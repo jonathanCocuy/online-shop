@@ -26,7 +26,7 @@ export default function Navbar() {
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center flex-1 justify-center space-x-8">
-                        <a 
+                        <a
                             href="#" 
                             onClick={() => setActiveLink("Home")}
                             className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${

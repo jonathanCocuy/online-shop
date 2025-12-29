@@ -9,7 +9,7 @@ export default function Footer() {
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                     {/* Copyright */}
                     <p className="text-sm text-gray-400">
-                        © 2025 OnlineShop. All rights reserved.
+                        © 2025 On-Shop. All rights reserved.
                     </p>
 
                     {/* Social Media */}
