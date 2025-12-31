@@ -27,13 +27,6 @@ type UserRow = RowDataPacket & {
     password: string;
 };
 
-type ExistingUserRow = RowDataPacket & {
-    id: number;
-    user_name: string;
-    last_name: string;
-    email: string;
-    password: string;
-};
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
@@ -43,9 +36,9 @@ export const AuthController = {
             // Validate request body
             const { user_name, last_name, email, password } = registerSchema.parse(req.body);
 
-            const [existingUser]= await db.query<ExistingUserRow[]>('SELECT * FROM users WHERE email = ?', [email]);  
+            const [existingUsers]= await db.query<UserRow[]>('SELECT * FROM users WHERE email = ?', [email]);  
 
-            if (existingUser.length > 0) {
+            if (existingUsers.length > 0) {
                 return res.status(400).json({ message: 'User already exists, please login' });
             }
 
@@ -72,13 +65,9 @@ export const AuthController = {
 
     async login(req: Request, res: Response) {
         try {
-            const validatedData = loginSchema.parse(req.body);
-            const { email, password } = validatedData;
+            const { email, password } = loginSchema.parse(req.body);
 
-            const [userRows] = await db.query<UserRow[]>(
-                "SELECT * FROM users WHERE email = ?",
-                [email]
-            );
+            const [userRows] = await db.query<UserRow[]>("SELECT * FROM users WHERE email = ?", [email]);
 
             if (userRows.length < 1) {
                 return res.status(401).json({ message: "Invalid email or password" });
