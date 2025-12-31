@@ -18,6 +18,23 @@ const loginSchema = z.object({
     password: z.string().min(8, 'Password must be at least 8 characters long'),
 });
 
+// Define the user row type (RowDataPacket is a type from mysql2)
+type UserRow = RowDataPacket & {
+    id: number;
+    user_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+};
+
+type ExistingUserRow = RowDataPacket & {
+    id: number;
+    user_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+};
+
 const JWT_SECRET = process.env.JWT_SECRET!;
 
 export const AuthController = {
@@ -26,7 +43,7 @@ export const AuthController = {
             // Validate request body
             const { user_name, last_name, email, password } = registerSchema.parse(req.body);
 
-            const existingUser = await db.query('SELECT * FROM users WHERE email = ?', [email]);  
+            const [existingUser]= await db.query<ExistingUserRow[]>('SELECT * FROM users WHERE email = ?', [email]);  
 
             if (existingUser.length > 0) {
                 return res.status(400).json({ message: 'User already exists, please login' });
@@ -54,15 +71,6 @@ export const AuthController = {
     },
 
     async login(req: Request, res: Response) {
-        // Define the user row type (RowDataPacket is a type from mysql2)
-        type UserRow = RowDataPacket & {
-            id: number;
-            user_name: string;
-            last_name: string;
-            email: string;
-            password: string;
-        };
-
         try {
             const validatedData = loginSchema.parse(req.body);
             const { email, password } = validatedData;
