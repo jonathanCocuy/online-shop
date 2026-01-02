@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ShoppingCart, Search, Menu, X, User, Heart, ShoppingBag } from "lucide-react";
 
 export default function Navbar() {
@@ -9,7 +10,7 @@ export default function Navbar() {
     const [activeLink, setActiveLink] = useState("Home");
 
     return (
-        <nav className="bg-white shadow-sm sticky top-0 z-50">
+        <nav className="bg-white shadow-sm sticky top-0 z-50 rounded-lg">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
@@ -26,42 +27,42 @@ export default function Navbar() {
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center flex-1 justify-center space-x-8">
-                        <a
-                            href="#" 
+                        <Link
+                            href="/" 
                             onClick={() => setActiveLink("Home")}
                             className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${
                                 activeLink === "Home" ? "border-b-2 border-slate-800 font-semibold" : ""
                             }`}
                         >
                             Home
-                        </a>
-                        <a 
-                            href="#" 
+                        </Link>
+                        <Link 
+                            href="/products" 
                             onClick={() => setActiveLink("Products")}
                             className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${
                                 activeLink === "Products" ? "border-b-2 border-slate-800 font-semibold" : ""
                             }`}
                         >
                             Products
-                        </a>
-                        <a 
-                            href="#" 
+                        </Link>
+                        <Link 
+                            href="/categories" 
                             onClick={() => setActiveLink("Categories")}
                             className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${
                                 activeLink === "Categories" ? "border-b-2 border-slate-800 font-semibold" : ""
                             }`}
                         >
                             Categories
-                        </a>
-                        <a 
-                            href="#" 
+                        </Link>
+                        <Link 
+                            href="/contact" 
                             onClick={() => setActiveLink("Contact")}
                             className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${
                                 activeLink === "Contact" ? "border-b-2 border-slate-800 font-semibold" : ""
                             }`}
                         >
                             Contact
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Icons */}
@@ -125,42 +126,42 @@ export default function Navbar() {
             {isOpen && (
                 <div className="md:hidden border-t border-gray-200 bg-white">
                     <div className="px-4 pt-2 pb-4 space-y-1">
-                        <a
-                            href="#"
+                        <Link
+                            href="/"
                             onClick={() => setActiveLink("Home")}
                             className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors ${
                                 activeLink === "Home" ? "bg-slate-800 text-white font-semibold" : ""
                             }`}
                         >
                             Home
-                        </a>
-                        <a
-                            href="#"
+                        </Link>
+                        <Link
+                            href="/products"
                             onClick={() => setActiveLink("Products")}
                             className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors ${
                                 activeLink === "Products" ? "bg-slate-800 text-white font-semibold" : ""
                             }`}
                         >
                             Products
-                        </a>
-                        <a
-                            href="#"
+                        </Link>
+                        <Link
+                            href="/categories"
                             onClick={() => setActiveLink("Categories")}
                             className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors ${
                                 activeLink === "Categories" ? "bg-slate-800 text-white font-semibold" : ""
                             }`}
                         >
                             Categories
-                        </a>
-                        <a
-                            href="#"
+                        </Link>
+                        <Link  
+                            href="/contact"
                             onClick={() => setActiveLink("Contact")}
                             className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors ${
                                 activeLink === "Contact" ? "bg-slate-800 text-white font-semibold" : ""
                             }`}
                         >
                             Contact
-                        </a>
+                        </Link>
                         <div className="pt-4 border-t border-gray-200 mt-4 flex space-x-4 px-3">
                             <button className="p-2 text-gray-700 hover:text-slate-800">
                                 <Search size={20} />
