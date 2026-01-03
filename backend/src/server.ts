@@ -1,71 +1,35 @@
-// src/server.ts
 import dotenv from 'dotenv';
 import { app } from './app';
 import { db } from './config/db';
 import { env } from './config/env';
 
-// ════════════════════════════════════════════
-// CARGAR VARIABLES DE ENTORNO
-// ════════════════════════════════════════════
-dotenv.config();
+/* dotenv.config(); */
 
-// ════════════════════════════════════════════
-// VERIFICAR VARIABLES REQUERIDAS
-// ════════════════════════════════════════════
+// Check if the required variables are defined
 if (!env.JWT_SECRET) {
     console.error('❌ ERROR: JWT_SECRET no está definido');
     process.exit(1);
 }
 
-// ════════════════════════════════════════════
-// PUERTO
-// ════════════════════════════════════════════
 const PORT = process.env.PORT || 5000;
 
-// ════════════════════════════════════════════
-// FUNCIÓN PARA INICIAR SERVIDOR
-// ════════════════════════════════════════════
 const startServer = async () => {
     try {
-        // 1. Conectar a la base de datos
-        await db.getConnection();
+        // Connect to the database
+        await db.getConnection(); // Get a connection from the pool
         console.log('✅ Database connected');
-        
-        // 2. Iniciar servidor
+    
         app.listen(PORT, () => {
             console.log('════════════════════════════════════════');
             console.log(`🚀 Server running on http://localhost:${PORT}`);
-            console.log(`📚 API available at http://localhost:${PORT}/api`);
-            console.log(`🏥 Health check: http://localhost:${PORT}/health`);
             console.log('════════════════════════════════════════');
         });
         
     } catch (error) {
         console.error('❌ Error starting server:', error);
+        // Exit the process with an error code
         process.exit(1);
     }
 };
 
-// ════════════════════════════════════════════
-// MANEJO DE CIERRE GRACEFUL
-// ════════════════════════════════════════════
-process.on('SIGINT', async () => {
-    console.log('\n👋 Shutting down gracefully...');
-    
-    // Cerrar conexión a BD
-    await db.end();
-    console.log('✅ Database connection closed');
-    
-    process.exit(0);
-});
-
-process.on('SIGTERM', async () => {
-    console.log('\n👋 SIGTERM received, shutting down...');
-    await db.end();
-    process.exit(0);
-});
-
-// ════════════════════════════════════════════
-// INICIAR SERVIDOR
-// ════════════════════════════════════════════
 startServer();
