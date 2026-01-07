@@ -3,14 +3,14 @@
 import React from 'react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  variant?: 'default' | 'filled' | 'outlined' | 'underlined' | 'floating';
-  colorScheme?: 'blue' | 'green' | 'purple' | 'red' | 'gray';
-  inputSize?: 'sm' | 'md' | 'lg';
-  label?: string;
-  error?: string;
-  helperText?: string;
-  icon?: React.ReactNode;
-  iconPosition?: 'left' | 'right';
+    variant?: 'default' | 'filled' | 'outlined' | 'underlined' | 'floating';
+    colorScheme?: 'blue' | 'green' | 'purple' | 'red' | 'gray';
+    inputSize?: 'sm' | 'md' | 'lg';
+    label?: string;
+    error?: string;
+    helperText?: string;
+    icon?: React.ReactNode;
+    iconPosition?: 'left' | 'right';
 }
 
 export const Input: React.FC<InputProps> = ({
