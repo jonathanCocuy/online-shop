@@ -27,9 +27,9 @@ export default function LoginForm() {
     return (
         <form onSubmit={onSubmit}>
             <div>
-                <Input type="email" placeholder="Email" {...register('email')} />
+                <Input type="email" variant="floating" placeholder="Email" {...register('email')} />
                     {errors.email && <p className="text-red-500">{errors.email.message}</p>}
-                <Input type="password" placeholder="Password" {...register('password')} />
+                <Input type="password" variant="floating" placeholder="Password" {...register('password')} />
                     {errors.password && <p className="text-red-500">{errors.password.message}</p>}
                 <Button type="submit">Login</Button>
             </div>
