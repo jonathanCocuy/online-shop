@@ -1,9 +1,6 @@
-import dotenv from 'dotenv';
 import { app } from './app';
 import { db } from './config/db';
 import { env } from './config/env';
-
-/* dotenv.config(); */
 
 // Check if the required variables are defined
 if (!env.JWT_SECRET) {
