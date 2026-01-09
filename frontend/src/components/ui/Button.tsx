@@ -36,7 +36,7 @@ export const Button: React.FC<ButtonProps> = ({
     
     return (
         <button className={combinedStyles} {...props}>
-        {children}
+            {children}
         </button>
     );
 };

@@ -35,7 +35,7 @@ export default function LoginForm() {
         setError('');
         authService.login(data).then((response) => {
             authService.setToken(response.token);
-            router.push('/dashboard');
+            router.push('/');
         }).catch((error) => {
             setError(error.message);
         });
