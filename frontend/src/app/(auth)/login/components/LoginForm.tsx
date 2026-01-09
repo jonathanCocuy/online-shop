@@ -1,13 +1,15 @@
 'use client';
 
+import Link from "next/link";
+import { z } from "zod";
 import { useState } from "react";
 import { loginSchema } from "../schema";
-import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { authService } from "@/lib/auth";
+import { useRouter } from "next/navigation";
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
@@ -15,6 +17,9 @@ export default function LoginForm() {
 
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    const router = useRouter();
 
     const form = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),
@@ -27,8 +32,15 @@ export default function LoginForm() {
     const { register, handleSubmit, formState: { errors } } = form;
 
     const onSubmit = handleSubmit((data) => {
-        console.log(data);
+        setError('');
+        authService.login(data).then((response) => {
+            authService.setToken(response.token);
+            router.push('/dashboard');
+        }).catch((error) => {
+            setError(error.message);
+        });
     });
+
 
     return (
         <div className="flex items-center justify-center min-h-screen p-4 w-full">
@@ -106,12 +118,12 @@ export default function LoginForm() {
                                         )}
                                     </button>
                                 </div>
-                                {errors.password && (
+                                {error && (
                                     <p className="text-red-500 text-sm mt-2 ml-1 flex items-center gap-1 animate-pulse">
                                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                                         </svg>
-                                        {errors.password?.message}
+                                        {error}
                                     </p>
                                 )}
                             </div>

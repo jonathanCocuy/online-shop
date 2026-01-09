@@ -8,12 +8,18 @@ import { useState } from 'react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
+import { authService } from '@/lib/auth';
+import { useRouter } from 'next/navigation';
+
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export default function RegisterForm() {
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState('');
+
+    const router = useRouter();
 
     const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormValues>({
         resolver: zodResolver(registerSchema),
@@ -21,8 +27,17 @@ export default function RegisterForm() {
 
     const onSubmit = async (data: RegisterFormValues) => {
         setIsLoading(true);
+        setError('');
         try {
-            console.log(data);
+            authService.register(data).then((response) => {
+                authService.setToken(response.token);
+                router.push('/login');
+                console.log(response);
+            }).catch((error) => {
+                setError(error.message);
+            });
+        } catch (error) {
+            setError((error as Error).message || "An error occurred");
         } finally {
             setIsLoading(false);
         }
