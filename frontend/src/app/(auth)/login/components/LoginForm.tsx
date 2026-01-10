@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { z } from "zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { loginSchema } from "../schema";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/Input";
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from "@/lib/auth";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
@@ -18,6 +19,8 @@ export default function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading] = useState(false);
     const [error, setError] = useState('');
+    const [isAnimating, setIsAnimating] = useState(false);
+    const [isEntering, setIsEntering] = useState(true);
 
     const router = useRouter();
 
@@ -31,61 +34,94 @@ export default function LoginForm() {
 
     const { register, handleSubmit, formState: { errors } } = form;
 
+    useEffect(() => {
+        // Animación de entrada desde la izquierda
+        setTimeout(() => {
+            setIsEntering(false);
+        }, 50);
+    }, []);
+
+    const handleNavigateToRegister = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        setIsAnimating(true);
+        
+        // Espera a que termine la animación antes de navegar
+        setTimeout(() => {
+            router.push('/register');
+        }, 500);
+    };
+
     const onSubmit = handleSubmit((data) => {
         setError('');
         authService.login(data).then((response) => {
             authService.setToken(response.token);
-            router.push('/');
+
+            if(authService.isAuthenticated()) {
+                router.push('/');
+            }
         }).catch((error) => {
             setError(error.message);
         });
     });
 
-
     return (
-        <div className="flex items-center justify-center min-h-screen p-4 w-full">
-            {/* Contenedor del formulario */}
-            <div className="relative w-full max-w-md">
-                {/* Card principal */}
-                <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-8 border border-white/20">
+        <div className="flex items-center justify-center w-full h-full p-4 md:p-8 lg:p-12">
+            {/* Container of the form */}
+            <div className="w-full h-[90%] sm:w-[85%] sm:h-[90%] md:w-[60%] md:h-[80%] lg:w-[50%] lg:h-[90%] xl:w-[60%] xl:h-[90%] bg-gray-500 rounded-4xl bg-[url('/images/register.webp')] bg-cover bg-center bg-no-repeat">
+                {/* Main card - Con animación hacia la derecha */}
+                <div 
+                    className={`w-full md:w-[80%] lg:w-[100%] xl:w-1/2 bg-white/70 backdrop-blur-xs rounded-4xl shadow-2xl p-6 md:p-8 border border-white/20 h-full flex flex-col justify-center transition-all duration-500 ease-in-out ${
+                        isAnimating 
+                            ? 'opacity-0 translate-x-full scale-95'  // Sale hacia la izquierda
+                            : isEntering
+                            ? 'opacity-0 scale-95'  // Aparece con fade y zoom (sin deslizar)
+                            : 'opacity-100 scale-100'  // Estado final
+                    }`}
+                >
                     {/* Header */}
-                    <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mb-4 shadow-lg">
-                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
+                    <div className="text-left mb-8 px-4 md:px-8 lg:px-16">
+                        <div className="flex items-center justify-start gap-2 mb-4">
+                            <div className="flex items-center justify-center w-15 h-15 shadow-lg rounded-full bg-white">
+                                <Image src="/images/login-logo.png" alt="Login" width={60} height={60} className="rounded-sm" />
+                            </div>
+                            <p className="text-2xl font-bold text-gray-800">On-Shop</p>
                         </div>
-                        <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                        Welcome back
+                        <h1 className="text-2xl text-gray-800 mb-2">
+                            Welcome Back!
                         </h1>
-                        <p className="text-gray-600">
-                        Enter your credentials to continue
+                        <p className="text-gray-600 text-sm">
+                            Enter your credentials to continue
                         </p>
                     </div>
 
-                    {/* Formulario */}
-                    <form onSubmit={onSubmit} className="space-y-6">
+                    {/* Form */}
+                    <form onSubmit={onSubmit} className="space-y-6 px-4 md:px-8 lg:px-16">
                         <div className="space-y-5">
                             {/* Email Input */}
                             <div>
                                 <div className="relative">
-                                <Input
-                                    {...register('email')}
-                                    type="email"
-                                    variant="default"
-                                    placeholder="Email"
-                                    colorScheme="purple"
-                                    iconPosition="left"
-                                    className={errors.email ? 'border-red-500' : ''}
-                                />
+                                    <Input
+                                        {...register('email')}
+                                        type="email"
+                                        variant="default"
+                                        placeholder="Enter your email"
+                                        colorScheme="purple"
+                                        iconPosition="left"
+                                        className={`pr-10 ${errors.email ? 'border-red-500' : ''}`}
+                                    />
+                                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
                                 </div>
                                 {errors.email && (
-                                <p className="text-red-500 text-sm mt-2 ml-1 flex items-center gap-1 animate-pulse">
-                                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                    </svg>
-                                    {errors.email?.message}
-                                </p>
+                                    <p className="text-red-500 text-sm mt-2 ml-1 flex items-center gap-1 animate-pulse">
+                                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                        </svg>
+                                        {errors.email?.message}
+                                    </p>
                                 )}
                             </div>
 
@@ -95,16 +131,16 @@ export default function LoginForm() {
                                     <Input
                                         type={showPassword ? "text" : "password"}
                                         variant="floating"
-                                        placeholder="Password"
+                                        placeholder="Enter your password"
                                         colorScheme="purple"
                                         {...register('password')}
                                         iconPosition="left"
-                                        className={errors.password ? 'border-red-500' : ''}
+                                        className={`pr-10 ${errors.password ? 'border-red-500' : ''}`}
                                     />
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors z-10"
                                     >
                                         {showPassword ? (
                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,7 +165,7 @@ export default function LoginForm() {
                             </div>
                         </div>
 
-                        {/* Opciones adicionales */}
+                        {/* Additional options */}
                         <div className="flex items-center justify-between text-sm">
                         <label className="flex items-center cursor-pointer">
                             <input type="checkbox" className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 focus:ring-2" />
@@ -140,7 +176,7 @@ export default function LoginForm() {
                         </a>
                         </div>
 
-                        {/* Botón de submit */}
+                        {/* Submit button */}
                         <Button
                             type="submit"
                             variant="primary"
@@ -173,23 +209,27 @@ export default function LoginForm() {
                     </form>
 
                 {/* Footer */}
-                <div className="mt-8 text-center">
+                <div className="mt-8 text-center px-4 md:px-8 lg:px-16">
                     <p className="text-sm text-gray-600">
                     Don&apos;t have an account?{' '}
-                    <Link href="/register" className="text-purple-600 hover:text-purple-700 font-medium transition-colors">
+                    <Link 
+                        href="/register" 
+                        onClick={handleNavigateToRegister}
+                        className="text-purple-600 hover:text-purple-700 font-medium transition-colors cursor-pointer"
+                    >
                         Register here
                     </Link>
                     </p>
                 </div>
-                </div>
 
                 {/* Texto adicional */}
-                <p className="text-center text-sm text-gray-500 mt-4">
+                <p className="text-center text-xs md:text-sm text-gray-500 mt-4 px-4">
                     By logging in, you agree to our{' '}
                     <a href="#" className="text-gray-700 hover:underline">Terms</a>
                         {' '}and{' '}
                     <a href="#" className="text-gray-700 hover:underline">Privacy Policy</a>
                 </p>
+                </div>
             </div>
         </div>
     );

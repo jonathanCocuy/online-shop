@@ -64,11 +64,11 @@ export const Input: React.FC<InputProps> = ({
     };
 
     const variantStyles = {
-        default: `text-gray-700 border border-gray-300 rounded-lg bg-white ${error ? 'border-red-500' : getColorStyles(colorScheme)} focus:ring-2 placeholder:text-gray-400`,
-        filled: `text-gray-700 border-0 rounded-lg ${error ? 'bg-red-50' : 'bg-gray-100'} ${getColorStyles(colorScheme)} focus:ring-2 placeholder:text-gray-400`,
-        outlined: `text-gray-700 border-2 ${error ? 'border-red-500' : 'border-gray-300'} rounded-lg bg-transparent ${getColorStyles(colorScheme)} placeholder:text-gray-400`,
-        underlined: `text-gray-700 border-0 border-b-2 ${error ? 'border-red-500' : 'border-gray-300'} rounded-none bg-transparent ${getColorStyles(colorScheme)} px-0 placeholder:text-gray-400`,
-        floating: `text-gray-700 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-lg bg-white ${getColorStyles(colorScheme)} focus:ring-2 peer placeholder:text-gray-400`,
+        default: `text-md text-gray-700 border border-gray-300 rounded-2xl bg-white ${error ? 'border-red-500' : getColorStyles(colorScheme)} focus:ring-2 placeholder:text-gray-400`,
+        filled: `text-md text-gray-700 border-0 rounded-2xl  ${error ? 'bg-red-50' : 'bg-gray-100'} ${getColorStyles(colorScheme)} focus:ring-2 placeholder:text-gray-400`,
+        outlined: `text-md text-gray-700 border-2 ${error ? 'border-red-500' : 'border-gray-300'} rounded-2xl  bg-transparent ${getColorStyles(colorScheme)} placeholder:text-gray-400`,
+        underlined: `text-md text-gray-700 border-0 border-b-2 ${error ? 'border-red-500' : 'border-gray-300'} rounded-none bg-transparent ${getColorStyles(colorScheme)} px-0 placeholder:text-gray-400`,
+        floating: `text-md text-gray-700 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-2xl  bg-white ${getColorStyles(colorScheme)} focus:ring-2 peer placeholder:text-gray-400`,
     };
 
     const iconStyles = icon ? (iconPosition === 'left' ? 'pl-10' : 'pr-10') : '';

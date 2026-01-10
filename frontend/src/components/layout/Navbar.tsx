@@ -2,12 +2,21 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ShoppingCart, Search, Menu, X, User, Heart, ShoppingBag } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, User, Heart, ShoppingBag, LogOut } from "lucide-react";
+import { authService } from "@/lib/auth";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
     const [activeLink, setActiveLink] = useState("Home");
+
+    const router = useRouter();
+
+    const handleLogout = () => {
+        authService.logout();
+        router.push('/login');
+    }
 
     return (
         <nav className="bg-white shadow-sm sticky top-0 z-50 rounded-lg">
@@ -76,14 +85,18 @@ export default function Navbar() {
                         <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
                             <Heart size={20} />
                         </button>
-                        <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
-                            <User size={20} />
-                        </button>
                         <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all relative">
                             <ShoppingCart size={20} />
                             <span className="absolute -top-1 -right-1 bg-slate-800 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                                 3
                             </span>
+                        </button>
+                        <div className="p-2"></div>
+                        <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
+                            <User size={20} />
+                        </button>
+                        <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all" onClick={handleLogout}>
+                            <LogOut size={20} color="red" />
                         </button>
                     </div>
 
