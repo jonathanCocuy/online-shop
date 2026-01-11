@@ -35,7 +35,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({
     ...props
 }, ref) => {
     const [isFocused, setIsFocused] = React.useState(false);
-    const [hasValue, setHasValue] = React.useState(false);
+    const [hasValue, setHasValue] = React.useState(!!props.value && props.value !== '');
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setHasValue(e.target.value !== '');
@@ -72,12 +72,15 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({
         return colors[scheme as keyof typeof colors];
     };
 
+    // Determinar el color del texto basado en si hay un valor seleccionado
+    const textColorClass = hasValue || (props.value && props.value !== '') ? 'text-gray-700' : 'text-gray-400';
+
     const variantStyles = {
-        default: `text-md text-gray-700 border border-gray-300 rounded-2xl bg-white ${error ? 'border-red-500' : getColorStyles(colorScheme)} focus:ring-2`,
-        filled: `text-md text-gray-700 border-0 rounded-2xl ${error ? 'bg-red-50' : 'bg-gray-100'} ${getColorStyles(colorScheme)} focus:ring-2`,
-        outlined: `text-md text-gray-700 border-2 ${error ? 'border-red-500' : 'border-gray-300'} rounded-2xl bg-transparent ${getColorStyles(colorScheme)}`,
-        underlined: `text-md text-gray-700 border-0 border-b-2 ${error ? 'border-red-500' : 'border-gray-300'} rounded-none bg-transparent ${getColorStyles(colorScheme)} px-0`,
-        floating: `text-md text-gray-700 border ${error ? 'border-red-500 focus:border-red-500' : 'border-gray-300'} rounded-2xl bg-white ${getColorStyles(colorScheme)} focus:ring-2 peer`,
+        default: `text-md ${textColorClass} border border-gray-300 rounded-2xl bg-white ${error ? 'border-red-500' : getColorStyles(colorScheme)} focus:ring-2`,
+        filled: `text-md ${textColorClass} border-0 rounded-2xl ${error ? 'bg-red-50' : 'bg-gray-100'} ${getColorStyles(colorScheme)} focus:ring-2`,
+        outlined: `text-md ${textColorClass} border-2 ${error ? 'border-red-500' : 'border-gray-300'} rounded-2xl bg-transparent ${getColorStyles(colorScheme)}`,
+        underlined: `text-md ${textColorClass} border-0 border-b-2 ${error ? 'border-red-500' : 'border-gray-300'} rounded-none bg-transparent ${getColorStyles(colorScheme)} px-0`,
+        floating: `text-md ${textColorClass} border ${error ? 'border-red-500 focus:border-red-500' : 'border-gray-300'} rounded-2xl bg-white ${getColorStyles(colorScheme)} focus:ring-2 peer`,
     };
 
     const iconStyles = icon ? (iconPosition === 'left' ? 'pl-10 pr-10' : 'pr-10') : 'pr-10';
@@ -104,6 +107,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 onChange={handleChange}
+                defaultValue=""
                 {...props}
             >
             {placeholder && (
@@ -112,7 +116,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({
                 </option>
             )}
             {options.map((option) => (
-                <option key={option.value} value={option.value}>
+                <option key={option.value} value={option.value} className="text-gray-700">
                 {option.label}
                 </option>
             ))}

@@ -271,7 +271,15 @@ export default function RegisterForm() {
                                 )}
                             </div>
                             <div>
-                                <Select variant="default" colorScheme="purple" options={[{ value: '', label: 'Select your role' }, { value: 'CLIENT', label: 'Client' }, { value: 'SELLER', label: 'Seller' }]} />
+                                <Select 
+                                    variant="default" 
+                                    placeholder="Select your role" 
+                                    colorScheme="purple" 
+                                    options={[
+                                        { value: 'CLIENT', label: 'Client' }, 
+                                        { value: 'SELLER', label: 'Seller' }
+                                    ]} 
+                                />
                             </div>
                         </div>
     

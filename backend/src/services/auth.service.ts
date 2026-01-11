@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { db } from "../config/db";
 import { env } from "../config/env";
-import { registerSchema, loginSchema, UserRow } from "../controllers/auth.controller";
+import { registerSchema, loginSchema, UserRow } from "../schemas/auth.schemas";
 
 // Define the input types for the register and login functions
 type RegisterInput = z.infer<typeof registerSchema>;
