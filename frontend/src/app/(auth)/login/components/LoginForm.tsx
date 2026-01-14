@@ -72,10 +72,10 @@ export default function LoginForm() {
                 <div 
                     className={`w-full md:w-[80%] lg:w-[100%] xl:w-1/2 bg-white/70 backdrop-blur-xs rounded-4xl shadow-2xl p-6 md:p-8 border border-white/20 h-full flex flex-col justify-center transition-all duration-500 ease-in-out ${
                         isAnimating 
-                            ? 'opacity-0 translate-x-full scale-95'  // Sale hacia la izquierda
+                            ? 'opacity-0 translate-x-full scale-95' 
                             : isEntering
-                            ? 'opacity-0 scale-95'  // Aparece con fade y zoom (sin deslizar)
-                            : 'opacity-100 scale-100'  // Estado final
+                            ? 'opacity-0 scale-95'
+                            : 'opacity-100 scale-100'
                     }`}
                 >
                     {/* Header */}
@@ -208,27 +208,19 @@ export default function LoginForm() {
                         </div>
                     </form>
 
-                {/* Footer */}
-                <div className="mt-8 text-center px-4 md:px-8 lg:px-16">
-                    <p className="text-sm text-gray-600">
-                    Don&apos;t have an account?{' '}
-                    <Link 
-                        href="/register" 
-                        onClick={handleNavigateToRegister}
-                        className="text-purple-600 hover:text-purple-700 font-medium transition-colors cursor-pointer"
-                    >
-                        Register here
-                    </Link>
-                    </p>
-                </div>
-
-                {/* Texto adicional */}
-                <p className="text-center text-xs md:text-sm text-gray-500 mt-4 px-4">
-                    By logging in, you agree to our{' '}
-                    <a href="#" className="text-gray-700 hover:underline">Terms</a>
-                        {' '}and{' '}
-                    <a href="#" className="text-gray-700 hover:underline">Privacy Policy</a>
-                </p>
+                    {/* Footer */}
+                    <div className="mt-4 text-center px-4 md:px-8 lg:px-16">
+                        <p className="text-sm text-gray-600">
+                        Don&apos;t have an account?{' '}
+                        <Link 
+                            href="/register" 
+                            onClick={handleNavigateToRegister}
+                            className="text-purple-600 hover:text-purple-700 font-medium transition-colors cursor-pointer"
+                        >
+                            Register here
+                        </Link>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

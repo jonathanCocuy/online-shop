@@ -274,7 +274,8 @@ export default function RegisterForm() {
                                 <Select 
                                     variant="default" 
                                     placeholder="Select your role" 
-                                    colorScheme="purple" 
+                                    colorScheme="purple"
+                                    {...register('role')}
                                     options={[
                                         { value: 'CLIENT', label: 'Client' }, 
                                         { value: 'SELLER', label: 'Seller' }
@@ -316,7 +317,7 @@ export default function RegisterForm() {
                     </form>
     
                     {/* Footer */}
-                    <div className="mt-6 text-center px-4 md:px-8 lg:px-16">
+                    <div className="mt-4 text-center px-4 md:px-8 lg:px-16">
                         <p className="text-sm text-gray-600">
                             Already have an account?{' '}
                             <Link 
@@ -328,14 +329,6 @@ export default function RegisterForm() {
                             </Link>
                         </p>
                     </div>
-    
-                    {/* Texto adicional */}
-                    <p className="text-center text-xs md:text-sm text-gray-500 mt-4 px-4">
-                        By registering, you agree to our{' '}
-                        <a href="#" className="text-gray-700 hover:underline">Terms</a>
-                        {' '}and{' '}
-                        <a href="#" className="text-gray-700 hover:underline">Privacy Policy</a>
-                    </p>
                 </div>
             </div>
         </div>
