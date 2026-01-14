@@ -6,6 +6,7 @@ export const registerSchema = z.object({
     last_name: z.string().min(3, 'Lastname must be at least 3 characters long'),
     email: z.string().email('Invalid email address'),
     password: z.string().min(8, 'Password must be at least 8 characters long'),
+    role: z.enum(['CLIENT', 'SELLER', 'ADMIN']),
 });
 
 export const loginSchema = z.object({
@@ -20,4 +21,5 @@ export type UserRow = RowDataPacket & {
     last_name: string;
     email: string;
     password: string;
+    role: 'CLIENT' | 'SELLER' | 'ADMIN';
 };

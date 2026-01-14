@@ -27,8 +27,8 @@ export class AuthService {
         const hashedPassword = await bcrypt.hash(validatedData.password, 10);
 
         await db.query(
-            'INSERT INTO users (user_name, last_name, email, password) VALUES (?, ?, ?, ?)', 
-            [validatedData.user_name, validatedData.last_name, validatedData.email, hashedPassword]
+            'INSERT INTO users (user_name, last_name, email, password, role) VALUES (?, ?, ?, ?, ?)', 
+            [validatedData.user_name, validatedData.last_name, validatedData.email, hashedPassword, validatedData.role]
         );
 
         return { message: 'User created successfully' }

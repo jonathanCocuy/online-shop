@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+/* import { Request, Response, NextFunction } from "express";
 
 export const roleMiddleware = (role: 'client' | 'seller' | 'admin') => {
     return (req: Request, res: Response, next: NextFunction) => {
@@ -7,4 +7,4 @@ export const roleMiddleware = (role: 'client' | 'seller' | 'admin') => {
         }
         next();
     }
-}
+} */
