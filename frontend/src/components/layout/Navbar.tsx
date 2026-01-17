@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ShoppingCart, Search, Menu, X, User, Heart, ShoppingBag, LogOut } from "lucide-react";
 import { authService } from "@/lib/auth";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -25,8 +26,8 @@ export default function Navbar() {
                     {/* Logo */}
                     <div className="flex items-center">
                         <div className="flex-shrink-0 flex items-center gap-2">
-                            <div className="bg-slate-800 p-2 rounded-lg">
-                                <ShoppingBag className="text-white" size={24} />
+                            <div className="rounded-lg">
+                                <Image src="/images/login-logo.png" alt="Logo" width={50} height={50} />
                             </div>
                             <span className="text-2xl font-bold text-slate-800">
                                 On-Shop
