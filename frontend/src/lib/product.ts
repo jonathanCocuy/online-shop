@@ -7,6 +7,7 @@ export interface Product {
     price: number;
     image_url: string;
     stock: number;
+    category: string;
 }
 
 export const productService = {

@@ -2,10 +2,14 @@
 
 import { Product } from '@/lib/product';
 import Image from 'next/image';
+import { Heart } from 'lucide-react';
+import { useState } from 'react';
 
 
 // Componente de tarjeta de producto individual
 export default function ProductCard({ product }: { product: Product }) {
+    const [isLiked, setIsLiked] = useState(false);
+
     return (
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 w-[302px]">
             <div className="relative overflow-hidden bg-gray-100">
@@ -24,9 +28,15 @@ export default function ProductCard({ product }: { product: Product }) {
             </div>
             
             <div className="p-5">
-                <h2 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h2>
-                
+                <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h2>
+                    <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all" onClick={() => setIsLiked(!isLiked)}>
+                        {isLiked ? <Heart size={20} fill="red" /> : <Heart size={20} />}
+                    </button>
+                </div>
+                <p className="text-blue-600 font-semibold text-sm mb-4 line-clamp-2">{product.category.toUpperCase()}</p>
                 <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.description}</p>
+
                 
                 <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-gray-900">
@@ -34,7 +44,7 @@ export default function ProductCard({ product }: { product: Product }) {
                     </span>
                     
                     <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors duration-200 text-sm">
-                        Agregar
+                        Add to cart
                     </button>
                 </div>
             </div>

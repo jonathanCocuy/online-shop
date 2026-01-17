@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { productService } from "@/lib/product";
 import { Product } from "@/lib/product";
-import Image from "next/image";
 import ProductCard from "@/components/product/ProductCard";
 
 export default function Products() {
@@ -30,13 +28,18 @@ export default function Products() {
                 {loading && (
                     <div className="flex flex-col items-center justify-center gap-4">
                         <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-white"></div>
-                        <p className="text-white">Loading...</p>
+                        <p className="text-white">Loading products...</p>
                     </div>
                 )}
 
                 {!loading && products.length === 0 && (
                     <div className="flex flex-col items-center justify-center gap-4">
                         <p className="text-white">No products found</p>
+                    </div>
+                )}
+                {error && (
+                    <div className="flex flex-col items-center justify-center gap-4">
+                        <p className="text-white">Contact the administrator</p>
                     </div>
                 )}
             </div>
