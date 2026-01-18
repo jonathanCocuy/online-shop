@@ -22,6 +22,10 @@ export default function Products() {
         });
     }, []);
 
+    const handleAddProduct = () => {
+        
+    }
+
     return (
         <div className="flex flex-col items-center justify-center">
             <h1 className="text-4xl font-bold text-center mb-20 mt-10">Products</h1>
