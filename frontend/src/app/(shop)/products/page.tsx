@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { productService } from "@/lib/product";
 import { Product } from "@/lib/product";
 import ProductCard from "@/components/product/ProductCard";
+import { Button } from "@/components/ui/Button";
 
 export default function Products() {
 
@@ -24,6 +25,9 @@ export default function Products() {
     return (
         <div className="flex flex-col items-center justify-center">
             <h1 className="text-4xl font-bold text-center mb-20 mt-10">Products</h1>
+            <div className="mb-10 w-2/3 flex justify-start">
+                <Button variant="primary">Add Product</Button>
+            </div>
             <div className="flex flex-col items-center justify-center">
                 {loading && (
                     <div className="flex flex-col items-center justify-center gap-4">
