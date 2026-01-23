@@ -71,8 +71,10 @@ export const Input: React.FC<InputProps> = ({
         floating: `text-md text-gray-700 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-2xl  bg-white ${getColorStyles(colorScheme)} focus:ring-2 peer placeholder:text-gray-400`,
     };
 
+
     const iconStyles = icon ? (iconPosition === 'left' ? 'pl-10' : 'pr-10') : '';
-    const inputClasses = `${baseStyles} ${variantStyles[variant]} ${sizeStyles[inputSize]} ${iconStyles} ${className}`;
+    const numberInputStyles = props.type === 'number' ? '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' : '';
+    const inputClasses = `${baseStyles} ${variantStyles[variant]} ${sizeStyles[inputSize]} ${iconStyles} ${numberInputStyles} ${className}`;
 
     return (
         <div className="w-full">
@@ -99,14 +101,14 @@ export const Input: React.FC<InputProps> = ({
             />
             
             {variant === 'floating' && label && (
-            <label className={`absolute left-4 transition-all duration-200 pointer-events-none
-                    ${isFocused || hasValue || props.value
-                    ? `-top-2 text-xs bg-white px-1 ${getLabelColorClass(colorScheme)}`
-                    : 'top-1/2 -translate-y-1/2 text-gray-500'
-                }`}
-            >
-                {label}
-            </label>
+                <label className={`absolute left-4 transition-all duration-200 pointer-events-none
+                        ${isFocused || hasValue || props.value
+                        ? `-top-2 text-xs bg-white px-1 ${getLabelColorClass(colorScheme)}`
+                        : 'top-1/2 -translate-y-1/2 text-gray-500'
+                    }`}
+                >
+                    {label}
+                </label>
             )}
             
             {icon && iconPosition === 'right' && (
@@ -126,22 +128,3 @@ export const Input: React.FC<InputProps> = ({
         </div>
     );
 };
-
-// Iconos simples SVG
-/* const SearchIcon = () => (
-    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    </svg>
-);
-
-const EmailIcon = () => (
-    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-    </svg>
-);
-
-const LockIcon = () => (
-    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-    </svg>
-); */
