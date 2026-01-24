@@ -15,7 +15,8 @@
     "ogl": "^1.0.11",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-hook-form": "^7.70.0"
+    "react-hook-form": "^7.70.0",
+    "tippy.js": "^6.3.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

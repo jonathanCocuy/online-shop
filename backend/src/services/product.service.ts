@@ -3,8 +3,33 @@ import { db } from "../config/db";
 
 export class ProductService {
     async createProduct(validatedData: Product) {
-        const product = await db.query('INSERT INTO products (name, price, description, image) VALUES (?, ?, ?, ?)', [validatedData.name, validatedData.price, validatedData.description, validatedData.image]);
-        return product;
+        console.log('🔵 Service - creando producto:', validatedData);
+        
+        try {
+            const [result] = await db.query(
+                'INSERT INTO products (name, price, description, image_url, category, stock, currency) VALUES (?, ?, ?, ?, ?, ?, ?)', 
+                [
+                    validatedData.name, 
+                    validatedData.price, 
+                    validatedData.description, 
+                    validatedData.image_url, 
+                    validatedData.category, 
+                    validatedData.stock, 
+                    validatedData.currency
+                ]
+            );
+            
+            console.log('✅ Resultado del INSERT:', result);
+            
+            const insertId = (result as any).insertId;
+            return {
+                id: insertId,
+                ...validatedData
+            };
+        } catch (error) {
+            console.error('❌ Error en DB query:', error);
+            throw error;
+        }
     }
 
     async getProducts() {
@@ -18,7 +43,7 @@ export class ProductService {
     }
 
     async updateProduct(id: number, validatedData: Product) {
-        const product = await db.query('UPDATE products SET name = ?, price = ?, description = ?, image = ? WHERE id = ?', [validatedData.name, validatedData.price, validatedData.description, validatedData.image, id]);
+        const product = await db.query('UPDATE products SET name = ?, price = ?, description = ?, image_url = ?, category = ?, stock = ?, currency = ? WHERE id = ?', [validatedData.name, validatedData.price, validatedData.description, validatedData.image_url, validatedData.category, validatedData.stock, validatedData.currency, id]);
         return product;
     }
 

@@ -14,20 +14,27 @@ export const SlideOver: React.FC<SlideOverProps> = ({
   title,
   children,
 }) => {
-  // No bloqueamos el scroll del body para mantener visible el contenido de fondo
-
   if (!isOpen) return null;
+
+  // Función para manejar click en el backdrop
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Solo cierra si el click es directamente en el backdrop
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
 
   return (
     <>
-      {/* Backdrop - no bloquea clicks para mantener la vista */}
+      {/* Backdrop - ahora captura clicks y previene interacción con elementos debajo */}
       <div
-        className="fixed inset-0 z-40 bg-black/80 transition-opacity duration-300 pointer-events-none"
+        className="fixed inset-0 z-40 bg-black/80 transition-opacity duration-300"
+        onClick={handleBackdropClick}
       />
   
       {/* Slide Over Panel */}
-      <div className="fixed top-0 right-0 w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/4 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out pointer-events-auto h-[700px] flex justify-center items-center rounded-lg">
-        <div className="flex flex-col">
+      <div className="fixed top-25 w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/2 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out h-auto flex justify-center items-center rounded-lg">
+        <div className="flex flex-col w-full h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
             <h2 className="text-2xl font-bold text-gray-900">{title}</h2>

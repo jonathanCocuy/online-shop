@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ShoppingCart, Search, Menu, X, User, Heart, ShoppingBag, LogOut } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, User, Heart, LogOut } from "lucide-react";
 import { authService } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -83,9 +83,9 @@ export default function Navbar() {
                         >
                             <Search size={20} />
                         </button>
-                        <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
+                        <Link href="/favorites" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
                             <Heart size={20} />
-                        </button>
+                        </Link>
                         <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all relative">
                             <ShoppingCart size={20} />
                             <span className="absolute -top-1 -right-1 bg-slate-800 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">

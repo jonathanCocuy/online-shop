@@ -6,7 +6,7 @@ import { Product } from "@/lib/product";
 import ProductCard from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/Button";
 import { SlideOver } from "@/components/ui/SlideOver";
-import ProductForm from "@/components/product/ProductForm";
+import ProductForm, { ProductFormData } from "@/components/product/ProductForm";
 
 export default function Products() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -24,17 +24,29 @@ export default function Products() {
         });
     }, []);
 
-    const handleFormSubmit = () => {
-        // Aquí manejas el submit del formulario
-        setIsSlideOverOpen(false);
-        // Opcional: recargar productos
-        // productService.getProducts().then(setProducts);
+    const handdleAddProduct = async (product: ProductFormData) => {
+        setIsSlideOverOpen(true);
+
+        try {
+            const response = await productService.createProduct({ id: crypto.randomUUID(), name: product.name, description: product.description, price: Number(product.price), image_url: product.image_url, stock: Number(product.stock), category: product.category, currency: product.currency });
+            if (response.success) {
+                setProducts([...products, response.data]);  
+                setIsSlideOverOpen(false);
+                productService.getProducts().then(setProducts);
+            } else {
+                setError(response.message);
+            }
+        } catch (error) {
+            console.error('Error adding product:', error);
+            setError('Error adding product');
+            setIsSlideOverOpen(false);
+        }
     };
 
     return (
         <div className="flex flex-col items-center justify-center">
             <h1 className="text-4xl font-bold text-center mb-20 mt-10">Products</h1>
-            <div className="mb-10 w-2/3 flex justify-start">
+            <div className="mb-10 w-full flex justify-center">
                 <Button 
                     variant="primary" 
                     onClick={() => setIsSlideOverOpen(true)}
@@ -76,7 +88,7 @@ export default function Products() {
                 title="Add Product"
             >
                 <ProductForm 
-                    onSubmit={handleFormSubmit}
+                    onSubmit={handdleAddProduct}
                     onCancel={() => setIsSlideOverOpen(false)}
                 />
             </SlideOver>

@@ -76,11 +76,11 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({
     const textColorClass = hasValue || (props.value && props.value !== '') ? 'text-gray-700' : 'text-gray-400';
 
     const variantStyles = {
-        default: `text-md ${textColorClass} border border-gray-300 rounded-2xl bg-white ${error ? 'border-red-500' : getColorStyles(colorScheme)} focus:ring-2`,
-        filled: `text-md ${textColorClass} border-0 rounded-2xl ${error ? 'bg-red-50' : 'bg-gray-100'} ${getColorStyles(colorScheme)} focus:ring-2`,
-        outlined: `text-md ${textColorClass} border-2 ${error ? 'border-red-500' : 'border-gray-300'} rounded-2xl bg-transparent ${getColorStyles(colorScheme)}`,
-        underlined: `text-md ${textColorClass} border-0 border-b-2 ${error ? 'border-red-500' : 'border-gray-300'} rounded-none bg-transparent ${getColorStyles(colorScheme)} px-0`,
-        floating: `text-md ${textColorClass} border ${error ? 'border-red-500 focus:border-red-500' : 'border-gray-300'} rounded-2xl bg-white ${getColorStyles(colorScheme)} focus:ring-2 peer`,
+        default: `text-md h-12 ${textColorClass} border border-gray-300 rounded-2xl bg-white ${error ? 'border-red-500' : getColorStyles(colorScheme)} focus:ring-2`,
+        filled: `text-md h-12 ${textColorClass} border-0 rounded-2xl ${error ? 'bg-red-50' : 'bg-gray-100'} ${getColorStyles(colorScheme)} focus:ring-2`,
+        outlined: `text-md h-12 ${textColorClass} border-2 ${error ? 'border-red-500' : 'border-gray-300'} rounded-2xl bg-transparent ${getColorStyles(colorScheme)}`,
+        underlined: `text-md h-12 ${textColorClass} border-0 border-b-2 ${error ? 'border-red-500' : 'border-gray-300'} rounded-none bg-transparent ${getColorStyles(colorScheme)} px-0`,
+        floating: `text-md h-12 ${textColorClass} border ${error ? 'border-red-500 focus:border-red-500' : 'border-gray-300'} rounded-2xl bg-white ${getColorStyles(colorScheme)} focus:ring-2 peer`,
     };
 
     const iconStyles = icon ? (iconPosition === 'left' ? 'pl-10 pr-10' : 'pr-10') : 'pr-10';

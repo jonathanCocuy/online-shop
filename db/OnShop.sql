@@ -66,4 +66,10 @@ SELECT * FROM products;
 
 DELETE from products where id;
 
-ALTER TABLE products ADD category varchar(255)
+ALTER TABLE products ADD category varchar(255);
+
+ALTER TABLE products MODIFY currency enum('COP', 'USD', 'EUR', 'GBP') NOT NULL DEFAULT 'USD';
+
+DESCRIBE products;
+
+delete from products where id = '57'

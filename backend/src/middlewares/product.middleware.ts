@@ -3,11 +3,10 @@ import { z } from "zod";
 import { productSchema } from "../schemas/product.schema";
 
 export const productMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const { name, price, description, image } = req.body;
-    if (!name || !price || !description || !image) {
+    const { name, price, description, image_url, category, stock, currency } = req.body;
+    if (!name || !price || !description || !image_url || !category || !stock || !currency	) {
         return res.status(400).json({ message: 'All fields are required' });
     }
-    next();
 
     try {
         const validatedData = productSchema.parse(req.body);
@@ -17,6 +16,6 @@ export const productMiddleware = (req: Request, res: Response, next: NextFunctio
         if (error instanceof z.ZodError) {
             return res.status(400).json({ message: error.message });
         }
-        return res.status(500).json({ message: 'Internal server error' });
+        return res.status(500).json({ message: 'Internal server error', error: error });
     }
 }

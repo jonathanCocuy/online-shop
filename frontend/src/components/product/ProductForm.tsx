@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
+import { Textarea } from "@/components/ui/Textarea";
 
 interface ProductFormProps {
     onSubmit: (productData: ProductFormData) => void;
@@ -13,20 +14,22 @@ interface ProductFormProps {
 export interface ProductFormData {
     name: string;
     description: string;
-    price: number;
+    price: number | string;
     image_url: string;
-    stock: number;
+    stock: number | string;
     category: string;
+    currency: string;
 }
 
 export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
     const [formData, setFormData] = useState<ProductFormData>({
         name: "",
         description: "",
-        price: 0,
+        price: "",
         image_url: "",
-        stock: 0,
+        stock: "",
         category: "",
+        currency: "COP",
     });
 
     const handleChange = (
@@ -35,13 +38,14 @@ export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]: name === "price" || name === "stock" ? Number(value) : value,
+            [name]: value,
         }));
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onSubmit(formData);
+        onCancel();
     };
 
     return (
@@ -61,7 +65,7 @@ export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
             </div>
 
             <div>
-                <Input
+                <Textarea
                     name="description"
                     label="Description"
                     required
@@ -73,7 +77,23 @@ export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
                 />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <Select
+                        label="Currency"
+                        placeholder="Select a currency"
+                        required
+                        onChange={(e) => setFormData(prev => ({ ...prev, currency: e.target.value }))}
+                        options={[
+                            { value: "COP", label: "COP" },
+                            { value: "USD", label: "USD" },
+                            { value: "EUR", label: "EUR" },
+                            { value: "GBP", label: "GBP" },
+                        ]}
+                        colorScheme="blue"
+                        variant="outlined"
+                    />
+                </div>  
                 <div>
                     <Input
                         type="number"
@@ -81,10 +101,10 @@ export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
                         label="Price ($)"
                         required
                         min="0"
-                        step="0.01"
+                        step={formData.currency === "COP" ? 100 : 0.01}
                         value={formData.price}
                         onChange={handleChange}
-                        placeholder="0.00"
+                        placeholder={formData.currency === "COP" ? "0" : "0.00"}
                         colorScheme="blue"
                         variant="outlined"
                     />
@@ -113,11 +133,12 @@ export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
                     onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
                     options={[
                         { value: "", label: "Select a category" },
-                        { value: "electronics", label: "Electronics" },
-                        { value: "clothing", label: "Clothing" },
-                        { value: "books", label: "Books" },
-                        { value: "toys", label: "Toys" },
-                        { value: "other", label: "Other" }
+                        { value: "technology", label: "Technology" },
+                        { value: "home", label: "Home" },
+                        { value: "shoes", label: "Shoes" },
+                        { value: "accesories", label: "Accesories" },
+                        { value: "sports", label: "Sports" },
+                        { value: "clothes", label: "Clothes" },
                     ]}
                     colorScheme="blue"
                     variant="outlined"
@@ -142,13 +163,15 @@ export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
                 <Button
                     type="button"
                     onClick={onCancel}
-                    variant="secondary"
+                    variant="danger"
                 >
                     Cancel
                 </Button>
                 <Button
                     type="submit"
                     variant="primary"
+                    disabled={!formData.name || !formData.description || !formData.price || !formData.stock || !formData.category || !formData.image_url}
+                    onClick={handleSubmit}
                 >
                     Create Product
                 </Button>

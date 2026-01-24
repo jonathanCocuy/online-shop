@@ -7,10 +7,9 @@ export class ProductsController {
     
     async createProduct(req: Request, res: Response) {
         try {
-            const validatedData = productSchema.parse(req.body);
 
             const productService = new ProductService();
-            const result = await productService.createProduct({ id: 0, ...validatedData });
+            const result = await productService.createProduct(req.body);
 
             return res.status(201).json(result);
 
