@@ -45,7 +45,7 @@ export default function ProductCard({ product } : { product: Product }) {
 
                 <div className="flex items-end justify-start">
                     <span className="text-2xl font-bold text-gray-900">${product.price}</span>
-                    <span className="text-xs font-bold text-gray-900 mb-1">{product.currency.toUpperCase()}</span>
+                    <span className="text-xs font-bold text-gray-900 mb-1">{product.currency}</span>
                 </div>
                 <div className="flex justify-between items-center gap-2 pt-4">
                     <Button data-tippy-content="View product" variant="secondary" size="sm"     className="flex items-center gap-2">

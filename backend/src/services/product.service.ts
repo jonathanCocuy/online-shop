@@ -3,7 +3,6 @@ import { db } from "../config/db";
 
 export class ProductService {
     async createProduct(validatedData: Product) {
-        console.log('🔵 Service - creando producto:', validatedData);
         
         try {
             const [result] = await db.query(
@@ -18,8 +17,7 @@ export class ProductService {
                     validatedData.currency
                 ]
             );
-            
-            console.log('✅ Resultado del INSERT:', result);
+        
             
             const insertId = (result as any).insertId;
             return {
