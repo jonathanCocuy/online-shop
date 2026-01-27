@@ -8,6 +8,9 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
+import { SlideOver } from "@/components/ui/SlideOver";
+import ProductForm, { ProductFormData } from '@/components/product/ProductForm';
+import { Pencil, Trash2 } from 'lucide-react';
 
 // Configuración de formatos por moneda
 const CURRENCY_CONFIG = {
@@ -38,29 +41,31 @@ export default function ProductDetailPage() {
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isSlideOverOpen, setIsSlideOverOpen] = useState(false);
     const router = useRouter();
 
-    useEffect(() => {
-        const fetchProduct = async () => {
-            try {
-                const data = await productService.getProductById(params.id as string);
-                setLoading(true);
-                setProduct(data);
-                setError(null);
-            } catch {
-                setError('');
-            } finally {
-                setLoading(false);
-            }
-        };
+    // Función para cargar el producto
+    const fetchProduct = async () => {
+        try {
+            setLoading(true);
+            const data = await productService.getProductById(params.id as string);
+            setProduct(data);
+            setError(null);
+        } catch {
+            setError('Error loading product');
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         if (params.id) {
             fetchProduct();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.id]);
 
     const handleDeleteProduct = async () => {
-        // Mostrar confirmación antes de eliminar
         const result = await Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -72,12 +77,10 @@ export default function ProductDetailPage() {
             cancelButtonText: 'Cancel'
         });
 
-        // Si el usuario confirma
         if (result.isConfirmed) {
             try {
                 await productService.deleteProduct(params.id as string);
                 
-                // Mostrar alerta de éxito
                 await Swal.fire({
                     title: 'Deleted!',
                     text: 'Product deleted successfully',
@@ -86,12 +89,10 @@ export default function ProductDetailPage() {
                     showConfirmButton: false
                 });
 
-                // Redirigir a la página de productos
                 router.push('/products');
             } catch (error) {
                 console.error('Error deleting product:', error);
                 
-                // Mostrar alerta de error
                 Swal.fire({
                     title: 'Error!',
                     text: 'Failed to delete product',
@@ -102,12 +103,77 @@ export default function ProductDetailPage() {
         }
     };
 
+    const handleUpdateProduct = async (productData: ProductFormData) => {
+        try {
+            // 1. Actualizar el estado local INMEDIATAMENTE (optimistic update)
+            setProduct(prev => prev ? {
+                ...prev,
+                name: productData.name,
+                description: productData.description,
+                price: Number(productData.price),
+                image_url: productData.image_url,
+                stock: Number(productData.stock),
+                category: productData.category,
+                currency: productData.currency
+            } : null);
+
+            // 2. Cerrar el modal INMEDIATAMENTE
+            setIsSlideOverOpen(false);
+
+            // 3. Actualizar en el backend en segundo plano
+            const response = await productService.updateProduct({
+                id: params.id as string,
+                name: productData.name,
+                description: productData.description,
+                price: Number(productData.price),
+                image_url: productData.image_url,
+                stock: Number(productData.stock),
+                category: productData.category,
+                currency: productData.currency
+            });
+
+            if (response.success) {
+                // 4. Mostrar alerta de éxito
+                await Swal.fire({
+                    title: 'Success!',
+                    text: 'Product updated successfully',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+
+                // 5. Opcional: Sincronizar con el servidor para confirmar
+                await fetchProduct();
+            } else {
+                // Si falla, revertir al estado anterior
+                await fetchProduct();
+                Swal.fire({
+                    title: 'Error',
+                    text: response.message || 'Could not update product',
+                    icon: 'error',
+                });
+            }
+        } catch (error) {
+            // Si hay error, recargar el producto original
+            await fetchProduct();
+            console.error('Error updating product:', error);
+            Swal.fire({
+                title: 'Error',
+                text: 'An error occurred while updating',
+                icon: 'error',
+            });
+        }
+    };
+
+    const handleCloseModal = () => {
+        setIsSlideOverOpen(false);
+    };
+
     // Función para formatear el precio según la moneda
     const formatPrice = (price: number | string, currency: string): string => {
         const config = CURRENCY_CONFIG[currency as keyof typeof CURRENCY_CONFIG];
         if (!config) return `${currency} ${price}`;
         
-        // Convertir a número si viene como string
         const numPrice = typeof price === 'string' ? parseFloat(price) : price;
         
         return numPrice.toLocaleString(config.locale, {
@@ -118,35 +184,38 @@ export default function ProductDetailPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-black text-white flex justify-center items-center">
-                <div className="text-xl">Charging product...</div>
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex justify-center items-center">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+                    <p className="text-xl">Loading product...</p>
+                </div>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="min-h-screen bg-black text-white flex flex-col justify-center items-center">
-                <div className="text-xl text-red-600">{error}</div>
-                <Button variant="primary" size="sm" className="flex items-center gap-2">
-                    <Link href="/products" className="mt-4 text-blue-500 hover:underline">
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex flex-col justify-center items-center">
+                <div className="text-xl text-red-600 mb-4">{error}</div>
+                <Link href="/products">
+                    <Button variant="primary" size="lg">
                         ← Back to products
-                    </Link>
-                </Button>
+                    </Button>
+                </Link>
             </div>
         );
     }
 
     if (!product) {
         return (
-            <div className="min-h-screen bg-black text-white flex flex-col justify-center items-center">
-                <div className="text-xl text-red-600">Product not found</div>
-                <div className="text-sm text-gray-500 mt-2">Searched ID: {params.id}</div>
-                <Button variant="primary" size="lg" className="flex items-center gap-2">
-                    <Link href="/products">
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex flex-col justify-center items-center">
+                <div className="text-xl text-red-600 mb-2">Product not found</div>
+                <div className="text-sm text-gray-500 mb-4">Searched ID: {params.id}</div>
+                <Link href="/products">
+                    <Button variant="primary" size="lg">
                         ← Back to products
-                    </Link>
-                </Button>
+                    </Button>
+                </Link>
             </div>
         );
     }
@@ -154,41 +223,41 @@ export default function ProductDetailPage() {
     const currencyConfig = CURRENCY_CONFIG[product.currency as keyof typeof CURRENCY_CONFIG];
 
     return (
-        <div className="bg-black text-white w-full max-w-7xl flex flex-col items-center justify-center">
-            <div className="container mx-auto px-4 py-8">
-                <Button variant="primary" size="md" className="flex items-center gap-2 mb-6">
-                    <Link href="/products">
+        <div className="min-h-screen text-white flex flex-col items-center mt-10">
+            <div className="max-w-7xl mx-auto px-4 py-8">
+                <Link href="/products">
+                    <Button variant="primary" size="md" className="mb-6">
                         ← Back to products
-                    </Link>
-                </Button>
+                    </Button>
+                </Link>
 
                 <div className="grid md:grid-cols-2 gap-8 mt-6">
                     {/* Imagen del producto */}
-                    <div className="bg-gray-200 rounded-lg overflow-hidden">
+                    <div className="bg-gray-200 rounded-lg overflow-hidden aspect-square">
                         <Image
                             src={product.image_url}
                             alt={product.name}
                             className="w-full h-full object-cover"
                             width={1000}
                             height={1000}
+                            priority
+                            key={product.image_url} // Forzar re-render cuando cambie la imagen
                         />
                     </div>
 
                     {/* Información del producto */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col justify-center">
                         <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
                         
                         <div className="mb-4">
-                            <span className="inline-block bg-blue-900 text-blue-200 px-3 py-1 rounded-full text-sm">
+                            <span className="inline-block bg-blue-900 text-blue-200 px-3 py-1 rounded-full text-sm font-semibold">
                                 {product.category.toUpperCase()}
                             </span>
                         </div>
 
-                        <div className="flex items-end justify-start gap-1">
-                            <p className="text-5xl font-bold text-white mb-8">
-                                {currencyConfig?.symbol || product.currency} {formatPrice(product.price, product.currency)}
-                            </p>
-                        </div>
+                        <p className="text-5xl font-bold text-white mb-8">
+                            {currencyConfig?.symbol || product.currency} {formatPrice(product.price, product.currency)}
+                        </p>
 
                         <div className="mb-6">
                             <h2 className="text-xl font-semibold mb-3">Description:</h2>
@@ -200,31 +269,60 @@ export default function ProductDetailPage() {
                         <div className="mb-8">
                             <h2 className="text-xl font-semibold mb-3">Availability:</h2>
                             {product.stock > 0 ? (
-                                <p className="text-green-500 text-lg">
-                                    In stock ({product.stock} units)
+                                <p className="text-green-500 text-lg font-semibold">
+                                    ✓ In stock ({product.stock} units)
                                 </p>
                             ) : (
-                                <p className="text-red-500 text-lg font-semibold">Out of stock</p>
+                                <p className="text-red-500 text-lg font-semibold">✗ Out of stock</p>
                             )}
                         </div>
-                        <div className="flex items-center gap-2">
+
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                             {product.stock > 0 && (
                                 <Button 
                                     variant="primary" 
                                     size="lg" 
-                                    className="flex items-center gap-2"
-                                    disabled={product.stock === 0}
+                                    className="flex-1 flex items-center justify-center gap-2"
                                 >
                                     Add to cart
                                 </Button>
                             )}
-                            <Button variant="danger" size="lg" className="flex items-center gap-2" onClick={handleDeleteProduct}>
-                                Delete product
+                            <Button 
+                                variant="secondary" 
+                                size="lg" 
+                                className="flex items-center justify-center gap-2" 
+                                onClick={() => setIsSlideOverOpen(true)}
+                            >
+                                <Pencil size={18} />
+                                Edit
+                            </Button>
+                            <Button 
+                                variant="danger" 
+                                size="lg" 
+                                className="flex items-center justify-center gap-2" 
+                                onClick={handleDeleteProduct}
+                            >
+                                <Trash2 size={18} />
+                                Delete
                             </Button>
                         </div>
                     </div>
                 </div>
             </div>
+
+            {/* Modal de edición */}
+            <SlideOver
+                isOpen={isSlideOverOpen}
+                onClose={handleCloseModal}
+                title="Edit Product"
+            >
+                <ProductForm 
+                    initialData={product}
+                    onSubmit={handleUpdateProduct}
+                    onCancel={handleCloseModal}
+                    isEditMode={true}
+                />
+            </SlideOver>
         </div>
     );
 }

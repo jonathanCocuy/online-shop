@@ -34,7 +34,6 @@ export default function Shop() {
         const fetchFeaturedProducts = async () => {
             try {
                 const products = await productService.getProducts();
-                // Tomar los primeros 8 productos como destacados
                 setFeaturedProducts(products.slice(0, 8));
             } catch (error) {
                 console.error('Error fetching products:', error);
