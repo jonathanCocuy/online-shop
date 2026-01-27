@@ -2,17 +2,26 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { ShoppingCart, Search, Menu, X, User, Heart, LogOut } from "lucide-react";
 import { authService } from "@/lib/auth";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
-    const [activeLink, setActiveLink] = useState("Home");
-
+    const pathname = usePathname();
     const router = useRouter();
+
+    // Determinar el enlace activo basado en la ruta actual
+    const getActiveLink = () => {
+        if (pathname === '/') return 'Home';
+        if (pathname.startsWith('/products')) return 'Products';
+        if (pathname.startsWith('/categories')) return 'Categories';
+        return 'Home';
+    };
+
+    const activeLink = getActiveLink();
 
     const handleLogout = () => {
         authService.logout();
@@ -20,7 +29,7 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="bg-white shadow-sm sticky top-0 z-50 rounded-lg">
+        <nav className="bg-white shadow-sm sticky top-5 z-50 rounded-lg">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
@@ -39,7 +48,6 @@ export default function Navbar() {
                     <div className="hidden md:flex items-center flex-1 justify-center space-x-8">
                         <Link
                             href="/" 
-                            onClick={() => setActiveLink("Home")}
                             className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${
                                 activeLink === "Home" ? "border-b-2 border-slate-800 font-semibold" : ""
                             }`}
@@ -48,7 +56,6 @@ export default function Navbar() {
                         </Link>
                         <Link 
                             href="/products" 
-                            onClick={() => setActiveLink("Products")}
                             className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${
                                 activeLink === "Products" ? "border-b-2 border-slate-800 font-semibold" : ""
                             }`}
@@ -57,21 +64,11 @@ export default function Navbar() {
                         </Link>
                         <Link 
                             href="/categories" 
-                            onClick={() => setActiveLink("Categories")}
                             className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${
                                 activeLink === "Categories" ? "border-b-2 border-slate-800 font-semibold" : ""
                             }`}
                         >
                             Categories
-                        </Link>
-                        <Link 
-                            href="/contact" 
-                            onClick={() => setActiveLink("Contact")}
-                            className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${
-                                activeLink === "Contact" ? "border-b-2 border-slate-800 font-semibold" : ""
-                            }`}
-                        >
-                            Contact
                         </Link>
                     </div>
 
@@ -86,16 +83,16 @@ export default function Navbar() {
                         <Link href="/favorites" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
                             <Heart size={20} />
                         </Link>
-                        <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all relative">
+                        <Link href="/cart" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all relative">
                             <ShoppingCart size={20} />
                             <span className="absolute -top-1 -right-1 bg-slate-800 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                                 3
                             </span>
-                        </button>
+                        </Link>
                         <div className="p-2"></div>
-                        <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
+                        <Link href="/dashboard/client" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
                             <User size={20} />
-                        </button>
+                        </Link>
                         <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all" onClick={handleLogout}>
                             <LogOut size={20} color="red" />
                         </button>
@@ -142,7 +139,6 @@ export default function Navbar() {
                     <div className="px-4 pt-2 pb-4 space-y-1">
                         <Link
                             href="/"
-                            onClick={() => setActiveLink("Home")}
                             className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors ${
                                 activeLink === "Home" ? "bg-slate-800 text-white font-semibold" : ""
                             }`}
@@ -151,7 +147,6 @@ export default function Navbar() {
                         </Link>
                         <Link
                             href="/products"
-                            onClick={() => setActiveLink("Products")}
                             className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors ${
                                 activeLink === "Products" ? "bg-slate-800 text-white font-semibold" : ""
                             }`}
@@ -160,21 +155,11 @@ export default function Navbar() {
                         </Link>
                         <Link
                             href="/categories"
-                            onClick={() => setActiveLink("Categories")}
                             className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors ${
                                 activeLink === "Categories" ? "bg-slate-800 text-white font-semibold" : ""
                             }`}
                         >
                             Categories
-                        </Link>
-                        <Link  
-                            href="/contact"
-                            onClick={() => setActiveLink("Contact")}
-                            className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors ${
-                                activeLink === "Contact" ? "bg-slate-800 text-white font-semibold" : ""
-                            }`}
-                        >
-                            Contact
                         </Link>
                         <div className="pt-4 border-t border-gray-200 mt-4 flex space-x-4 px-3">
                             <button className="p-2 text-gray-700 hover:text-slate-800">

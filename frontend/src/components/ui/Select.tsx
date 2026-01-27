@@ -88,67 +88,66 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({
 
     return (
         <div className="w-full">
-        {label && variant !== 'floating' && (
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-            {label}
-            </label>
-        )}
-        
-        <div className="relative">
-            {icon && iconPosition === 'left' && (
-                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 z-10 pointer-events-none">
-                    {icon}
+            {label && variant !== 'floating' && (
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {label}
+                </label>
+            )}
+            
+            <div className="relative">
+                {icon && iconPosition === 'left' && (
+                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 z-10 pointer-events-none">
+                        {icon}
+                    </div>
+                )}
+                
+                <select
+                    ref={ref}
+                    className={selectClasses}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    onChange={handleChange}
+                    {...props}
+                >
+                    {placeholder && (
+                        <option value="" disabled>
+                            {placeholder}
+                        </option>
+                    )}
+                    {options.map((option) => (
+                        <option key={option.value} value={option.value} className="text-gray-700">
+                            {option.label}
+                        </option>
+                    ))}
+                </select>
+                
+                {variant === 'floating' && label && (
+                    <label className={`absolute left-4 transition-all duration-200 pointer-events-none
+                        ${isFocused || hasValue || props.value
+                            ? `-top-2 text-xs bg-white px-1 ${error ? 'text-red-500' : getLabelColorClass(colorScheme)}`
+                            : 'top-1/2 -translate-y-1/2 text-gray-500'
+                        }`
+                    }
+                    >
+                        {label}
+                    </label>
+                )}
+                
+                {/* Flecha del select */}
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
                 </div>
-            )}
-            
-            <select
-                ref={ref}
-                className={selectClasses}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                onChange={handleChange}
-                defaultValue=""
-                {...props}
-            >
-            {placeholder && (
-                <option value="" disabled>
-                {placeholder}
-                </option>
-            )}
-            {options.map((option) => (
-                <option key={option.value} value={option.value} className="text-gray-700">
-                {option.label}
-                </option>
-            ))}
-            </select>
-            
-            {variant === 'floating' && label && (
-                <label className={`absolute left-4 transition-all duration-200 pointer-events-none
-                    ${isFocused || hasValue || props.value
-                        ? `-top-2 text-xs bg-white px-1 ${error ? 'text-red-500' : getLabelColorClass(colorScheme)}`
-                        : 'top-1/2 -translate-y-1/2 text-gray-500'
-                    }`
-                }
-            >
-                {label}
-            </label>
-            )}
-            
-            {/* Flecha del select */}
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
             </div>
-        </div>
-        
-        {error && (
-            <p className="mt-1 text-sm text-red-600">{error}</p>
-        )}
-        
-        {helperText && !error && (
-            <p className="mt-1 text-sm text-gray-500">{helperText}</p>
-        )}
+            
+            {error && (
+                <p className="mt-1 text-sm text-red-600">{error}</p>
+            )}
+            
+            {helperText && !error && (
+                <p className="mt-1 text-sm text-gray-500">{helperText}</p>
+            )}
         </div>
     );
 });

@@ -64,6 +64,6 @@ export const productService = {
             },
         });
         const data = await response.json();
-        return data;
+        return data[0];
     }
 }

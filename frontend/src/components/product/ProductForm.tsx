@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
+import Swal from 'sweetalert2';
 
 interface ProductFormProps {
     onSubmit: (productData: ProductFormData) => void;
@@ -21,6 +22,38 @@ export interface ProductFormData {
     currency: string;
 }
 
+// Configuration of currency formats
+const CURRENCY_CONFIG = {
+    COP: { 
+        decimals: 0, 
+        locale: 'es-CO', 
+        symbol: "$",
+        thousandSeparator: '.',
+        decimalSeparator: ''
+    },
+    USD: { 
+        decimals: 2, 
+        locale: 'en-US', 
+        symbol: "$",
+        thousandSeparator: ',',
+        decimalSeparator: '.'
+    },
+    EUR: { 
+        decimals: 2, 
+        locale: 'de-DE', 
+        symbol: "€",
+        thousandSeparator: '.',
+        decimalSeparator: ','
+    },
+    GBP: { 
+        decimals: 2, 
+        locale: 'en-GB', 
+        symbol: "£",
+        thousandSeparator: ',',
+        decimalSeparator: '.'
+    },
+};
+
 export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
     const [formData, setFormData] = useState<ProductFormData>({
         name: "",
@@ -29,8 +62,11 @@ export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
         image_url: "",
         stock: "",
         category: "",
-        currency: "COP",
+        currency: "",
     });
+
+    const [displayPrice, setDisplayPrice] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -42,11 +78,144 @@ export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        onSubmit(formData);
-        onCancel();
+    const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const newCurrency = e.target.value as keyof typeof CURRENCY_CONFIG;
+        setFormData(prev => ({ 
+            ...prev, 
+            currency: newCurrency,
+            price: ""
+        }));
+        setDisplayPrice("");
     };
+
+    const formatPrice = (value: string, currency: keyof typeof CURRENCY_CONFIG): string => {
+        const config = CURRENCY_CONFIG[currency];
+
+        let cleaned = value.replace(new RegExp(`[^\\d${config.decimalSeparator}]`, 'g'), '');
+        
+        if (config.decimals === 0) {
+            const numbers = cleaned.replace(/\D/g, '');
+            if (!numbers) return '';
+            const number = parseInt(numbers);
+            return number.toLocaleString(config.locale);
+        } else {
+            const parts = cleaned.split(config.decimalSeparator);
+            
+            if (parts.length > 2) {
+                cleaned = parts[0] + config.decimalSeparator + parts.slice(1).join('');
+                return cleaned;
+            }
+            
+            if (parts.length === 2 && parts[1].length > config.decimals) {
+                parts[1] = parts[1].slice(0, config.decimals);
+            }
+            
+            if (parts[0]) {
+                const integerPart = parseInt(parts[0].replace(/\D/g, '') || '0');
+                const formattedInteger = integerPart.toLocaleString(config.locale).split(config.decimalSeparator)[0];
+                
+                if (parts.length === 2) {
+                    return formattedInteger + config.decimalSeparator + parts[1];
+                }
+                return formattedInteger + (cleaned.endsWith(config.decimalSeparator) ? config.decimalSeparator : '');
+            }
+            
+            return cleaned;
+        }
+    };
+
+    const parseToRawValue = (value: string, currency: keyof typeof CURRENCY_CONFIG): string => {
+        const config = CURRENCY_CONFIG[currency];
+        
+        if (config.decimals === 0) {
+            // Para COP, solo números
+            return value.replace(/\D/g, '');
+        } else {
+            // Para otras monedas, convertir al formato estándar (punto decimal)
+            let raw = value.replace(new RegExp(`[^\\d${config.decimalSeparator}]`, 'g'), '');
+            // Reemplazar el separador decimal de la moneda por punto
+            if (config.decimalSeparator !== '.') {
+                raw = raw.replace(config.decimalSeparator, '.');
+            }
+            return raw;
+        }
+    };
+
+    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        const currency = formData.currency as keyof typeof CURRENCY_CONFIG;
+        
+        // Guardar el valor sin formato para el estado (con punto decimal estándar)
+        const rawValue = parseToRawValue(value, currency);
+        setFormData(prev => ({ ...prev, price: rawValue }));
+        
+        // Formatear para mostrar
+        const formatted = formatPrice(value, currency);
+        setDisplayPrice(formatted);
+    };
+
+    const handlePriceBlur = () => {
+        const currency = formData.currency as keyof typeof CURRENCY_CONFIG;
+        const config = CURRENCY_CONFIG[currency];
+        
+        if (formData.price && config.decimals > 0) {
+            const num = parseFloat(formData.price as string);
+            if (!isNaN(num)) {
+                const formatted = num.toFixed(config.decimals);
+                setFormData(prev => ({ ...prev, price: formatted }));
+                
+                // Convertir el formato estándar al formato de la moneda
+                const parts = formatted.split('.');
+                let display = parseInt(parts[0]).toLocaleString(config.locale).split(config.decimalSeparator)[0];
+                if (parts[1]) {
+                    display += config.decimalSeparator + parts[1];
+                }
+                setDisplayPrice(display);
+            }
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        setIsSubmitting(true);
+        
+        try {
+            // Convertir el precio a número antes de enviar
+            const config = CURRENCY_CONFIG[formData.currency as keyof typeof CURRENCY_CONFIG];
+            const priceValue = config.decimals === 0
+                ? parseInt((formData.price as string).replace(/\D/g, '') || '0')
+                : parseFloat((formData.price as string) || '0');
+            
+            await onSubmit({
+                ...formData,
+                price: priceValue
+            });
+
+            await Swal.fire({
+                title: 'Success!',
+                text: 'Product created successfully',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            
+            onCancel();
+            
+        } catch (error) {
+            console.error('Error creating product:', error);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Failed to create product',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const currencyConfig = CURRENCY_CONFIG[formData.currency as keyof typeof CURRENCY_CONFIG];
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -83,7 +252,8 @@ export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
                         label="Currency"
                         placeholder="Select a currency"
                         required
-                        onChange={(e) => setFormData(prev => ({ ...prev, currency: e.target.value }))}
+                        value={formData.currency}
+                        onChange={handleCurrencyChange}
                         options={[
                             { value: "COP", label: "COP" },
                             { value: "USD", label: "USD" },
@@ -93,20 +263,25 @@ export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
                         colorScheme="blue"
                         variant="outlined"
                     />
-                </div>  
+                </div>
                 <div>
                     <Input
-                        type="number"
+                        type="text"
                         name="price"
-                        label="Price ($)"
+                        label={`Price ${currencyConfig ? `(${currencyConfig.symbol})` : ''}`}
                         required
-                        min="0"
-                        step={formData.currency === "COP" ? 100 : 0.01}
-                        value={formData.price}
-                        onChange={handleChange}
-                        placeholder={formData.currency === "COP" ? "0" : "0.00"}
+                        value={displayPrice}
+                        onChange={handlePriceChange}
+                        onBlur={handlePriceBlur}
+                        placeholder={
+                            formData.currency === 'COP' ? "1.000.000" :
+                            formData.currency === 'EUR' ? "1.000.000,00" :
+                            formData.currency === 'USD' || formData.currency === 'GBP' ? "1,000,000.00" :
+                            "Enter price"
+                        }
                         colorScheme="blue"
                         variant="outlined"
+                        disabled={!formData.currency}
                     />
                 </div>
 
@@ -117,6 +292,7 @@ export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
                         label="Stock"
                         required
                         min="0"
+                        step="1"
                         value={formData.stock}
                         onChange={handleChange}
                         placeholder="0"
@@ -129,10 +305,11 @@ export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
             <div>
                 <Select
                     label="Category"
+                    placeholder="Select a category"
                     required
+                    value={formData.category}
                     onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
                     options={[
-                        { value: "", label: "Select a category" },
                         { value: "technology", label: "Technology" },
                         { value: "home", label: "Home" },
                         { value: "shoes", label: "Shoes" },
@@ -164,16 +341,25 @@ export default function ProductForm({ onSubmit, onCancel }: ProductFormProps) {
                     type="button"
                     onClick={onCancel}
                     variant="danger"
+                    disabled={isSubmitting}
                 >
                     Cancel
                 </Button>
                 <Button
                     type="submit"
                     variant="primary"
-                    disabled={!formData.name || !formData.description || !formData.price || !formData.stock || !formData.category || !formData.image_url}
-                    onClick={handleSubmit}
+                    disabled={
+                        !formData.name || 
+                        !formData.description || 
+                        !formData.price || 
+                        !formData.stock || 
+                        !formData.category || 
+                        !formData.currency ||
+                        !formData.image_url ||
+                        isSubmitting
+                    }
                 >
-                    Create Product
+                    {isSubmitting ? 'Creating...' : 'Create Product'}
                 </Button>
             </div>
         </form>

@@ -7,12 +7,12 @@ export default function ShopLayout({children} : {children: React.ReactNode}) {
             <div className="mx-auto flex min-h-screen flex-col">
                 
                 {/* Navbar */}
-                <div className="w-full max-w-7xl mx-auto sticky top-5 z-50 mt-4">
+                <div className="w-full max-w-7xl mx-auto sticky top-5 z-50">
                     <Navbar />
                 </div>
 
                 {/* Contenido */}
-                <main className="flex-1 py-6">
+                <main className="flex-1 flex flex-col items-center">
                     {children}
                 </main>
 
