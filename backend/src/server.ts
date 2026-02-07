@@ -14,12 +14,12 @@ const startServer = async () => {
     try {
         // Connect to the database
         await db.getConnection(); // Get a connection from the pool
+        console.log('════════════════════════════════════════════');
         console.log('✅ Database connected');
     
         app.listen(PORT, () => {
-            console.log('════════════════════════════════════════');
             console.log(`🚀 Server running on http://localhost:${PORT}`);
-            console.log('════════════════════════════════════════');
+            console.log('════════════════════════════════════════════');
         });
         
     } catch (error) {

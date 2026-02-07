@@ -7,6 +7,7 @@ import ProductCard from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/Button";
 import { SlideOver } from "@/components/ui/SlideOver";
 import ProductForm, { ProductFormData } from "@/components/product/ProductForm";
+import { ShoppingBag } from "lucide-react";
 
 export default function Products() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -69,15 +70,19 @@ export default function Products() {
     return (
         <div className="min-h-screen flex flex-col items-center">
             {/* Header Section */}
-            <div className="relative overflow-hidden">
-                <div className="relative max-w-7xl mx-auto w-full py-16">
-                    <div className="text-center">
-                        <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">
-                            Our Products
-                        </h1>
-                        <p className="text-gray-400 text-lg mb-8">
-                            Discover our exclusive collection
-                        </p>
+            <div className="relative overflow-hidden w-full mt-10 mb-10">
+                <div className="relative max-w-7xl mx-auto w-full p-8">
+                    <div className="text-left flex items-center justify-between">
+                        <div className="flex flex-col items-start justify-center gap-2">
+                            <h1 className="text-5xl font-bold text-white flex items-center gap-3">
+                                <ShoppingBag size={36} />
+                                Our Products
+                            </h1>
+                            <p className="text-gray-400 text-lg">
+                                Discover our exclusive collection
+                            </p>
+                        </div>
+                        
                         <Button 
                             variant="primary" 
                             onClick={() => setIsSlideOverOpen(true)}
