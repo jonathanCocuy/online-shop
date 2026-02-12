@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ShoppingCart, Heart, Package, TrendingUp, Star, Clock } from 'lucide-react';
+import { ShoppingCart, Heart, Package, Star, Clock, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -29,8 +29,20 @@ export default function CustomerDashboard() {
         totalOrders: 0,
         totalSpent: 0,
         pendingOrders: 0,
-        favoriteItems: 0
+        favoriteItems: 0,
+        pageVisits: 0,
+        productViews: 0
     });
+
+    useEffect(() => {
+        setStats((prev) => ({
+            ...prev,
+            favoriteItems: favorites.length,
+            totalOrders: orders.length,
+            pageVisits: orders.length * 150 + favorites.length * 40,
+            productViews: favorites.length * 12 + orders.length * 5
+        }));
+    }, [favorites.length, orders.length]);
 
     const getStatusColor = (status: string) => {
         const colors = {
@@ -52,53 +64,79 @@ export default function CustomerDashboard() {
         return texts[status as keyof typeof texts];
     };
 
+    const metricCards = [
+        {
+            label: 'Page Visits',
+            value: stats.pageVisits,
+            icon: Clock,
+            helper: 'Hourly reach',
+            accent: 'text-blue-400'
+        },
+        {
+            label: 'Product Views',
+            value: stats.productViews,
+            icon: Star,
+            helper: 'Interest score',
+            accent: 'text-amber-400'
+        },
+        {
+            label: 'Favorites',
+            value: stats.favoriteItems,
+            icon: Heart,
+            helper: 'Saved for later',
+            accent: 'text-pink-400'
+        },
+        {
+            label: 'Orders',
+            value: stats.totalOrders,
+            icon: ShoppingCart,
+            helper: 'Recent checkouts',
+            accent: 'text-green-400',
+            extra: `$${stats.totalSpent.toLocaleString()} spent`
+        }
+    ];
+
     return (
-        <div className="min-h-screen w-full max-w-7xl mt-4">
+        <div className="max-w-7xl w-full min-h-screen">
             {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600/10 to-purple-600/10 border-b border-gray-800 rounded-lg">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-4xl font-bold text-white mb-2">
-                                Welcome back, Customer! 👋
+            <div className="relative overflow-hidden w-full mt-10 mb-10">
+                <div className="relative max-w-7xl mx-auto w-full p-8">
+                    <div className="text-left flex items-center justify-between">
+                        <div className="flex flex-col items-start justify-center gap-2">
+                            <h1 className="text-5xl font-bold text-white flex items-center gap-3 justify-center">
+                                <LayoutDashboard size={36} />
+                                Dashboard insights for your store
                             </h1>
-                            <p className="text-gray-400">
-                                Here is what is happening with your orders today
+                            <p className="text-gray-400 text-lg">
+                                Track your page, product, favorites, and order performance in one place
                             </p>
                         </div>
-                        <Link href="/products">
-                            <Button variant="primary" className="bg-gradient-to-r from-blue-600 to-purple-600">
-                                Browse Products
-                            </Button>
-                        </Link>
                     </div>
                 </div>
             </div>
 
-            <div className="w-full max-w-7xl mx-auto py-4">
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Stats Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    {/* Total Orders */}
-                    <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-6 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="bg-blue-500/20 p-3 rounded-xl">
-                                <ShoppingCart className="text-blue-400" size={24} />
+                    {metricCards.map((card) => {
+                        const Icon = card.icon;
+                        return (
+                            <div
+                                key={card.label}
+                                className="bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300"
+                            >
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="bg-white/10 p-3 rounded-xl">
+                                        <Icon className={card.accent} size={24} />
+                                    </div>
+                                    <span className="text-xs text-gray-400">{card.helper}</span>
+                                </div>
+                                <h3 className="text-gray-400 text-sm mb-1">{card.label}</h3>
+                                <p className="text-3xl font-bold text-white">{card.value.toLocaleString()}</p>
+                                {card.extra && <p className="text-xs text-gray-400 mt-2">{card.extra}</p>}
                             </div>
-                        </div>
-                        <h3 className="text-gray-400 text-sm mb-1">Total Orders</h3>
-                        <p className="text-3xl font-bold text-white">{stats.totalOrders}</p>
-                    </div>
-
-                    {/* Total Spent */}
-                    <div className="bg-gradient-to-br from-green-500/10 to-green-600/5 backdrop-blur-sm border border-green-500/20 rounded-2xl p-6 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="bg-green-500/20 p-3 rounded-xl">
-                                <TrendingUp className="text-green-400" size={24} />
-                            </div>
-                        </div>
-                        <h3 className="text-gray-400 text-sm mb-1">Total Spent</h3>
-                        <p className="text-3xl font-bold text-white">${stats.totalSpent.toLocaleString()}</p>
-                    </div>
+                        );
+                    })}
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -168,6 +206,11 @@ export default function CustomerDashboard() {
                                 <div className="text-center py-12">
                                     <Heart size={48} className="text-gray-600 mx-auto mb-4" />
                                     <p className="text-gray-400 text-sm">No favorites yet</p>
+                                    <Link href="/favorites">
+                                        <Button variant="primary" size="sm" className="mt-4">
+                                            View Favorites
+                                        </Button>
+                                    </Link>
                                 </div>
                             ) : (
                                 <div className="space-y-4">

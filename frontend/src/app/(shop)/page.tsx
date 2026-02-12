@@ -14,17 +14,9 @@ import {
     HeadphonesIcon
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import CategoryCard, { type CategoryCardData } from '@/components/categories/CategoryCard';
 import ProductCard from '@/components/product/ProductCard';
 import { Product, productService } from '@/lib/product';
-
-interface Category {
-    id: string;
-    name: string;
-    slug: string;
-    image: string;
-    gradient: string;
-    productCount: number;
-}
 
 export default function Shop() {
     const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
@@ -45,7 +37,7 @@ export default function Shop() {
         fetchFeaturedProducts();
     }, []);
 
-    const categories: Category[] = [
+    const categories: CategoryCardData[] = [
         {
             id: '1',
             name: 'Technology',
@@ -275,36 +267,7 @@ export default function Shop() {
 
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                         {categories.map((category) => (
-                            <Link href={`/categories/${category.slug}`} key={category.id}>
-                                <div className="group relative overflow-hidden rounded-2xl cursor-pointer h-64">
-                                    {/* Background Image */}
-                                    <Image
-                                        src={category.image}
-                                        alt={category.name}
-                                        fill
-                                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                                    />
-                                    
-                                    {/* Gradient Overlay */}
-                                    <div className={`absolute inset-0 bg-gradient-to-t ${category.gradient} opacity-60 group-hover:opacity-75 transition-opacity duration-300`}></div>
-                                    <div className="absolute inset-0 bg-black/40"></div>
-
-                                    {/* Content */}
-                                    <div className="absolute inset-0 flex flex-col justify-end p-4">
-                                        <h3 className="text-white font-bold text-lg mb-1 group-hover:translate-y-[-4px] transition-transform duration-300">
-                                            {category.name}
-                                        </h3>
-                                        <p className="text-white/80 text-sm">
-                                            {category.productCount} items
-                                        </p>
-                                    </div>
-
-                                    {/* Hover Arrow */}
-                                    <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                        <ArrowRight className="text-white" size={16} />
-                                    </div>
-                                </div>
-                            </Link>
+                            <CategoryCard key={category.id} category={category} />
                         ))}
                     </div>
 
@@ -353,7 +316,7 @@ export default function Shop() {
                                 {featuredProducts.map((product) => (
                                     <div 
                                         key={product.id} 
-                                        className="transform hover:scale-105 transition-transform duration-300"
+                                        className=""
                                     >
                                         <ProductCard product={product} />
                                     </div>

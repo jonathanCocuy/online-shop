@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ShoppingCart, Search, Menu, X, User, Heart, LogOut } from "lucide-react";
@@ -18,7 +18,11 @@ export default function Navbar() {
         if (pathname === '/') return 'Home';
         if (pathname.startsWith('/products')) return 'Products';
         if (pathname.startsWith('/categories')) return 'Categories';
-        return 'Home';
+        if (pathname.startsWith('/contact')) return 'Contact';
+        if (pathname.startsWith('/favorites')) return 'Favorites';
+        if (pathname.startsWith('/cart')) return 'Cart';
+        if (pathname.startsWith('/dashboard/client')) return 'Dashboard';
+        return '';
     };
 
     const activeLink = getActiveLink();
@@ -29,7 +33,9 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="bg-white shadow-sm sticky top-5 z-50 rounded-lg">
+        <nav className="bg-white shadow-sm sticky top-0 z-50 rounded-lg">
+            {/* Blur effect for the top margin area */}
+            <div className="absolute -top-5 left-0 right-0 h-5 backdrop-blur-md -z-10"></div>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
@@ -81,17 +87,17 @@ export default function Navbar() {
                             <Search size={20} />
                         </button>
                         <Link href="/favorites" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
-                            <Heart size={20} />
+                            {activeLink === "Favorites" ? <Heart size={20} fill="red" /> : <Heart size={20} />}
                         </Link>
                         <Link href="/cart" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all relative">
-                            <ShoppingCart size={20} />
+                            {activeLink === "Cart" ? <ShoppingCart size={20} fill="blue" /> : <ShoppingCart size={20} />}
                             <span className="absolute -top-1 -right-1 bg-slate-800 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                                 3
                             </span>
                         </Link>
                         <div className="p-2"></div>
                         <Link href="/dashboard/client" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
-                            <User size={20} />
+                            {activeLink === "Dashboard" ? <User size={20} fill="green" /> : <User size={20} />}
                         </Link>
                         <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all" onClick={handleLogout}>
                             <LogOut size={20} color="red" />
@@ -160,6 +166,14 @@ export default function Navbar() {
                             }`}
                         >
                             Categories
+                        </Link>
+                        <Link  
+                            href="/contact"
+                            className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors ${
+                                activeLink === "Contact" ? "bg-slate-800 text-white font-semibold" : ""
+                            }`}
+                        >
+                            Contact
                         </Link>
                         <div className="pt-4 border-t border-gray-200 mt-4 flex space-x-4 px-3">
                             <button className="p-2 text-gray-700 hover:text-slate-800">
