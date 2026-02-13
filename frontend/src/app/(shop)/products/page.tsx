@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { SlideOver } from "@/components/ui/SlideOver";
 import ProductForm, { ProductFormData } from "@/components/product/ProductForm";
 import { ShoppingBag } from "lucide-react";
+import Filter from "@/components/ui/Filter";
 
 export default function Products() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -82,13 +83,13 @@ export default function Products() {
                                 Discover our exclusive collection
                             </p>
                         </div>
-                        
                         <Button 
                             variant="primary" 
                             onClick={() => setIsSlideOverOpen(true)}
                         >
                             + Add New Product
                         </Button>
+                        <Filter sortBy="featured" onSortChange={(value) => {}} />
                     </div>
                 </div>
             </div>

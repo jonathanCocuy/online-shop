@@ -29,7 +29,7 @@ export default function CustomerDashboard() {
         totalOrders: 0,
         totalSpent: 0,
         pendingOrders: 0,
-        favoriteItems: 0,
+        favoriteItems: favorites.length,
         pageVisits: 0,
         productViews: 0
     });
@@ -170,6 +170,7 @@ export default function CustomerDashboard() {
                                     {orders.map((order) => (
                                         <div
                                             key={order.id}
+                                            
                                             className="bg-gray-900/50 border border-gray-700 rounded-xl p-4 hover:border-blue-500/50 transition-all duration-300"
                                         >
                                             <div className="flex items-center justify-between mb-3">

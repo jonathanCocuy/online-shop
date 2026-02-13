@@ -26,7 +26,7 @@ export default function Shop() {
         const fetchFeaturedProducts = async () => {
             try {
                 const products = await productService.getProducts();
-                setFeaturedProducts(products.slice(0, 8));
+                setFeaturedProducts(products.sort(() => Math.random() - 0.5).slice(0, 8));
             } catch (error) {
                 console.error('Error fetching products:', error);
             } finally {
@@ -283,7 +283,7 @@ export default function Shop() {
             </section>
 
             {/* Featured Products Section */}
-            <section className="py-20 bg-gray-900/30 flex justify-center items-center">
+            <section className="bg-gray-900/30 flex justify-center items-center">
                 <div className="max-w-7xl w-full">
                     <div className="flex items-center justify-between mb-12">
                         <div>

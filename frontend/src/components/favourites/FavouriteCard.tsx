@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Heart } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Product } from '@/lib/product';
 import tippy from 'tippy.js';
@@ -51,20 +51,21 @@ export default function FavouriteCard({ product, onDelete }: FavouriteCardProps)
                                 {formatCurrency(product.price, product.currency)}
                             </p>
                         </div>
-                        <span className="px-4 py-1 rounded-full border border-white/20 text-xs uppercase tracking-[0.3em] text-white/80">
-                            {product.category}
+                        <span className="inline-block bg-blue-900 text-blue-200 px-3 py-1 rounded-full text-sm font-semibold">
+                            {product.category.toUpperCase()}
                         </span>
                     </div>
                 </div>
 
                 <Button
-                    variant="ghost"
+                    variant="secondary"
                     size="sm"
-                    className="text-red-400 border border-red-500/40 hover:text-red-500 hover:border-red-400 focus:ring-red-400"
+                    className="text-red-400 border border-red-500/40 hover:text-red-500 hover:border-red-400 focus:ring-red-400 flex items-center gap-2"
                     onClick={onDelete}
                     type="button"
                 >
-                    <Heart size={18} fill="red" data-tippy-content="Remove from favorites"/>
+                    <Trash2 size={18} fill="red" color="black" data-tippy-content="Remove from favorites"/>
+                    <p className="text-red-300">Remove from favorites</p>
                 </Button>
             </div>
         </div>
