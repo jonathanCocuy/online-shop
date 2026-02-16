@@ -6,10 +6,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { ShoppingCart, Search, Menu, X, User, Heart, LogOut } from "lucide-react";
 import { authService } from "@/lib/auth";
 import Image from "next/image";
+import Swal from "sweetalert2";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
+    const [isClient, setIsClient] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
 
@@ -28,9 +31,28 @@ export default function Navbar() {
     const activeLink = getActiveLink();
 
     const handleLogout = () => {
-        authService.logout();
-        router.push('/login');
+        Swal.fire({
+            title: 'Are you sure you want to logout?',
+            text: 'You will be logged out of your account',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Logout',
+            confirmButtonColor: '#3B82F6',
+            cancelButtonColor: '#6B7280',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                authService.logout();
+                setIsAuthenticated(false);
+                router.push('/');
+            }
+        });
     }
+
+    useEffect(() => {
+        setIsAuthenticated(authService.isAuthenticated());
+        setIsClient(true);
+    }, []);
 
     return (
         <nav className="bg-white shadow-sm sticky top-0 z-50 rounded-lg">
@@ -86,9 +108,13 @@ export default function Navbar() {
                         >
                             <Search size={20} />
                         </button>
-                        <Link href="/favorites" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
-                            {activeLink === "Favorites" ? <Heart size={20} fill="red" /> : <Heart size={20} />}
-                        </Link>
+                        {isClient && isAuthenticated && (
+                            <>
+                                <Link href="/favorites" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
+                                    {activeLink === "Favorites" ? <Heart size={20} fill="red" /> : <Heart size={20} />}
+                                </Link>
+                            </>
+                        )}
                         <Link href="/cart" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all relative">
                             {activeLink === "Cart" ? <ShoppingCart size={20} fill="blue" /> : <ShoppingCart size={20} />}
                             <span className="absolute -top-1 -right-1 bg-slate-800 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
@@ -99,9 +125,11 @@ export default function Navbar() {
                         <Link href="/dashboard/client" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
                             {activeLink === "Dashboard" ? <User size={20} fill="green" /> : <User size={20} />}
                         </Link>
-                        <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all" onClick={handleLogout}>
-                            <LogOut size={20} color="red" />
-                        </button>
+                        {isClient && isAuthenticated && (
+                            <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all" onClick={handleLogout}>
+                                <LogOut size={20} color="red" />
+                            </button>
+                        )}
                     </div>
 
                     {/* Mobile menu button */}

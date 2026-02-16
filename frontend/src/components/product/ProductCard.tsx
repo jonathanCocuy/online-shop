@@ -8,6 +8,9 @@ import { Button } from '../ui/Button';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 import Link from 'next/link';
+import { favoritesService } from '@/lib/favorites';
+import { authService } from '@/lib/auth';
+import Swal from 'sweetalert2';
 
 // Configuración de formatos por moneda
 const CURRENCY_CONFIG = {
@@ -55,6 +58,33 @@ export default function ProductCard({ product } : { product: Product }) {
         });
     };
 
+    const handleFavoriteToggle = async () => {
+        if (!authService.isAuthenticated()) {
+            Swal.fire({
+                title: 'You are not authenticated',
+                text: 'Please login to save favorites',
+                icon: 'warning',
+                confirmButtonText: 'Login',
+                confirmButtonColor: '#3B82F6',
+                cancelButtonColor: '#6B7280',
+                cancelButtonText: 'Cancel'
+            });
+            return;
+        }
+
+        try {
+            if (isLiked) {
+                await favoritesService.removeFavorite(product.id as string);
+                setIsLiked(false);
+            } else {
+                await favoritesService.addFavorite(product.id as string | number);
+                setIsLiked(true);
+            }
+        } catch (error) {
+            console.error('Failed to update favorites', error);
+        }
+    };
+
     return (
         <div className="relative w-[295px]">
             <div className="absolute inset-0 translate-x-2 translate-y-2 rounded-[28px] bg-gradient-to-r from-blue-500/30 to-purple-500/30 blur-3xl opacity-60"></div>
@@ -79,7 +109,7 @@ export default function ProductCard({ product } : { product: Product }) {
                             {product.name}
                         </h2>
                     </div>
-                    <p className="text-blue-600 font-semibold text-sm line-clamp-2">{product.category.toUpperCase()}</p>
+                    <p className="text-blue-600 font-semibold text-sm line-clamp-2">{product.category?.toUpperCase() ?? product.category_id}</p>
                     <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.description}</p>
 
                     <div className="flex items-end justify-start gap-1">
@@ -97,7 +127,7 @@ export default function ProductCard({ product } : { product: Product }) {
                                     <Eye size={20} />
                                 </Link>
                             </Button>
-                            <Button variant="ghost" size="sm" className="flex items-center gap-2 group" onClick={() => setIsLiked(!isLiked)}>
+                        <Button variant="ghost" size="sm" className="flex items-center gap-2 group" onClick={handleFavoriteToggle}>
                                 {isLiked ? (
                                     <Heart size={20} fill="red" className="transition-all duration-300" />
                                 ) : (

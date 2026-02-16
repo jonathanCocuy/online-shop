@@ -1,4 +1,4 @@
-"use client";
+ 'use client';
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
@@ -7,6 +7,7 @@ import { Select } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
 import Swal from 'sweetalert2';
 import { Product } from '@/lib/product';
+import { categoryService } from '@/lib/category';
 
 interface ProductFormProps {
     onSubmit: (productData: ProductFormData) => void;
@@ -20,10 +21,10 @@ export interface ProductFormData {
     description: string;
     price: number | string;
     image_url: string;
-    stock: number | string;
-    category: string;
+    stock: number | string;    
+    category_id: string;
     currency: string;
-}
+}   
 
 const CURRENCY_CONFIG = {
     COP: { decimals: 0, locale: 'es-CO', symbol: "$", decimalSeparator: ',' },
@@ -38,9 +39,9 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditMod
         description: initialData?.description || "",
         price: initialData?.price || "",
         image_url: initialData?.image_url || "",
-        stock: initialData?.stock || "",
-        category: initialData?.category || "",
-        currency: initialData?.currency || "USD", // Valor por defecto
+        stock: initialData?.stock ?? "",
+        category_id: initialData?.category_id != null ? String(initialData.category_id) : "",
+        currency: initialData?.currency || "USD",
     });
 
     const [displayPrice, setDisplayPrice] = useState("");
@@ -165,6 +166,31 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditMod
     };
 
     const currencyConfig = CURRENCY_CONFIG[formData.currency as keyof typeof CURRENCY_CONFIG];
+    const [categoryOptions, setCategoryOptions] = useState<{ value: string; label: string }[]>([]);
+    const defaultCategories = [
+        { value: "technology", label: "Technology" },
+        { value: "home", label: "Home" },
+        { value: "shoes", label: "Shoes" },
+        { value: "accessories", label: "Accessories" },
+        { value: "sports", label: "Sports" },
+        { value: "clothes", label: "Clothes" },
+    ];
+
+    useEffect(() => {
+        const loadCategories = async () => {
+            try {
+                const data = await categoryService.getCategories();
+                setCategoryOptions(data.map((category) => ({
+                    value: String(category.id),
+                    label: category.name
+                })));
+            } catch (error) {
+                console.error('Unable to load categories', error);
+            }
+        };
+
+        loadCategories();
+    }, []);
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -191,13 +217,14 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditMod
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Select
                     label="Currency"
+                    placeholder="Select currency"
                     required
                     value={formData.currency}
                     onChange={handleCurrencyChange}
                     options={[
-                        { value: "COP", label: "🇨🇴 COP" },
-                        { value: "USD", label: "🇺🇸 USD" },
-                        { value: "EUR", label: "🇪🇺 EUR" },
+                        { value: "COP", label: "COP" },
+                        { value: "USD", label: "USD" },
+                        { value: "EUR", label: "EUR" },
                         { value: "GBP", label: "🇬🇧 GBP" },
                     ]}
                     colorScheme="blue"
@@ -230,17 +257,11 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditMod
 
             <Select
                 label="Category"
+                placeholder="Select category"
                 required
-                value={formData.category}
-                onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                options={[
-                    { value: "technology", label: "Technology" },
-                    { value: "home", label: "Home" },
-                    { value: "shoes", label: "Shoes" },
-                    { value: "accessories", label: "Accessories" },
-                    { value: "sports", label: "Sports" },
-                    { value: "clothes", label: "Clothes" },
-                ]}
+                value={formData.category_id}
+                onChange={(e) => setFormData(prev => ({ ...prev, category_id: e.target.value }))}
+                options={categoryOptions.length > 0 ? categoryOptions : defaultCategories}
                 colorScheme="blue"
             />
 

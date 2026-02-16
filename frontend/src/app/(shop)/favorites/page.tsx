@@ -3,20 +3,30 @@
 import { useEffect, useState } from 'react';
 import { Heart } from 'lucide-react';
 import FavouriteCard from '@/components/favourites/FavouriteCard';
-import { Product, productService } from '@/lib/product';
+import { Product } from '@/lib/product';
+import { favoritesService } from '@/lib/favorites';
+import { authService } from '@/lib/auth';
 
 export default function Favorites() {
     const [favorites, setFavorites] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const loadFavorites = async () => {
+            if (!authService.isAuthenticated()) {
+                setError('Log in to see your favorites.');
+                setLoading(false);
+                return;
+            }
+
             try {
                 setLoading(true);
-                const products = await productService.getProducts();
-                setFavorites(products.slice(0, 4));
-            } catch (error) {
-                console.error('Failed to load favorites', error);
+                const items = await favoritesService.getFavorites();
+                setFavorites(items);
+            } catch (err) {
+                console.error('Failed to load favorites', err);
+                setError('Unable to load favorites right now.');
             } finally {
                 setLoading(false);
             }
@@ -25,8 +35,16 @@ export default function Favorites() {
         loadFavorites();
     }, []);
 
-    const handleDelete = (id: string) => {
-        setFavorites((prev) => prev.filter((product) => product.id !== id));
+    const handleDelete = async (productId: number | string) => {
+        if (!authService.isAuthenticated()) return;
+
+        try {
+            await favoritesService.removeFavorite(productId);
+            setFavorites((prev) => prev.filter((product) => String(product.id) !== String(productId)));
+        } catch (err) {
+            console.error('Failed to remove favorite', err);
+            setError('Could not remove favorite.');
+        }
     };
 
     return (
@@ -53,6 +71,15 @@ export default function Favorites() {
                     <div className="flex items-center justify-center">
                         <p className="text-gray-400">Loading favorites…</p>
                     </div>
+                ) : error ? (
+                    <div className="text-center py-16">
+                        <p className="text-gray-400 mb-4">{error}</p>
+                        {!authService.isAuthenticated() && (
+                            <p className="text-sm text-gray-500">
+                                Log in to sync your favorite products.
+                            </p>
+                        )}
+                    </div>
                 ) : favorites.length === 0 ? (
                     <div className="text-center py-16">
                         <p className="text-gray-400 mb-4">No favorites yet.</p>
@@ -61,11 +88,7 @@ export default function Favorites() {
                 ) : (
                     <div className="flex flex-col gap-4">
                         {favorites.map((product) => (
-                            <FavouriteCard
-                                key={product.id}
-                                product={product}
-                                onDelete={() => handleDelete(product.id)}
-                            />
+                            <FavouriteCard key={product.id} product={product} onDelete={() => handleDelete(product.id || 0)} />
                         ))}
                     </div>
                 )}

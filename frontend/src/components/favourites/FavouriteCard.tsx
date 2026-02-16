@@ -52,7 +52,7 @@ export default function FavouriteCard({ product, onDelete }: FavouriteCardProps)
                             </p>
                         </div>
                         <span className="inline-block bg-blue-900 text-blue-200 px-3 py-1 rounded-full text-sm font-semibold">
-                            {product.category.toUpperCase()}
+                            {product.category?.toUpperCase() ?? product.category_id}
                         </span>
                     </div>
                 </div>

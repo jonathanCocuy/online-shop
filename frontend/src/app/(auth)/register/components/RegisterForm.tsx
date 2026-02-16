@@ -11,7 +11,6 @@ import Link from 'next/link';
 import { authService } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Select } from '@/components/ui/Select';
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
@@ -269,18 +268,6 @@ export default function RegisterForm() {
                                         {errors.confirm_password?.message}
                                     </p>
                                 )}
-                            </div>
-                            <div>
-                                <Select 
-                                    variant="default" 
-                                    placeholder="Select your role" 
-                                    colorScheme="purple"
-                                    {...register('role')}
-                                    options={[
-                                        { value: 'CLIENT', label: 'Client' }, 
-                                        { value: 'SELLER', label: 'Seller' }
-                                    ]} 
-                                />
                             </div>
                         </div>
     

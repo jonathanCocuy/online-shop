@@ -1,11 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ShoppingBag, ArrowLeft, Tag, Truck, Heart, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import Swal from 'sweetalert2';
-import CartCard, { type CartItem } from '@/components/cart/CartCard';
+import CartCard from '@/components/cart/CartCard';
+import { cartService, type CartItem } from '@/lib/cart';
+import { authService } from '@/lib/auth';
 
 // Configuración de formatos por moneda
 const CURRENCY_CONFIG = {
@@ -32,31 +34,37 @@ const CURRENCY_CONFIG = {
 };
 
 export default function CartPage() {
-    const [cartItems, setCartItems] = useState<CartItem[]>([
-        {
-            id: '1',
-            name: 'Wireless Headphones Pro',
-            price: 299900,
-            currency: 'COP',
-            image_url: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
-            quantity: 2,
-            stock: 15,
-            category: 'technology'
-        },
-        {
-            id: '2',
-            name: 'Smart Watch Series 5',
-            price: 450000,
-            currency: 'COP',
-            image_url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500',
-            quantity: 1,
-            stock: 8,
-            category: 'technology'
-        },
-    ]);
+    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     const [promoCode, setPromoCode] = useState('');
     const [discount, setDiscount] = useState(0);
+    const fetchCart = async () => {
+        if (!authService.isAuthenticated()) {
+            setError('Log in to view your cart.');
+            setCartItems([]);
+            setLoading(false);
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const items = await cartService.getCart();
+            setCartItems(items);
+            setError(null);
+        } catch (err) {
+            console.error('Failed to load cart', err);
+            setError('Unable to load cart items.');
+            setCartItems([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchCart();
+    }, []);
 
     // Función para formatear el precio según la moneda
     const formatPrice = (price: number, currency: string): string => {
@@ -69,11 +77,13 @@ export default function CartPage() {
         });
     };
 
-    const updateQuantity = (id: string, newQuantity: number) => {
+    const updateQuantity = async (id: string, newQuantity: number) => {
         if (newQuantity < 1) return;
-        
-        const item = cartItems.find(item => item.id === id);
-        if (item && newQuantity > item.stock) {
+
+        const item = cartItems.find((cartItem) => cartItem.id === id);
+        if (!item) return;
+
+        if (newQuantity > item.stock) {
             Swal.fire({
                 title: 'Stock Limit',
                 text: `Only ${item.stock} units available`,
@@ -83,12 +93,24 @@ export default function CartPage() {
             return;
         }
 
-        setCartItems(cartItems.map(item => 
-            item.id === id ? { ...item, quantity: newQuantity } : item
-        ));
+        try {
+            await cartService.updateQuantity(item.productId, newQuantity);
+            await fetchCart();
+        } catch (err) {
+            console.error('Failed to update quantity', err);
+            Swal.fire({
+                title: 'Error',
+                text: 'Could not update the quantity.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
     };
 
     const removeItem = async (id: string) => {
+        const item = cartItems.find((cartItem) => cartItem.id === id);
+        if (!item) return;
+
         const result = await Swal.fire({
             title: 'Remove Item?',
             text: "Are you sure you want to remove this item from cart?",
@@ -100,14 +122,27 @@ export default function CartPage() {
             cancelButtonText: 'Cancel'
         });
 
-        if (result.isConfirmed) {
-            setCartItems(cartItems.filter(item => item.id !== id));
+        if (!result.isConfirmed) {
+            return;
+        }
+
+        try {
+            await cartService.removeFromCart(item.productId);
             Swal.fire({
                 title: 'Removed!',
                 text: 'Item removed from cart',
                 icon: 'success',
                 timer: 1500,
                 showConfirmButton: false
+            });
+            await fetchCart();
+        } catch (err) {
+            console.error('Failed to remove item', err);
+            Swal.fire({
+                title: 'Error',
+                text: 'Could not remove the item from cart.',
+                icon: 'error',
+                confirmButtonText: 'OK'
             });
         }
     };
@@ -182,6 +217,14 @@ export default function CartPage() {
         }
     };
 
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <p className="text-gray-400">Loading cart…</p>
+            </div>
+        );
+    }
+
     if (cartItems.length === 0) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
@@ -190,7 +233,9 @@ export default function CartPage() {
                         <ShoppingBag size={80} className="text-gray-600" />
                     </div>
                     <h2 className="text-3xl font-bold text-white mb-4">Your cart is empty</h2>
-                    <p className="text-gray-400 mb-8">Start adding some products to your cart!</p>
+                    <p className="text-gray-400 mb-8">
+                        {error ?? 'Start adding some products to your cart!'}
+                    </p>
                     <Link href="/products">
                         <Button variant="primary" size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600">
                             Browse Products
@@ -225,6 +270,11 @@ export default function CartPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Cart Items */}
                     <div className="lg:col-span-2 space-y-4">
+                        {error && (
+                            <div className="text-sm text-red-300 text-center">
+                                {error}
+                            </div>
+                        )}
                         {cartItems.map((item) => {
                             const currencySymbol =
                                 CURRENCY_CONFIG[item.currency as keyof typeof CURRENCY_CONFIG]?.symbol ||

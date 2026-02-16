@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { authService } from '@/lib/auth';
 import { Product, productService } from '@/lib/product';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
@@ -43,6 +44,7 @@ export default function ProductDetailPage() {
     const [error, setError] = useState<string | null>(null);
     const [isSlideOverOpen, setIsSlideOverOpen] = useState(false);
     const router = useRouter();
+    const [isOwner, setIsOwner] = useState(false);
 
     // Función para cargar el producto
     const fetchProduct = async () => {
@@ -50,9 +52,12 @@ export default function ProductDetailPage() {
             setLoading(true);
             const data = await productService.getProductById(params.id as string);
             setProduct(data);
+            const currentUser = authService.getUserId();
+            setIsOwner(currentUser !== null && Number(data?.user_id) === currentUser);
             setError(null);
-        } catch {
-            setError('Error loading product');
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : 'Error loading product';
+            setError(message);
         } finally {
             setLoading(false);
         }
@@ -113,7 +118,7 @@ export default function ProductDetailPage() {
                 price: Number(productData.price),
                 image_url: productData.image_url,
                 stock: Number(productData.stock),
-                category: productData.category,
+                category_id: productData.category_id,
                 currency: productData.currency
             } : null);
 
@@ -128,7 +133,7 @@ export default function ProductDetailPage() {
                 price: Number(productData.price),
                 image_url: productData.image_url,
                 stock: Number(productData.stock),
-                category: productData.category,
+                category_id: productData.category_id,
                 currency: productData.currency
             });
 
@@ -251,7 +256,7 @@ export default function ProductDetailPage() {
                         
                         <div className="mb-4">
                             <span className="inline-block bg-blue-900 text-blue-200 px-3 py-1 rounded-full text-sm font-semibold">
-                                {product.category.toUpperCase()}
+                                {product.category ?? product.category_id}
                             </span>
                         </div>
 
@@ -287,42 +292,48 @@ export default function ProductDetailPage() {
                                     Add to cart
                                 </Button>
                             )}
-                            <Button 
-                                variant="secondary" 
-                                size="lg" 
-                                className="flex items-center justify-center gap-2" 
-                                onClick={() => setIsSlideOverOpen(true)}
-                            >
-                                <Pencil size={18} />
-                                Edit
-                            </Button>
-                            <Button 
-                                variant="danger" 
-                                size="lg" 
-                                className="flex items-center justify-center gap-2" 
-                                onClick={handleDeleteProduct}
-                            >
-                                <Trash2 size={18} />
-                                Delete
-                            </Button>
+                            {isOwner && (
+                                <Button 
+                                    variant="secondary" 
+                                    size="lg" 
+                                    className="flex items-center justify-center gap-2" 
+                                    onClick={() => setIsSlideOverOpen(true)}
+                                >
+                                    <Pencil size={18} />
+                                    Edit
+                                </Button>
+                            )}
+                            {isOwner && (
+                                <Button 
+                                    variant="danger" 
+                                    size="lg" 
+                                    className="flex items-center justify-center gap-2" 
+                                    onClick={handleDeleteProduct}
+                                >
+                                    <Trash2 size={18} />
+                                    Delete
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Modal de edición */}
-            <SlideOver
-                isOpen={isSlideOverOpen}
-                onClose={handleCloseModal}
-                title="Edit Product"
-            >
-                <ProductForm 
-                    initialData={product}
-                    onSubmit={handleUpdateProduct}
-                    onCancel={handleCloseModal}
-                    isEditMode={true}
-                />
-            </SlideOver>
+            {isOwner && (
+                <SlideOver
+                    isOpen={isSlideOverOpen}
+                    onClose={handleCloseModal}
+                    title="Edit Product"
+                >
+                    <ProductForm 
+                        initialData={product}
+                        onSubmit={handleUpdateProduct}
+                        onCancel={handleCloseModal}
+                        isEditMode={true}
+                    />
+                </SlideOver>
+            )}
         </div>
     );
 }

@@ -1,94 +1,116 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import CategoryCard, { type CategoryCardData } from '@/components/categories/CategoryCard';
 import CategoryFilter from '@/components/ui/Filter';
 import ProductCard from '@/components/product/ProductCard';
-import { Product, productService } from '@/lib/product';
-
-const categories: CategoryCardData[] = [
-    {
-        id: '1',
-        name: 'Technology',
-        slug: 'technology',
-        image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600',
-        gradient: 'from-blue-500 to-cyan-500',
-        productCount: 245
-    },
-    {
-        id: '2',
-        name: 'Home',
-        slug: 'home',
-        image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=600',
-        gradient: 'from-green-500 to-emerald-500',
-        productCount: 189
-    },
-    {
-        id: '3',
-        name: 'Shoes',
-        slug: 'shoes',
-        image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600',
-        gradient: 'from-orange-500 to-red-500',
-        productCount: 312
-    },
-    {
-        id: '4',
-        name: 'Accessories',
-        slug: 'accessories',
-        image: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=600',
-        gradient: 'from-purple-500 to-pink-500',
-        productCount: 156
-    },
-    {
-        id: '5',
-        name: 'Sports',
-        slug: 'sports',
-        image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600',
-        gradient: 'from-red-500 to-rose-500',
-        productCount: 198
-    },
-    {
-        id: '6',
-        name: 'Clothes',
-        slug: 'clothes',
-        image: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=600',
-        gradient: 'from-indigo-500 to-purple-500',
-        productCount: 421
-    }
-];
+import { Product } from '@/lib/product';
+import { categoryService, type Category } from '@/lib/category';
 
 export default function CategoryPage() {
-    const params = useParams();
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
+    const [productError, setProductError] = useState<string | null>(null);
     const [sortBy, setSortBy] = useState('featured');
-    const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000]);
 
-    const categoryName = params.slug ? String(params.slug).charAt(0).toUpperCase() + String(params.slug).slice(1) : 'Category';
+    const [categories, setCategories] = useState<CategoryCardData[]>([]);
+    const [categoriesLoading, setCategoriesLoading] = useState(true);
+    const [selectedCategorySlug, setSelectedCategorySlug] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fetchProducts = async () => {
+    const gradientLookup: Record<string, string> = {
+        technology: 'from-blue-500 to-cyan-500',
+        home: 'from-green-500 to-emerald-500',
+        shoes: 'from-orange-500 to-red-500',
+        accessories: 'from-purple-500 to-pink-500',
+        sports: 'from-red-500 to-rose-500',
+        clothes: 'from-indigo-500 to-purple-500'
+    };
+
+    const mapCategoryToCard = (category: Category): CategoryCardData => {
+        const image = category.image ?? category.image_url ?? 'https://images.unsplash.com/photo-1522199755839-a2bacb67c546?w=600';
+        return {
+            id: category.id,
+            name: category.name,
+            slug: category.slug,
+            gradient: category.gradient ?? gradientLookup[category.slug] ?? 'from-slate-500 to-slate-700',
+            productCount: category.product_count ?? 0
+        };
+    };
+
+    const currentCategoryName = useMemo(() => {
+        if (!selectedCategorySlug) return 'Discover categories';
+        return (
+            categories.find((category) => category.slug === selectedCategorySlug)?.name ||
+            'Discover categories'
+        );
+    }, [selectedCategorySlug, categories]);
+
+    const loadCategoryProducts = useCallback(
+        async (categoryId?: string) => {
+            if (!categoryId) {
+                setProducts([]);
+                setProductError(null);
+                setLoading(false);
+                return;
+            }
+
             try {
                 setLoading(true);
-                const allProducts = await productService.getProducts();
-                // Filtrar por categoría
-                const filtered = allProducts.filter(
-                    (product) => product.category.toLowerCase() === String(params.slug).toLowerCase()
-                );
-                setProducts(filtered);
+                setProductError(null);
+                const data = await categoryService.getProductsByCategoryId(categoryId);
+                setProducts(data);
             } catch (error) {
                 console.error('Error fetching products:', error);
+                setProductError('Unable to load products for this category.');
+                setProducts([]);
             } finally {
                 setLoading(false);
             }
+        },
+        []
+    );
+
+    useEffect(() => {
+        if (!selectedCategorySlug || categoriesLoading) {
+            if (!selectedCategorySlug) {
+                setProducts([]);
+            }
+            return;
+        }
+
+        const matchedCategory = categories.find((category) => category.slug === selectedCategorySlug);
+        if (!matchedCategory) {
+            setProductError('Category not found.');
+            setProducts([]);
+            setLoading(false);
+            return;
+        }
+
+        loadCategoryProducts(matchedCategory.id);
+    }, [selectedCategorySlug, categories, categoriesLoading, loadCategoryProducts]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                setCategoriesLoading(true);
+                const rows = await categoryService.getCategories();
+                const mapped = rows.map(mapCategoryToCard);
+                setCategories(mapped);
+                if (mapped.length > 0 && !selectedCategorySlug) {
+                    setSelectedCategorySlug(mapped[0].slug);
+                }
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            } finally {
+                setCategoriesLoading(false);
+            }
         };
 
-        fetchProducts();
-    }, [params.slug]);
+        fetchCategories();
+    }, []);
 
     const sortedProducts = [...products].sort((a, b) => {
         switch (sortBy) {
@@ -112,7 +134,7 @@ export default function CategoryPage() {
                         <div className="flex flex-col items-start justify-center gap-2">
                             <h1 className="text-5xl font-bold text-white flex items-center gap-3">
                                 <Filter size={36} />
-                                Category
+                                {currentCategoryName}
                             </h1>
                             <p className="text-gray-400 text-lg">
                                 Discover our exclusive products
@@ -138,11 +160,26 @@ export default function CategoryPage() {
                         <ArrowLeft size={16} className="rotate-180" />
                     </Link>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-6">
-                    {categories.map((category) => (
-                        <CategoryCard key={category.id} category={category} />
-                    ))}
-                </div>
+                {categoriesLoading ? (
+                    <div className="flex items-center justify-center py-12">
+                        <p className="text-gray-500">Loading categories…</p>
+                    </div>
+                ) : categories.length === 0 ? (
+                    <div className="text-center py-12">
+                        <p className="text-gray-500">No categories available.</p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-6">
+                        {categories.map((category) => (
+                            <CategoryCard
+                                key={category.id}
+                                category={category}
+                                onClick={() => setSelectedCategorySlug(category.slug)}
+                                isActive={selectedCategorySlug === category.slug}
+                            />
+                        ))}
+                    </div>
+                )}
             </section>
 
             <div className="px-4 sm:px-6 lg:px-8">
@@ -151,6 +188,25 @@ export default function CategoryPage() {
                     <div className="flex flex-col items-center justify-center gap-6 py-20">
                         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
                         <p className="text-gray-400 text-lg">Loading products...</p>
+                    </div>
+                ) : productError ? (
+                    <div className="text-center py-20">
+                        <div className="bg-gray-800/50 backdrop-blur-sm rounded-full p-12 border border-gray-700 inline-block mb-6">
+                            <Filter size={64} className="text-gray-600" />
+                        </div>
+                        <h2 className="text-2xl font-bold text-white mb-4">Oops!</h2>
+                        <p className="text-gray-400 mb-8">{productError}</p>
+                        <Link href="/categories">
+                            <Button variant="primary">Browse Categories</Button>
+                        </Link>
+                    </div>
+                ) : !selectedCategorySlug ? (
+                    <div className="text-center py-20">
+                        <div className="bg-gray-800/50 backdrop-blur-sm rounded-full p-12 border border-gray-700 inline-block mb-6">
+                            <Filter size={64} className="text-gray-600" />
+                        </div>
+                        <h2 className="text-2xl font-bold text-white mb-4">Select a category</h2>
+                        <p className="text-gray-400 mb-8">Click on a category above to explore its products.</p>
                     </div>
                 ) : products.length === 0 ? (
                     <div className="text-center py-20">

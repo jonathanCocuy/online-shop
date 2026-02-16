@@ -1,55 +1,61 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
 
 export interface CategoryCardData {
     id: string;
     name: string;
     slug: string;
-    image: string;
     gradient: string;
     productCount: number;
 }
 
 interface CategoryCardProps {
     category: CategoryCardData;
+    onClick?: (category: CategoryCardData) => void;
+    isActive?: boolean;
 }
 
-export default function CategoryCard({ category }: CategoryCardProps) {
-    const { name, slug, image, gradient, productCount } = category;
+function CardContent({ category }: { category: CategoryCardData }) {
+    const { name, gradient, productCount } = category;
+    return (
+        <>
+            <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-45`}></div>
+            <div className="absolute inset-0 bg-black/80"></div>
+            <div className="relative z-10 text-center space-y-1">
+                <p className="text-sm font-semibold text-white">{name.toUpperCase()}</p>
+                <p className="text-xs text-white/60">{productCount.toLocaleString()} productos</p>
+            </div>
+        </>
+    );
+}
+
+export default function CategoryCard({ category, onClick, isActive }: CategoryCardProps) {
+    const wrapperClasses = `
+        group relative overflow-hidden rounded-2xl h-28 md:h-32 border bg-black/70 flex items-center justify-center transition-all duration-200
+        ${isActive ? 'border-white/70 shadow-lg shadow-blue-500/20 scale-105' : 'border-white/30 hover:border-white/60 hover:shadow-xl hover:shadow-blue-500/30'}
+    `;
+
+    if (onClick) {
+        return (
+            <button
+                type="button"
+                aria-label={`View ${category.name} category`}
+                className={wrapperClasses}
+                onClick={() => onClick(category)}
+            >
+                <CardContent category={category} />
+            </button>
+        );
+    }
 
     return (
         <Link
-            href={`/categories/${slug}`}
-            aria-label={`View ${name} category`}
-            className="group relative overflow-hidden rounded-2xl cursor-pointer h-64"
+            href={`/categories/${category.slug}`}
+            aria-label={`View ${category.name} category`}
+            className={wrapperClasses}
         >
-            <div className="absolute inset-0">
-                <Image
-                    src={image}
-                    alt={name}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-            </div>
-
-            <div className={`absolute inset-0 bg-gradient-to-t ${gradient} opacity-60 group-hover:opacity-75 transition-opacity duration-300`}></div>
-            <div className="absolute inset-0 bg-black/40"></div>
-
-            <div className="absolute inset-0 flex flex-col justify-end p-4">
-                <h3 className="text-white font-bold text-lg mb-1 group-hover:translate-y-[-4px] transition-transform duration-300">
-                    {name}
-                </h3>
-                <p className="text-white/80 text-sm">
-                    {productCount.toLocaleString()} items
-                </p>
-            </div>
-
-            <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <ArrowRight className="text-white" size={16} />
-            </div>
+            <CardContent category={category} />
         </Link>
     );
 }

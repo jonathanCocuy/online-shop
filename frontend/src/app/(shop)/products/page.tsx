@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { productService } from "@/lib/product";
 import { Product } from "@/lib/product";
 import ProductCard from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/Button";
-import { SlideOver } from "@/components/ui/SlideOver";
 import ProductForm, { ProductFormData } from "@/components/product/ProductForm";
 import { ShoppingBag } from "lucide-react";
 import Filter from "@/components/ui/Filter";
@@ -14,7 +13,7 @@ export default function Products() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [isSlideOverOpen, setIsSlideOverOpen] = useState(false);
+    const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'name'>('featured');
 
     // Función para cargar productos
     const fetchProducts = async () => {
@@ -35,38 +34,21 @@ export default function Products() {
         fetchProducts();
     }, []);
 
-    const handdleAddProduct = async (product: ProductFormData) => {
-        try {
-            const response = await productService.createProduct({ 
-                id: crypto.randomUUID(), 
-                name: product.name, 
-                description: product.description, 
-                price: Number(product.price), 
-                image_url: product.image_url, 
-                stock: Number(product.stock), 
-                category: product.category, 
-                currency: product.currency 
-            });
-            
-            if (response.success) {
-                // Recargar los productos después de crear uno nuevo
-                await fetchProducts();
-                setIsSlideOverOpen(false);
-            } else {
-                setError(response.message);
+    const sortedProducts = useMemo(() => {
+        return [...products].sort((a, b) => {
+            switch (sortBy) {
+                case 'price-low':
+                    return a.price - b.price;
+                case 'price-high':
+                    return b.price - a.price;
+                case 'name':
+                    return a.name.localeCompare(b.name);
+                default:
+                    return 0;
             }
-        } catch (error) {
-            console.error('Error adding product:', error);
-            setError('Error adding product');
-        }
-    };
+        });
+    }, [products, sortBy]);
 
-    // Función para manejar cuando se cierra el modal
-    const handleCloseModal = () => {
-        setIsSlideOverOpen(false);
-        // Recargar productos cuando se cierra el modal
-        fetchProducts();
-    };
 
     return (
         <div className="min-h-screen flex flex-col items-center">
@@ -83,13 +65,7 @@ export default function Products() {
                                 Discover our exclusive collection
                             </p>
                         </div>
-                        <Button 
-                            variant="primary" 
-                            onClick={() => setIsSlideOverOpen(true)}
-                        >
-                            + Add New Product
-                        </Button>
-                        <Filter sortBy="featured" onSortChange={(value) => {}} />
+                        <Filter sortBy={sortBy} onSortChange={(value) => setSortBy(value as any)} />
                     </div>
                 </div>
             </div>
@@ -142,29 +118,14 @@ export default function Products() {
                 {/* Products Grid */}
                 {!loading && products.length > 0 && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {products.map((product) => (
-                            <div
-                                key={product.id}
-                                className=""
-                            >
+                        {sortedProducts.map((product) => (
+                            <div key={product.id} className="">
                                 <ProductCard product={product} />
                             </div>
                         ))}
                     </div>
                 )}
             </div>
-
-            {/* Slide Over Panel */}
-            <SlideOver
-                isOpen={isSlideOverOpen}
-                onClose={handleCloseModal}
-                title="Add Product"
-            >
-                <ProductForm 
-                    onSubmit={handdleAddProduct}
-                    onCancel={handleCloseModal}
-                />
-            </SlideOver>
         </div>
     );
 }

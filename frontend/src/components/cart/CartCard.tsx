@@ -4,17 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Trash2, Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-
-export interface CartItem {
-    id: string;
-    name: string;
-    price: number;
-    currency: string;
-    image_url: string;
-    quantity: number;
-    stock: number;
-    category: string;
-}
+import { CartItem } from '@/lib/cart';
 
 interface CartCardProps {
     item: CartItem;
