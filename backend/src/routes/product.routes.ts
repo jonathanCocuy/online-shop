@@ -7,10 +7,11 @@ import { authMiddleware } from "../middlewares/auth.middleware";
 const router = Router();
 
 
-router.post('/products'/* , roleMiddleware('seller') */, productMiddleware, new ProductsController().createProduct);
+router.post('/products'/* , roleMiddleware('seller') */, authMiddleware, productMiddleware, new ProductsController().createProduct);
 router.get('/products', new ProductsController().getProducts);
+router.get('/products/me', authMiddleware, new ProductsController().getMyProducts);
 router.get('/products/:id', new ProductsController().getProductById);
-router.put('/products/:id'/* , roleMiddleware('seller') */, productMiddleware, new ProductsController().updateProduct);
-router.delete('/products/:id'/* , roleMiddleware('seller') */, new ProductsController().deleteProduct);
+router.put('/products/:id'/* , roleMiddleware('seller') */, authMiddleware, productMiddleware, new ProductsController().updateProduct);
+router.delete('/products/:id'/* , roleMiddleware('seller') */, authMiddleware, new ProductsController().deleteProduct);
 
 export default router;

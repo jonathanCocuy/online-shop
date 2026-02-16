@@ -3,8 +3,9 @@ import { z } from "zod";
 import { productSchema } from "../schemas/product.schema";
 
 export const productMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const { name, price, description, image_url, category, stock, currency } = req.body;
-    if (!name || !price || !description || !image_url || !category || !stock || !currency	) {
+    const { name, price, description, image_url, category, category_id, stock, currency } = req.body;
+    const hasCategory = category != null && String(category).trim().length >= 3 || category_id != null;
+    if (!name || !price || !description || !image_url || !hasCategory || stock == null || !currency) {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
