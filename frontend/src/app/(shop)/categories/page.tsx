@@ -137,7 +137,7 @@ export default function CategoryPage() {
                         <div className="flex flex-col items-start justify-center gap-2">
                             <h1 className="text-5xl font-bold text-white flex items-center gap-3">
                                 <Filter size={36} />
-                                {currentCategoryName.toUpperCase()}
+                                {currentCategoryName.charAt(0).toUpperCase() + currentCategoryName.slice(1)}
                             </h1>
                             <p className="text-gray-400 text-lg">
                                 Discover our exclusive products
@@ -225,7 +225,7 @@ export default function CategoryPage() {
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {sortedProducts.map((product) => (
-                            <div key={product.id} className="transform hover:scale-105 transition-transform duration-300">
+                            <div key={product.id}>
                                 <ProductCard product={product} />
                             </div>
                         ))}

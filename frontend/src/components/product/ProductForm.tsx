@@ -214,8 +214,8 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditMod
                 colorScheme="blue"
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+ 
                 <Input
                     name="price"
                     label={`Price ${currencyConfig ? `(${currencyConfig.symbol})` : ''}`}
@@ -245,10 +245,11 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditMod
                 label="Category"
                 placeholder="Select category"
                 required
-                value={formData.category_id}
+                value={formData.category_id.toUpperCase()}
                 onChange={(e) => setFormData(prev => ({ ...prev, category_id: e.target.value }))}
                 options={categoryOptions.length > 0 ? categoryOptions : defaultCategories}
                 colorScheme="blue"
+                className="text-uppercase capitalize"
             />
 
             <Input

@@ -104,12 +104,6 @@ export default function Navbar() {
 
                     {/* Icons */}
                     <div className="hidden md:flex items-center space-x-4">
-                        <button 
-                            onClick={() => setSearchOpen(!searchOpen)}
-                            className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all"
-                        >
-                            <Search size={20} />
-                        </button>
                         {isClient && isAuthenticated && (
                             <>
                                 <Link href="/favorites" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
@@ -153,20 +147,6 @@ export default function Navbar() {
                         </button>
                     </div>
                 </div>
-
-                {/* Search Bar */}
-                {searchOpen && (
-                    <div className="pb-4 animate-in fade-in slide-in-from-top-2">
-                        <div className="relative">
-                            <input
-                                type="text"
-                                placeholder="Buscar Products..."
-                                className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-800 focus:border-transparent"
-                            />
-                            <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
-                        </div>
-                    </div>
-                )}
             </div>
 
             {/* Mobile menu */}

@@ -59,7 +59,7 @@ export default function Products() {
                         <div className="flex flex-col items-start justify-center gap-2">
                             <h1 className="text-5xl font-bold text-white flex items-center gap-3">
                                 <ShoppingBag size={36} />
-                                Our Products
+                                Our Products List
                             </h1>
                             <p className="text-gray-400 text-lg">
                                 Discover our exclusive collection
