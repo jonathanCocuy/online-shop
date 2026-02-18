@@ -50,7 +50,9 @@ export class CategoryService {
     /** Productos de una categoría */
     async getProductsByCategoryId(categoryId: number) {
         const [rows] = await db.query(
-            'SELECT * FROM products WHERE category_id = ?',
+            `SELECT p.*, c.name AS category FROM products p
+             LEFT JOIN categories c ON c.id = p.category_id
+             WHERE p.category_id = ?`,
             [categoryId]
         );
         const list = (Array.isArray(rows) ? rows : []) as { image_url?: string | null }[];
