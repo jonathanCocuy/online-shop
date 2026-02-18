@@ -18,7 +18,7 @@ export default function CategoryPage() {
 
     const [categories, setCategories] = useState<CategoryCardData[]>([]);
     const [categoriesLoading, setCategoriesLoading] = useState(true);
-    const [selectedCategorySlug, setSelectedCategorySlug] = useState<string | null>(null);
+    const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
     const gradientLookup: Record<string, string> = {
         technology: 'from-blue-500 to-cyan-500',
@@ -29,24 +29,27 @@ export default function CategoryPage() {
         clothes: 'from-indigo-500 to-purple-500'
     };
 
+    const slugify = (value: string) => value.toLowerCase().replace(/\s+/g, '-');
+
     const mapCategoryToCard = (category: Category): CategoryCardData => {
         const image = category.image ?? category.image_url ?? 'https://images.unsplash.com/photo-1522199755839-a2bacb67c546?w=600';
+        const slug = category.slug ?? slugify(category.name);
         return {
             id: category.id,
             name: category.name,
-            slug: category.slug,
-            gradient: category.gradient ?? gradientLookup[category.slug] ?? 'from-slate-500 to-slate-700',
+            slug,
+            gradient: category.gradient ?? gradientLookup[slug] ?? 'from-slate-500 to-slate-700',
             productCount: category.product_count ?? 0
         };
     };
 
     const currentCategoryName = useMemo(() => {
-        if (!selectedCategorySlug) return 'Discover categories';
+        if (!selectedCategoryId) return 'Discover categories';
         return (
-            categories.find((category) => category.slug === selectedCategorySlug)?.name ||
+            categories.find((category) => category.id === selectedCategoryId)?.name ||
             'Discover categories'
         );
-    }, [selectedCategorySlug, categories]);
+    }, [selectedCategoryId, categories]);
 
     const loadCategoryProducts = useCallback(
         async (categoryId?: string) => {
@@ -74,14 +77,14 @@ export default function CategoryPage() {
     );
 
     useEffect(() => {
-        if (!selectedCategorySlug || categoriesLoading) {
-            if (!selectedCategorySlug) {
+        if (!selectedCategoryId || categoriesLoading) {
+            if (!selectedCategoryId) {
                 setProducts([]);
             }
             return;
         }
 
-        const matchedCategory = categories.find((category) => category.slug === selectedCategorySlug);
+        const matchedCategory = categories.find((category) => category.id === selectedCategoryId);
         if (!matchedCategory) {
             setProductError('Category not found.');
             setProducts([]);
@@ -90,7 +93,7 @@ export default function CategoryPage() {
         }
 
         loadCategoryProducts(matchedCategory.id);
-    }, [selectedCategorySlug, categories, categoriesLoading, loadCategoryProducts]);
+    }, [selectedCategoryId, categories, categoriesLoading, loadCategoryProducts]);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -99,8 +102,8 @@ export default function CategoryPage() {
                 const rows = await categoryService.getCategories();
                 const mapped = rows.map(mapCategoryToCard);
                 setCategories(mapped);
-                if (mapped.length > 0 && !selectedCategorySlug) {
-                    setSelectedCategorySlug(mapped[0].slug);
+                if (mapped.length > 0 && !selectedCategoryId) {
+                    setSelectedCategoryId(mapped[0].id);
                 }
             } catch (error) {
                 console.error('Error fetching categories:', error);
@@ -134,7 +137,7 @@ export default function CategoryPage() {
                         <div className="flex flex-col items-start justify-center gap-2">
                             <h1 className="text-5xl font-bold text-white flex items-center gap-3">
                                 <Filter size={36} />
-                                {currentCategoryName}
+                                {currentCategoryName.toUpperCase()}
                             </h1>
                             <p className="text-gray-400 text-lg">
                                 Discover our exclusive products
@@ -174,8 +177,8 @@ export default function CategoryPage() {
                             <CategoryCard
                                 key={category.id}
                                 category={category}
-                                onClick={() => setSelectedCategorySlug(category.slug)}
-                                isActive={selectedCategorySlug === category.slug}
+                                onClick={() => setSelectedCategoryId(category.id)}
+                                isActive={selectedCategoryId === category.id}
                             />
                         ))}
                     </div>
@@ -200,7 +203,7 @@ export default function CategoryPage() {
                             <Button variant="primary">Browse Categories</Button>
                         </Link>
                     </div>
-                ) : !selectedCategorySlug ? (
+                ) : !selectedCategoryId ? (
                     <div className="text-center py-20">
                         <div className="bg-gray-800/50 backdrop-blur-sm rounded-full p-12 border border-gray-700 inline-block mb-6">
                             <Filter size={64} className="text-gray-600" />

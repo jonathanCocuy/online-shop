@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { ShoppingBag, ArrowLeft, Tag, Truck, Heart, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -40,7 +40,7 @@ export default function CartPage() {
 
     const [promoCode, setPromoCode] = useState('');
     const [discount, setDiscount] = useState(0);
-    const fetchCart = async () => {
+    const fetchCart = useCallback(async () => {
         if (!authService.isAuthenticated()) {
             setError('Log in to view your cart.');
             setCartItems([]);
@@ -60,11 +60,13 @@ export default function CartPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
         fetchCart();
-    }, []);
+        const cleanup = cartService.subscribe(fetchCart);
+        return () => cleanup?.();
+    }, [fetchCart]);
 
     // Función para formatear el precio según la moneda
     const formatPrice = (price: number, currency: string): string => {
@@ -227,7 +229,7 @@ export default function CartPage() {
 
     if (cartItems.length === 0) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <div className="bg-gray-800/50 backdrop-blur-sm rounded-full p-12 border border-gray-700 inline-block mb-6">
                         <ShoppingBag size={80} className="text-gray-600" />

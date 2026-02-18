@@ -55,6 +55,11 @@ const normalize = (item: CartBackendItem): CartItem => ({
     category: item.category
 });
 
+const emitCartUpdate = () => {
+    if (typeof window === "undefined") return;
+    window.dispatchEvent(new Event("cartUpdated"));
+};
+
 export const cartService = {
     async getCart(): Promise<CartItem[]> {
         const response = await fetch(`${API_URL}/cart`, {
@@ -81,6 +86,7 @@ export const cartService = {
         }
 
         const data = await response.json();
+        emitCartUpdate();
         return normalize(data);
     },
 
@@ -96,6 +102,7 @@ export const cartService = {
         }
 
         const data = await response.json();
+        emitCartUpdate();
         return normalize(data);
     },
 
@@ -109,6 +116,19 @@ export const cartService = {
             throw new Error('Failed to remove product from cart');
         }
 
+        emitCartUpdate();
         return response.json();
+    },
+
+    async getCartCount(): Promise<number> {
+        const cart = await this.getCart();
+        return cart.reduce((sum, item) => sum + item.quantity, 0);
+    },
+
+    subscribe(onUpdate: () => void) {
+        if (typeof window === "undefined") return () => {};
+        const handler = () => onUpdate();
+        window.addEventListener("cartUpdated", handler);
+        return () => window.removeEventListener("cartUpdated", handler);
     }
 };

@@ -42,7 +42,6 @@ export default function Shop() {
             id: '1',
             name: 'Technology',
             slug: 'technology',
-            image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600',
             gradient: 'from-blue-500 to-cyan-500',
             productCount: 245
         },
@@ -50,7 +49,6 @@ export default function Shop() {
             id: '2',
             name: 'Home',
             slug: 'home',
-            image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=600',
             gradient: 'from-green-500 to-emerald-500',
             productCount: 189
         },
@@ -58,7 +56,6 @@ export default function Shop() {
             id: '3',
             name: 'Shoes',
             slug: 'shoes',
-            image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600',
             gradient: 'from-orange-500 to-red-500',
             productCount: 312
         },
@@ -66,7 +63,6 @@ export default function Shop() {
             id: '4',
             name: 'Accessories',
             slug: 'accesories',
-            image: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=600',
             gradient: 'from-purple-500 to-pink-500',
             productCount: 156
         },
@@ -74,7 +70,6 @@ export default function Shop() {
             id: '5',
             name: 'Sports',
             slug: 'sports',
-            image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600',
             gradient: 'from-red-500 to-rose-500',
             productCount: 198
         },
@@ -82,7 +77,6 @@ export default function Shop() {
             id: '6',
             name: 'Clothes',
             slug: 'clothes',
-            image: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=600',
             gradient: 'from-indigo-500 to-purple-500',
             productCount: 421
         }

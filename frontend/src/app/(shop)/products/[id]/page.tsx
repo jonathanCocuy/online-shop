@@ -256,7 +256,7 @@ export default function ProductDetailPage() {
                         
                         <div className="mb-4">
                             <span className="inline-block bg-blue-900 text-blue-200 px-3 py-1 rounded-full text-sm font-semibold">
-                                {product.category ?? product.category_id}
+                                {product.category?.toUpperCase() ?? product.category_id}
                             </span>
                         </div>
 

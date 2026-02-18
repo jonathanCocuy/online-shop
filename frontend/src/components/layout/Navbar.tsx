@@ -7,6 +7,7 @@ import { ShoppingCart, Search, Menu, X, User, Heart, LogOut } from "lucide-react
 import { authService } from "@/lib/auth";
 import Image from "next/image";
 import Swal from "sweetalert2";
+import { useCartCount } from "@/hooks/useCartCount";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +16,7 @@ export default function Navbar() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
+    const { count } = useCartCount();
 
     // Determinar el enlace activo basado en la ruta actual
     const getActiveLink = () => {
@@ -118,7 +120,7 @@ export default function Navbar() {
                         <Link href="/cart" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all relative">
                             {activeLink === "Cart" ? <ShoppingCart size={20} fill="blue" /> : <ShoppingCart size={20} />}
                             <span className="absolute -top-1 -right-1 bg-slate-800 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                                3
+                                {count}
                             </span>
                         </Link>
                         <div className="p-2"></div>
@@ -140,7 +142,7 @@ export default function Navbar() {
                         <button className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all relative">
                             <ShoppingCart size={20} />
                             <span className="absolute -top-1 -right-1 bg-slate-800 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                                3
+                                {count}
                             </span>
                         </button>
                         <button

@@ -10,6 +10,7 @@ import 'tippy.js/dist/tippy.css';
 import Link from 'next/link';
 import { favoritesService } from '@/lib/favorites';
 import { authService } from '@/lib/auth';
+import { cartService } from '@/lib/cart';
 import Swal from 'sweetalert2';
 
 // Configuración de formatos por moneda
@@ -85,6 +86,40 @@ export default function ProductCard({ product } : { product: Product }) {
         }
     };
 
+    const handleAddToCart = async () => {
+        if (!authService.isAuthenticated()) {
+            Swal.fire({
+                title: 'Authentication required',
+                text: 'Please login to add products to your cart',
+                icon: 'warning',
+                confirmButtonText: 'Login',
+                confirmButtonColor: '#3B82F6',
+                cancelButtonColor: '#6B7280',
+                cancelButtonText: 'Cancel'
+            });
+            return;
+        }
+
+        try {
+            await cartService.addToCart(product.id as string | number, 1);
+            const total = await cartService.getCartCount();
+            Swal.fire({
+                title: 'Added to cart',
+                text: `Ahora tienes ${total} ${total === 1 ? 'producto' : 'productos'} en el carrito.`,
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        } catch (error: any) {
+            Swal.fire({
+                title: 'Error',
+                text: error?.message || 'No se pudo agregar el producto al carrito',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
+    };
+
     return (
         <div className="relative w-[295px]">
             <div className="absolute inset-0 translate-x-2 translate-y-2 rounded-[28px] bg-gradient-to-r from-blue-500/30 to-purple-500/30 blur-3xl opacity-60"></div>
@@ -135,7 +170,7 @@ export default function ProductCard({ product } : { product: Product }) {
                                 )}
                             </Button>
                         </div>
-                        <Button variant="primary" size="sm" className="flex items-center gap-2">
+                        <Button variant="primary" size="sm" className="flex items-center gap-2" onClick={handleAddToCart}>
                             Add to cart
                         </Button>
                     </div>

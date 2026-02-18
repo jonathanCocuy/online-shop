@@ -215,20 +215,6 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditMod
             />
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Select
-                    label="Currency"
-                    placeholder="Select currency"
-                    required
-                    value={formData.currency}
-                    onChange={handleCurrencyChange}
-                    options={[
-                        { value: "COP", label: "COP" },
-                        { value: "USD", label: "USD" },
-                        { value: "EUR", label: "EUR" },
-                        { value: "GBP", label: "🇬🇧 GBP" },
-                    ]}
-                    colorScheme="blue"
-                />
 
                 <Input
                     name="price"

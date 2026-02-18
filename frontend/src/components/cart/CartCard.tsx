@@ -44,7 +44,7 @@ export default function CartCard({
                                 </h3>
                             </Link>
                             <p className="text-blue-400 text-sm font-semibold mt-1">
-                                {item.category.toUpperCase()}
+                                {item.category?.toUpperCase()}
                             </p>
                         </div>
                         <button

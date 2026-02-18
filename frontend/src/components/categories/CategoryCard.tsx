@@ -51,7 +51,7 @@ export default function CategoryCard({ category, onClick, isActive }: CategoryCa
 
     return (
         <Link
-            href={`/categories/${category.slug}`}
+            href={`/categories`}
             aria-label={`View ${category.name} category`}
             className={wrapperClasses}
         >
