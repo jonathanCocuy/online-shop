@@ -50,7 +50,7 @@ export default function EditProductPage({ onProductUpdated }: EditProductPagePro
                 price: Number(productData.price),
                 image_url: productData.image_url,
                 stock: Number(productData.stock),
-                category: productData.category,
+                category_id: productData.category_id,
                 currency: productData.currency
             });
 

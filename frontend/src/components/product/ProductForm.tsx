@@ -17,6 +17,7 @@ interface ProductFormProps {
 }
 
 export interface ProductFormData {
+    id?: string | number;
     name: string;
     description: string;
     price: number | string;
