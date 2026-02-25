@@ -65,7 +65,6 @@ INSERT INTO products (name, description, price, stock, image_url, active, curren
 ('Graphics Tablet', 'Digital drawing tablet with 8192 pressure levels and battery-free pen', 199, 8, 'https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=800', TRUE, 'USD', 1),
 ('External SSD', '1TB portable SSD with USB 3.2 Gen 2 and read speeds up to 1050MB/s', 110, 35, 'https://images.unsplash.com/photo-1531492746076-161ca9bcad58?w=800', TRUE, 'USD', 1),
 ('Desk Lamp LED', 'Adjustable LED desk lamp with touch controls and USB charging port', 48, 20, 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800', TRUE, 'USD', 1),
-('Wireless Charger', 'Fast wireless charging pad compatible with Qi-enabled devices', 28, 40, 'https://images.unsplash.com/photo-1591290619762-37788c84bde5?w=800', TRUE, 'USD', 1),
 ('HDMI Cable 4K', 'Premium HDMI 2.1 cable supporting 4K at 120Hz and 8K at 60Hz', 22, 50, 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800', TRUE, 'USD', 1);
 
 -- --------------------------------------------
