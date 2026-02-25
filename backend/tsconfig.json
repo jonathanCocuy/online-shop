@@ -1,19 +1,14 @@
 {
   "compilerOptions": {
+    "module": "ESNext",
     "target": "ES2020",
-    "module": "CommonJS",
-
     "rootDir": "src",
     "outDir": "dist",
-
     "strict": true,
-
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-
-    "resolveJsonModule": true
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+    "resolveJsonModule": true,
+    "moduleResolution": "node"
+  }
 }
