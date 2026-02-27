@@ -6,4 +6,5 @@ export const env = {
     DEVELOPMENT_URL: process.env.DEVELOPMENT_URL!,
     PRODUCTION_URL: process.env.PRODUCTION_URL!,
     JWT_SECRET: process.env.JWT_SECRET!,
+    LOCAL_URL: process.env.LOCAL_URL!,
 }
