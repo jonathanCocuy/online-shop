@@ -1,6 +1,6 @@
 import { app } from './app.js';
-import { db } from './config/db';
-import { env } from './config/env';
+import { db } from './config/db.js';
+import { env } from './config/env.js';
 
 // Check if the required variables are defined
 if (!env.JWT_SECRET) {
