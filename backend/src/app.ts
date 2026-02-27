@@ -1,11 +1,11 @@
 import express from "express";
-import { corsMiddleware } from "./config/cors";
+import { corsMiddleware } from "./config/cors.js";
 
-import cartRoutes from "./routes/cart.routes";
-import authRoutes from "./routes/auth.routes";
-import productRoutes from "./routes/product.routes";
-import categoryRoutes from "./routes/category.routes";
-import favoritesRoutes from "./routes/favorites.routes";
+import cartRoutes from "./routes/cart.routes.js";
+import authRoutes from "./routes/auth.routes.js";
+import productRoutes from "./routes/product.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
+import favoritesRoutes from "./routes/favorites.routes.js";
 
 export const app = express();
 

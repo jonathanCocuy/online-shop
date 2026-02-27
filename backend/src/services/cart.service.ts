@@ -1,5 +1,5 @@
-import { db } from "../config/db";
-import { withNormalizedImages } from "../utils/image";
+import { db } from "../config/db.js";
+import { withNormalizedImages } from "../utils/image.js";
 
 export class CartService {
     async getCart(userId: number) {

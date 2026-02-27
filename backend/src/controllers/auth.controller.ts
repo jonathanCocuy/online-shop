@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { z } from "zod";
-import { AuthService } from "../services/auth.service";
-import { registerSchema, loginSchema } from "../schemas/auth.schemas";
+import { AuthService } from "../services/auth.service.js";
+import { registerSchema, loginSchema } from "../schemas/auth.schemas.js";
 
 export class AuthController {
     async register(req: Request, res: Response) {

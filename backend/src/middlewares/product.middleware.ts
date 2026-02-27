@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { z } from "zod";
-import { productSchema } from "../schemas/product.schema";
+import { productSchema } from "../schemas/product.schema.js";
 
 export const productMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const { name, price, description, image_url, category, category_id, stock, currency } = req.body;

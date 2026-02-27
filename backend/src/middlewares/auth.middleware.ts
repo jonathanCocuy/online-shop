@@ -1,7 +1,7 @@
 // middlewares/auth.middleware.ts
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
-import { JwtPayload } from '../types/auth.types'
+import { JwtPayload } from '../types/auth.types.js'
 
 // Extender Request para TS
 declare global {

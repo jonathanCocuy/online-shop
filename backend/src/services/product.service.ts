@@ -1,6 +1,6 @@
 import { Product } from "../types/product.types";
-import { db } from "../config/db";
-import { withNormalizedImage, withNormalizedImages } from "../utils/image";
+import { db } from "../config/db.js";
+import { withNormalizedImage, withNormalizedImages } from "../utils/image.js";
 
 type ProductInput = Product & { category?: string };
 

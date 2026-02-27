@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { z } from "zod";
-import { CategoryService } from "../services/category.service";
+import { CategoryService } from "../services/category.service.js";
 
 export class CategoryController {
 

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { productSchema } from "../schemas/product.schema";
 import { z } from "zod";
-import { ProductService } from "../services/product.service";
+import { ProductService } from "../services/product.service.js";
 
 export class ProductsController {
     

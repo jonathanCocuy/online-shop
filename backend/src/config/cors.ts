@@ -1,4 +1,4 @@
-import { env } from "./env";
+import { env } from "./env.js";
 import cors from "cors";
 
 export const corsMiddleware = cors({

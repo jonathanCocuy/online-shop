@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { FavoritesService } from "../services/favorites.service";
+import { FavoritesService } from "../services/favorites.service.js";
 
 export class FavoritesController {
     private getUserId(req: Request): number {

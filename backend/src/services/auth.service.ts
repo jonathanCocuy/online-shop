@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
-import { db } from "../config/db";
-import { env } from "../config/env";
-import { registerSchema, loginSchema, UserRow } from "../schemas/auth.schemas";
+import { db } from "../config/db.js";
+import { env } from "../config/env.js";
+import { registerSchema, loginSchema, UserRow } from "../schemas/auth.schemas.js";
 
 // Define the input types for the register and login functions
 type RegisterInput = z.infer<typeof registerSchema>;

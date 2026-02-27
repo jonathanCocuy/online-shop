@@ -1,5 +1,5 @@
 import mysql from 'mysql2/promise'
-import { env } from './env'
+import { env } from './env.js'
 
 export const db = mysql.createPool({
     uri: env.DATABASE_URL,
