@@ -8,6 +8,7 @@ if (!env.JWT_SECRET) {
     process.exit(1);
 }
 
+
 const PORT = process.env.PORT;
 
 const startServer = async () => {
