@@ -1,4 +1,4 @@
-import { Product } from "../types/product.types";
+import { Product } from "../types/product.types.js";
 import { db } from "../config/db.js";
 import { withNormalizedImage, withNormalizedImages } from "../utils/image.js";
 

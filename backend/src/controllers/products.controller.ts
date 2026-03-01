@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { productSchema } from "../schemas/product.schema";
+import { productSchema } from "../schemas/product.schema.js";
 import { z } from "zod";
 import { ProductService } from "../services/product.service.js";
 
