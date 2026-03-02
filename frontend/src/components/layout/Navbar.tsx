@@ -14,6 +14,7 @@ import { AnimatePresence, motion } from "framer-motion";
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [isClient, setIsClient] = useState(false);
+    const [clientState, setClientState] = useState({ isClient: false, isAuthenticated: false });
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
@@ -54,12 +55,16 @@ export default function Navbar() {
     }
 
     useEffect(() => {
-        setIsAuthenticated(authService.isAuthenticated());  // Fix error
-        setIsClient(true);
+        setTimeout(() => {
+            setClientState({
+                isClient: true,
+                isAuthenticated: authService.isAuthenticated()
+            });
+        }, 0);
     }, []);
 
     return (
-        <nav className="bg-white shadow-sm sticky top-0 z-50 rounded-lg">
+        <nav className={`bg-white shadow-sm sticky top-0 z-50 rounded-lg ${isOpen ? "rounded-bl-none rounded-br-none transition-all duration-300" : "rounded-bl-lg rounded-br-lg transition-all duration-300"} lg:rounded-lg`}>
             {/* Blur effect for the top margin area */}
             <div className="absolute -top-5 left-0 right-0 h-5 backdrop-blur-md -z-10"></div>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
