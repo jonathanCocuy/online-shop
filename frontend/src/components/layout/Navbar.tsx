@@ -166,7 +166,7 @@ export default function Navbar() {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="md:hidden absolute top-full left-0 right-0 mx-auto mt-1 z-50 border border-gray-200 bg-white rounded-lg overflow-hidden shadow-lg"
+                        className={`md:hidden absolute top-full left-0 right-0 mx-auto z-50 border border-gray-200 bg-white rounded-lg overflow-hidden shadow-lg ${isOpen ? "rounded-tl-none rounded-tr-none" : "rounded-tl-lg rounded-tr-lg"} lg:rounded-lg`}
                         style={{ width: 'calc(100% - 4px)' }}
                     >
                         <div className="px-4 pt-2 pb-4 space-y-1">
