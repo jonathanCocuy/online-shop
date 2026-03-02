@@ -241,7 +241,7 @@ export default function Shop() {
 
                     <div className="text-center mt-10 flex justify-center">
                         <Link href="/categories">
-                            <Button variant="secondary" size="lg" className="flex items-center gap-2 justify-center">
+                            <Button variant="secondary" size="md" className="flex items-center gap-2 justify-center">
                                 View All Categories
                                 <ArrowRight className="ml-2" size={18} />
                             </Button>
@@ -280,7 +280,7 @@ export default function Shop() {
                         </div>
                     ) : (
                         <>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
                                 {featuredProducts.map((product) => (
                                     <div key={product.id}>
                                         <ProductCard product={product} />
