@@ -85,7 +85,7 @@ export default function Shop() {
                                 <span className="text-blue-400 text-sm font-semibold">New Arrivals Every Week</span>
                             </div>
 
-                            <h1 className="text-4xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                            <h1 className="text-2xl lg:text-4xl md:text-7xl font-bold text-white mb-6 leading-tight">
                                 Everything You Need
                                 <span className="block mt-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-transparent bg-clip-text">
                                     In One Place
@@ -98,13 +98,13 @@ export default function Shop() {
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center lg:justify-start">
                                 <Link href="/products">
-                                    <Button variant="primary" size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg shadow-blue-500/25 text-lg px-8 flex items-center gap-2 justify-center">
+                                    <Button variant="primary" size="md" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg shadow-blue-500/25 text-lg px-8 flex items-center gap-2 justify-center">
                                         Shop Now
                                         <ArrowRight className="ml-2" size={20} />
                                     </Button>
                                 </Link>
                                 <Link href="/categories">
-                                    <Button variant="secondary" size="lg" className="text-lg px-8">
+                                    <Button variant="secondary" size="md" className="text-lg px-8">
                                         Browse Categories
                                     </Button>
                                 </Link>
