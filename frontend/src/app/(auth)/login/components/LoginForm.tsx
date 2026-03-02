@@ -66,12 +66,12 @@ export default function LoginForm() {
     });
 
     return (
-        <div className="flex items-center justify-center w-full h-full p-4 md:p-8 lg:p-12">
+        <div className="flex items-center justify-center w-full h-full p-4 md:p-8 lg:p-12 min-h-screen">
             {/* Container of the form */}
-            <div className="w-full h-[90%] sm:w-[85%] sm:h-[90%] md:w-[60%] md:h-[80%] lg:w-[50%] lg:h-[95%] xl:w-[60%] xl:h-[95%] bg-gray-500 rounded-4xl bg-[url('/images/register.webp')] bg-cover bg-center bg-no-repeat">
+            <div className="w-full h-[90%] sm:w-[85%] sm:h-[90%] md:w-[60%] md:h-[90%] lg:w-[50%] lg:h-[95%] xl:w-[60%] xl:h-[90%] bg-gray-500 rounded-4xl bg-[url('/images/register.webp')] bg-cover bg-center bg-no-repeat">
                 {/* Main card - Con animación hacia la derecha */}
                 <div 
-                    className={`w-full md:w-[80%] lg:w-[100%] xl:w-1/2 bg-white/70 backdrop-blur-xs rounded-4xl shadow-2xl p-6 md:p-8 border border-white/20 h-full flex flex-col justify-center transition-all duration-500 ease-in-out ${
+                    className={`w-full md:w-full lg:w-[100%] xl:w-1/2 bg-white/70 backdrop-blur-xs rounded-4xl shadow-2xl p-6 md:p-8 border border-white/20 h-full flex flex-col justify-center transition-all duration-500 ease-in-out ${
                         isAnimating 
                             ? 'opacity-0 translate-x-full scale-95' 
                             : isEntering

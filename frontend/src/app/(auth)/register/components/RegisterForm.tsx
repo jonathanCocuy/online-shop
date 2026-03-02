@@ -76,7 +76,7 @@ export default function RegisterForm() {
             <div className="w-full h-[90%] sm:w-[85%] sm:h-[90%] md:w-[60%] md:h-[80%] lg:w-[50%] lg:h-[90%] xl:w-[60%] xl:h-[90%] bg-gray-500 rounded-4xl bg-[url('/images/register.webp')] bg-cover bg-center bg-no-repeat flex justify-end">
                 {/* Main card - Con animación */}
                 <div 
-                    className={`w-full md:w-[80%] lg:w-[100%] xl:w-1/2 bg-white/70 backdrop-blur-xs rounded-4xl shadow-2xl p-6 md:p-8 border border-white/20 h-full flex flex-col justify-center transition-all duration-500 ease-in-out ${
+                    className={`w-full md:w-full lg:w-[100%] xl:w-1/2 bg-white/70 backdrop-blur-xs rounded-4xl shadow-2xl p-6 md:p-8 border border-white/20 h-full flex flex-col justify-center transition-all duration-500 ease-in-out ${
                         isAnimating 
                             ? 'opacity-0 -translate-x-full scale-95'
                             : isEntering
