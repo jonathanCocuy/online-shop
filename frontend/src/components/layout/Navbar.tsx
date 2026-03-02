@@ -59,7 +59,7 @@ export default function Navbar() {
     }, []);
 
     return (
-        <nav className={`bg-white shadow-sm sticky top-0 z-50 rounded-lg ${isOpen ? "rounded-bl-none rounded-br-none transition-all duration-300" : "rounded-bl-lg rounded-br-lg transition-all duration-300"} lg:rounded-lg`}>
+        <nav className={`bg-white shadow-sm sticky top-0 z-50 rounded-lg mx-4 md:mx-0 ${isOpen ? "rounded-bl-none rounded-br-none transition-all duration-300" : "rounded-bl-lg rounded-br-lg transition-all duration-300"} lg:rounded-lg`}>
             {/* Blur effect for the top margin area */}
             <div className="absolute -top-5 -left-5 -right-5 h-5 backdrop-blur-md -z-10"></div>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -68,7 +68,7 @@ export default function Navbar() {
                     <div className="flex items-center">
                         <div className="flex-shrink-0 flex items-center gap-2">
                             <div className="rounded-lg">
-                                <Image src="/images/login-logo.png" alt="Logo" width={50} height={50} className="sm: w-10 h-10"  />
+                                <Image src="/images/login-logo.png" alt="Logo" width={50} height={50} className="sm: w-10 h-10" />
                             </div>
                             <span className="text-lg lg:text-2xl font-bold text-slate-800">
                                 On-Shop
@@ -79,26 +79,23 @@ export default function Navbar() {
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center flex-1 justify-center space-x-8">
                         <Link
-                            href="/" 
-                            className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${
-                                activeLink === "Home" ? "border-b-2 border-slate-800 font-semibold" : ""
-                            }`}
+                            href="/"
+                            className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${activeLink === "Home" ? "border-b-2 border-slate-800 font-semibold" : ""
+                                }`}
                         >
                             Home
                         </Link>
-                        <Link 
-                            href="/products" 
-                            className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${
-                                activeLink === "Products" ? "border-b-2 border-slate-800 font-semibold" : ""
-                            }`}
+                        <Link
+                            href="/products"
+                            className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${activeLink === "Products" ? "border-b-2 border-slate-800 font-semibold" : ""
+                                }`}
                         >
                             Products
                         </Link>
-                        <Link 
-                            href="/categories" 
-                            className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${
-                                activeLink === "Categories" ? "border-b-2 border-slate-800 font-semibold" : ""
-                            }`}
+                        <Link
+                            href="/categories"
+                            className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${activeLink === "Categories" ? "border-b-2 border-slate-800 font-semibold" : ""
+                                }`}
                         >
                             Categories
                         </Link>
@@ -164,67 +161,66 @@ export default function Navbar() {
             <AnimatePresence mode="wait">
                 {isOpen && (
                     <motion.div
-                    key="mobile-menu"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="md:hidden absolute top-full left-0 right-0 mx-auto mt-1 z-50 border border-gray-200 bg-white rounded-lg overflow-hidden shadow-lg"
-                    style={{ width: 'calc(100% - 4px)' }}
-                >
-                    <div className="px-4 pt-2 pb-4 space-y-1">
-                        {[
-                        { href: "/", label: "Home", icon: <House size={20} />, name: "Home" },
-                        { href: "/products", label: "Products", icon: <Package size={20} />, name: "Products" },
-                        { href: "/categories", label: "Categories", icon: <List size={20} />, name: "Categories" },
-                        ].map((item, i) => (
-                        <motion.div
-                            key={item.name}
-                            initial={{ opacity: 0, y: -8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.06, duration: 0.2 }}
-                        >
-                            <Link
-                            href={item.href}
-                            className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors flex items-center gap-2 ${
-                                activeLink === item.name ? "bg-slate-800 text-white font-semibold" : ""
-                            }`}
-                            onClick={() => setIsOpen(false)}
-                            >
-                            {item.icon}
-                            {item.label}
-                            
-                            </Link>
-                        </motion.div>
-                        ))}
+                        key="mobile-menu"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="md:hidden absolute top-full left-0 right-0 mx-auto mt-1 z-50 border border-gray-200 bg-white rounded-lg overflow-hidden shadow-lg"
+                        style={{ width: 'calc(100% - 4px)' }}
+                    >
+                        <div className="px-4 pt-2 pb-4 space-y-1">
+                            {[
+                                { href: "/", label: "Home", icon: <House size={20} />, name: "Home" },
+                                { href: "/products", label: "Products", icon: <Package size={20} />, name: "Products" },
+                                { href: "/categories", label: "Categories", icon: <List size={20} />, name: "Categories" },
+                            ].map((item, i) => (
+                                <motion.div
+                                    key={item.name}
+                                    initial={{ opacity: 0, y: -8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: i * 0.06, duration: 0.2 }}
+                                >
+                                    <Link
+                                        href={item.href}
+                                        className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors flex items-center gap-2 ${activeLink === item.name ? "bg-slate-800 text-white font-semibold" : ""
+                                            }`}
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        {item.icon}
+                                        {item.label}
 
-                        {isClient && isAuthenticated && (
-                        <>
-                            <motion.div
-                            initial={{ opacity: 0, y: -8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.18, duration: 0.2 }}
-                            >
-                            <Link href="/favorites" className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors flex items-center gap-2 ${activeLink === "Favorites" ? "bg-slate-800 text-white font-semibold" : ""}`} onClick={() => setIsOpen(false)}>
-                                <Heart size={20} />
-                                Favorites
-                            </Link>
-                            </motion.div>
-                            <motion.div
-                            initial={{ opacity: 0, y: -8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.24, duration: 0.2 }}
-                            >
-                            <Link href="/" onClick={handleLogout} className="block px-3 py-2 rounded-md text-red-700 hover:bg-slate-100 hover:text-red-800 transition-colors flex items-center gap-2"
-                            
-                            >
-                                <LogOut size={20} color="red" />
-                                Logout
-                            </Link>
-                            </motion.div>
-                        </>
-                        )}
-                    </div>
+                                    </Link>
+                                </motion.div>
+                            ))}
+
+                            {isClient && isAuthenticated && (
+                                <>
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -8 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.18, duration: 0.2 }}
+                                    >
+                                        <Link href="/favorites" className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors flex items-center gap-2 ${activeLink === "Favorites" ? "bg-slate-800 text-white font-semibold" : ""}`} onClick={() => setIsOpen(false)}>
+                                            <Heart size={20} />
+                                            Favorites
+                                        </Link>
+                                    </motion.div>
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -8 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.24, duration: 0.2 }}
+                                    >
+                                        <Link href="/" onClick={handleLogout} className="block px-3 py-2 rounded-md text-red-700 hover:bg-slate-100 hover:text-red-800 transition-colors flex items-center gap-2"
+
+                                        >
+                                            <LogOut size={20} color="red" />
+                                            Logout
+                                        </Link>
+                                    </motion.div>
+                                </>
+                            )}
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
