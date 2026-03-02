@@ -17,10 +17,13 @@ import { Button } from '@/components/ui/Button';
 import CategoryCard, { type CategoryCardData } from '@/components/categories/CategoryCard';
 import ProductCard from '@/components/product/ProductCard';
 import { Product, productService } from '@/lib/product';
+import { authService } from '@/lib/auth';
 
 export default function Shop() {
     const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
+    const [totalProducts, setTotalProducts] = useState<Product[]>([]);
+    const [totalUsers, setTotalUsers] = useState<number>(0);
 
     useEffect(() => {
         const fetchFeaturedProducts = async () => {
@@ -33,6 +36,28 @@ export default function Shop() {
                 setLoading(false);
             }
         };
+
+        const fetchTotalProducts = async () => {
+            try {
+                const products = await productService.getProducts();
+                setTotalProducts(products);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        };
+
+        const fetchTotalUsers = async () => {
+            try {
+                const users = await authService.getUserId();
+                setTotalUsers(users ?? 0);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        };
+
+        fetchTotalUsers();
+
+        fetchTotalProducts();
 
         fetchFeaturedProducts();
     }, []);
@@ -116,7 +141,7 @@ export default function Shop() {
                             </p>
 
                             {/* CTAs */}
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center lg:justify-start">
                                 <Link href="/products">
                                     <Button 
                                         variant="primary" 
@@ -139,14 +164,10 @@ export default function Shop() {
                             </div>
 
                             {/* Stats */}
-                            <div className="grid grid-cols-3 gap-6 mt-12 max-w-lg mx-auto lg:mx-0">
+                            <div className="grid grid-cols-2 gap-6 mt-12 max-w-lg mx-auto lg:mx-0 items-center justify-center">
                                 <div className="text-center lg:text-left">
-                                    <div className="text-3xl font-bold text-white mb-1">{featuredProducts.length}</div>
+                                    <div className="text-3xl font-bold text-white mb-1">{totalProducts.length}</div>
                                     <div className="text-gray-400 text-sm">Products</div>
-                                </div>
-                                <div className="text-center lg:text-left">
-                                    <div className="text-3xl font-bold text-white mb-1">50K+</div>
-                                    <div className="text-gray-400 text-sm">Customers</div>
                                 </div>
                                 <div className="text-center lg:text-left">
                                     <div className="text-3xl font-bold text-white mb-1">4.9★</div>
