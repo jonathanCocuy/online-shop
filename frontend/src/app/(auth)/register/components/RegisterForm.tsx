@@ -301,7 +301,7 @@ export default function RegisterForm() {
                             </Button>
                             <Button
                                 type="button"
-                                variant="ghost"
+                                variant="google"
                                 size="md"
                                 disabled={isLoading}
                                 className="w-[20%] text-white font-semibold shadow-lg h-10 flex items-center justify-center"
