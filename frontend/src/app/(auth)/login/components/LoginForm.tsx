@@ -67,7 +67,7 @@ export default function LoginForm() {
     return (
         <div className="flex items-center justify-center w-full h-full p-4 md:p-8 lg:p-12">
             {/* Container of the form */}
-            <div className="w-full h-[90%] sm:w-[85%] sm:h-[90%] md:w-[60%] md:h-[80%] lg:w-[50%] lg:h-[90%] xl:w-[60%] xl:h-[90%] bg-gray-500 rounded-4xl bg-[url('/images/register.webp')] bg-cover bg-center bg-no-repeat">
+            <div className="w-full h-[90%] sm:w-[85%] sm:h-[90%] md:w-[60%] md:h-[80%] lg:w-[50%] lg:h-[95%] xl:w-[60%] xl:h-[95%] bg-gray-500 rounded-4xl bg-[url('/images/register.webp')] bg-cover bg-center bg-no-repeat">
                 {/* Main card - Con animación hacia la derecha */}
                 <div 
                     className={`w-full md:w-[80%] lg:w-[100%] xl:w-1/2 bg-white/70 backdrop-blur-xs rounded-4xl shadow-2xl p-6 md:p-8 border border-white/20 h-full flex flex-col justify-center transition-all duration-500 ease-in-out ${
@@ -166,14 +166,14 @@ export default function LoginForm() {
                         </div>
 
                         {/* Additional options */}
-                        <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-start justify-between flex-col text-sm gap-2">
+                        <a href="#" className="text-purple-600 hover:text-purple-700 font-medium transition-colors">
+                            Forgot your password?
+                        </a>
                         <label className="flex items-center cursor-pointer">
                             <input type="checkbox" className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 focus:ring-2" />
                             <span className="ml-2 text-gray-600">Remember me</span>
                         </label>
-                        <a href="#" className="text-purple-600 hover:text-purple-700 font-medium transition-colors">
-                            Forgot your password?
-                        </a>
                         </div>
 
                         {/* Submit button */}
@@ -212,6 +212,7 @@ export default function LoginForm() {
                     <div className="mt-4 text-center px-4 md:px-8 lg:px-16">
                         <p className="text-sm text-gray-600">
                         Don&apos;t have an account?{' '}
+                        </p>
                         <Link 
                             href="/register" 
                             onClick={handleNavigateToRegister}
@@ -219,7 +220,6 @@ export default function LoginForm() {
                         >
                             Register here
                         </Link>
-                        </p>
                     </div>
                 </div>
             </div>
