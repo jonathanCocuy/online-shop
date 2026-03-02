@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ShoppingCart, Search, Menu, X, User, Heart, LogOut, House, Package, List } from "lucide-react";
+import { ShoppingCart, Menu, X, User, Heart, LogOut, House, Package, List } from "lucide-react";
 import { authService } from "@/lib/auth";
 import Image from "next/image";
 import Swal from "sweetalert2";
@@ -13,7 +13,6 @@ import { AnimatePresence, motion } from "framer-motion";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
-    const [searchOpen, setSearchOpen] = useState(false);
     const [isClient, setIsClient] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const pathname = usePathname();
@@ -35,6 +34,7 @@ export default function Navbar() {
     const activeLink = getActiveLink();
 
     const handleLogout = () => {
+        setIsOpen(false);
         Swal.fire({
             title: 'Are you sure you want to logout?',
             text: 'You will be logged out of your account',
@@ -188,9 +188,11 @@ export default function Navbar() {
                             className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors flex items-center gap-2 ${
                                 activeLink === item.name ? "bg-slate-800 text-white font-semibold" : ""
                             }`}
+                            onClick={() => setIsOpen(false)}
                             >
                             {item.icon}
                             {item.label}
+                            
                             </Link>
                         </motion.div>
                         ))}
@@ -202,7 +204,7 @@ export default function Navbar() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.18, duration: 0.2 }}
                             >
-                            <Link href="/favorites" className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors flex items-center gap-2 ${activeLink === "Favorites" ? "bg-slate-800 text-white font-semibold" : ""}`}>
+                            <Link href="/favorites" className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-slate-100 hover:text-slate-800 transition-colors flex items-center gap-2 ${activeLink === "Favorites" ? "bg-slate-800 text-white font-semibold" : ""}`} onClick={() => setIsOpen(false)}>
                                 <Heart size={20} />
                                 Favorites
                             </Link>
@@ -212,7 +214,9 @@ export default function Navbar() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.24, duration: 0.2 }}
                             >
-                            <Link href="/" onClick={handleLogout} className="block px-3 py-2 rounded-md text-red-700 hover:bg-slate-100 hover:text-red-800 transition-colors flex items-center gap-2">
+                            <Link href="/" onClick={handleLogout} className="block px-3 py-2 rounded-md text-red-700 hover:bg-slate-100 hover:text-red-800 transition-colors flex items-center gap-2"
+                            
+                            >
                                 <LogOut size={20} color="red" />
                                 Logout
                             </Link>
