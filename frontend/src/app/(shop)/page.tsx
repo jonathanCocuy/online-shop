@@ -239,7 +239,7 @@ export default function Shop() {
                         ))}
                     </div>
 
-                    <div className="text-center mt-10 flex justify-center">
+                    <div className="text-center mt-4 flex justify-center">
                         <Link href="/categories">
                             <Button variant="secondary" size="md" className="flex items-center gap-2 justify-center">
                                 View All Categories
