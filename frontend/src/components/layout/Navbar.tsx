@@ -169,7 +169,7 @@ export default function Navbar() {
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="md:hidden absolute left-2 right-2 mt-2 z-50 border border-gray-200 bg-white rounded-lg overflow-hidden shadow-xl w-auto"
+                    className="md:hidden absolute left-0 right-0 z-50 border-t border-gray-200 bg-white rounded-b-lg overflow-hidden shadow-lg"
                     >
                     <div className="px-4 pt-2 pb-4 space-y-1">
                         {[
