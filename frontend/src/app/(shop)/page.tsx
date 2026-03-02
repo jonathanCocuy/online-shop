@@ -287,10 +287,10 @@ export default function Shop() {
                                 ))}
                             </div>
 
-                            <div className="text-center mt-4 md:hidden">
+                            <div className="text-center mt-4 flex justify-center md:hidden">
                                 <Link href="/products">
-                                    <Button variant="secondary" size="md">
-                                        All Products
+                                    <Button variant="secondary" className="flex items-center gap-2 justify-center">
+                                        View All Products
                                         <ArrowRight className="ml-2" size={18} />
                                     </Button>
                                 </Link>
