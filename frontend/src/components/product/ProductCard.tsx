@@ -144,7 +144,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 {/* Padding reducido en móvil (p-3) y original en desktop (p-5) */}
                 <div className="p-3 lg:p-5 bg-white">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-base lg:text-xl font-bold text-gray-900 mb-1 line-clamp-1" data-tippy-content={product.name}>
+                        <h2 className="text-md lg:text-xl font-bold text-gray-900 mb-1 line-clamp-1" data-tippy-content={product.name}>
                             {product.name}
                         </h2>
                     </div>
@@ -153,7 +153,7 @@ export default function ProductCard({ product }: { product: Product }) {
                         {product.category?.toUpperCase() ?? product.category_id}
                     </p>
 
-                    <p className="text-gray-600 text-[11px] lg:text-sm mb-2 lg:mb-4 line-clamp-2 leading-tight">
+                    <p className="text-gray-600 text-[9px] lg:text-sm mb-2 lg:mb-4 line-clamp-2 leading-tight">
                         {product.description}
                     </p>
 

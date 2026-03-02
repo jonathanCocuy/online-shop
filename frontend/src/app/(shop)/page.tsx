@@ -213,10 +213,10 @@ export default function Shop() {
             <section className="py-15 lg:py-20 w-full">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
-                        <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                        <h2 className="text-2xl md:text-5xl font-bold text-white mb-4">
                             Shop by Category
                         </h2>
-                        <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                        <p className="text-gray-400 text-lg max-w-2xl mx-auto text-md">
                             Browse through our wide range of categories to find exactly what you need
                         </p>
                     </div>
