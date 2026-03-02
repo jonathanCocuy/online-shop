@@ -131,23 +131,33 @@ export default function CategoryPage() {
     return (
         <div className="max-w-7xl w-full min-h-screen">
             {/* Header */}
-            <div className="relative overflow-hidden w-full mt-10 mb-10 flex flex-col gap-4">
-                <div className="relative max-w-7xl mx-auto w-full p-8 flex flex-row justify-between items-center">
-                    <div className="text-left flex items-center justify-between">
-                        <div className="flex flex-col items-start justify-center gap-2">
-                            <h1 className="text-5xl font-bold text-white flex items-center gap-3">
-                                <Filter size={36} />
+            <div className="relative overflow-hidden w-full mt-6 mb-6 lg:mt-10 lg:mb-10">
+                {/* Padding responsivo: p-4 en móvil, p-8 en PC */}
+                <div className="relative max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+
+                    {/* Contenedor principal: Columna en móvil (flex-col), Fila en PC (lg:flex-row) */}
+                    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-0">
+
+                        <div className="flex flex-col items-start justify-center gap-1 lg:gap-2">
+                            {/* Texto e ícono escalables */}
+                            <h1 className="text-2xl lg:text-5xl font-bold text-white flex items-center gap-2 lg:gap-3">
+                                <Filter className="w-6 h-6 lg:w-10 lg:h-10" />
                                 {currentCategoryName.charAt(0).toUpperCase() + currentCategoryName.slice(1)}
                             </h1>
-                            <p className="text-gray-400 text-lg">
+                            <p className="text-gray-400 text-sm lg:text-lg">
                                 Discover our exclusive products
                             </p>
                         </div>
+
+                        {/* Contenedor del CategoryFilter: Ocupa todo el ancho en móvil si es necesario */}
+                        <div className="w-full sm:w-auto mt-2 lg:mt-0 flex justify-start lg:justify-end">
+                            <CategoryFilter
+                                sortBy={sortBy}
+                                onSortChange={(value) => setSortBy(value)}
+                            />
+                        </div>
+
                     </div>
-                    <CategoryFilter
-                        sortBy={sortBy}
-                        onSortChange={(value) => setSortBy(value)}
-                    />  
                 </div>
             </div>
 
