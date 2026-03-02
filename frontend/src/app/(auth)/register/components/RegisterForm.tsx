@@ -11,7 +11,6 @@ import Link from 'next/link';
 import { authService } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { FaGoogle } from 'react-icons/fa';
 import { GoogleIcon } from '@/components/ui/Icons';
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
@@ -20,7 +19,7 @@ export default function RegisterForm() {
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [error, setError] = useState('');
+    const [, setError] = useState('');
     const [isAnimating, setIsAnimating] = useState(false);
     const [isEntering, setIsEntering] = useState(true);
 
@@ -86,7 +85,7 @@ export default function RegisterForm() {
                     }`}
                 >
                     {/* Header */}
-                    <div className="text-left mb-4 px-4 md:px-8 lg:px-16">
+                    <div className="text-left mb-4 px-4 md:px-4 lg:px-4">
                         <div className="flex items-center justify-start gap-2 mb-4">
                             <div className="flex items-center justify-center w-10 h-10 shadow-lg rounded-full bg-white">
                                 <Image src="/images/login-logo.png" alt="Register" className="rounded-sm" width={50} height={50}/>
@@ -102,7 +101,7 @@ export default function RegisterForm() {
                     </div>
     
                     {/* Form */}
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-2 md:px-8 lg:px-16" suppressHydrationWarning>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-2 md:px-4 lg:px-4" suppressHydrationWarning>
                         <div className="space-y-4">
                             {/* Name Input */}
                             <div>

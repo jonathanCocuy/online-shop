@@ -11,7 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { FaGoogle } from "react-icons/fa";
 import { GoogleIcon } from "@/components/ui/Icons";
 
 type LoginFormValues = z.infer<typeof loginSchema>;
