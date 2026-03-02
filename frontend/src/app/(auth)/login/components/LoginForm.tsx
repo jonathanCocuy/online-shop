@@ -95,8 +95,8 @@ export default function LoginForm() {
                     </div>
 
                     {/* Form */}
-                    <form onSubmit={onSubmit} className="space-y-6 px-2	">
-                        <div className="space-y-5">
+                    <form onSubmit={onSubmit} className="space-y-5 px-2	">
+                        <div className="space-y-4">
                             {/* Email Input */}
                             <div>
                                 <div className="relative">
@@ -168,14 +168,10 @@ export default function LoginForm() {
                         </div>
 
                         {/* Additional options */}
-                        <div className="flex items-start justify-between flex-col text-sm gap-2">
+                        <div className="flex items-center justify-between flex-col text-sm gap-2">
                             <a href="#" className="text-purple-600 hover:text-purple-700 font-medium transition-colors">
                                 Forgot your password?
                             </a>
-                            <label className="flex items-center cursor-pointer">
-                                <input type="checkbox" className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 focus:ring-2" />
-                                <span className="ml-2 text-gray-600">Remember me</span>
-                            </label>
                         </div>
 
                         {/* Submit button */}
@@ -205,15 +201,15 @@ export default function LoginForm() {
                                 <div className="w-full border-t border-gray-400 m-2"></div>
                             </div>
                             <div className="relative flex justify-center text-sm">
-                                <span className=" m-2 px-2 rounded-full bg-white border border-gray-500 text-gray-500">Or continue with</span>
+                                <span className="m-2 px-2 rounded-full bg-white border border-gray-500 text-gray-500">Or continue with</span>
                             </div>
                         </div>
                     </form>
 
                     {/* Footer */}
-                    <div className="mt-4 text-center px-4 md:px-8">
+                    <div className="text-center px-4 md:px-8 lg:px-16">
                         <p className="text-sm text-gray-600">
-                        Don&apos;t have an account?{' '}
+                            Don&apos;t have an account?{' '}
                         </p>
                         <Link 
                             href="/register" 
