@@ -89,7 +89,7 @@ export default function RegisterForm() {
                             <div className="flex items-center justify-center w-10 h-10 shadow-lg rounded-full bg-white">
                                 <Image src="/images/login-logo.png" alt="Register" className="rounded-sm" width={50} height={50}/>
                             </div>
-                            <p className="text-2xl font-bold text-gray-800">On-Shop</p>
+                            <p className="text-xl font-bold text-gray-800">On-Shop</p>
                         </div>
                         <h1 className="text-2xl text-gray-800 mb-2">
                             Create your account
