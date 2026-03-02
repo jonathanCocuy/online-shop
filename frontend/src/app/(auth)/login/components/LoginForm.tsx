@@ -136,6 +136,7 @@ export default function LoginForm() {
                                         colorScheme="purple"
                                         {...register('password')}
                                         iconPosition="left"
+                                        inputSize="sm"
                                         className={`pr-10 ${errors.password ? 'border-red-500' : ''}`}
                                     />
                                     <button

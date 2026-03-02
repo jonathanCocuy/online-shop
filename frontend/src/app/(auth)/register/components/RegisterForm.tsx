@@ -100,7 +100,7 @@ export default function RegisterForm() {
                     </div>
     
                     {/* Form */}
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-2 md:px-8 lg:px-16">
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-2 md:px-8 lg:px-16" suppressHydrationWarning>
                         <div className="space-y-4">
                             {/* Name Input */}
                             <div>
