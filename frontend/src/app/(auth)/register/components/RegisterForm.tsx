@@ -84,7 +84,7 @@ export default function RegisterForm() {
                     }`}
                 >
                     {/* Header */}
-                    <div className="text-left mb-8 px-4 md:px-8 lg:px-16">
+                    <div className="text-left mb-4 px-4 md:px-8 lg:px-16">
                         <div className="flex items-center justify-start gap-2 mb-4">
                             <div className="flex items-center justify-center w-15 h-15 shadow-lg rounded-full bg-white">
                                 <Image src="/images/login-logo.png" alt="Register" width={60} height={60} className="rounded-sm" />
@@ -308,17 +308,17 @@ export default function RegisterForm() {
                     </form>
     
                     {/* Footer */}
-                    <div className="mt-4 text-center px-4 md:px-8 lg:px-16">
+                    <div className="text-center px-4 md:px-8 lg:px-16">
                         <p className="text-sm text-gray-600">
                             Already have an account?{' '}
-                            <Link 
-                                href="/login" 
-                                onClick={handleNavigateToLogin}
-                                className="text-purple-600 hover:text-purple-700 font-medium transition-colors cursor-pointer"
-                            >
-                                Login here
-                            </Link>
                         </p>
+                        <Link 
+                            href="/login" 
+                            onClick={handleNavigateToLogin}
+                            className="text-purple-600 hover:text-purple-700 font-medium transition-colors cursor-pointer"
+                        >
+                            Login here
+                        </Link>
                     </div>
                 </div>
             </div>
