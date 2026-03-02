@@ -169,8 +169,9 @@ export default function Navbar() {
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="md:hidden absolute left-0 right-0 z-50 border-t border-gray-200 bg-white rounded-b-lg overflow-hidden shadow-lg"
-                    >
+                    className="md:hidden absolute top-full left-0 right-0 mx-auto mt-1 z-50 border border-gray-200 bg-white rounded-lg overflow-hidden shadow-lg"
+                    style={{ width: 'calc(100% - 4px)' }}
+                >
                     <div className="px-4 pt-2 pb-4 space-y-1">
                         {[
                         { href: "/", label: "Home", icon: <House size={20} />, name: "Home" },
