@@ -79,7 +79,7 @@ export default function LoginForm() {
                     }`}
                 >
                     {/* Header */}
-                    <div className="text-left mb-8 px-4 md:px-8 lg:px-16">
+                    <div className="text-left mb-4 px-2">
                         <div className="flex items-center justify-start gap-2 mb-4">
                             <div className="flex items-center justify-center w-15 h-15 shadow-lg rounded-full bg-white">
                                 <Image src="/images/login-logo.png" alt="Login" width={60} height={60} className="rounded-sm" />
@@ -95,13 +95,14 @@ export default function LoginForm() {
                     </div>
 
                     {/* Form */}
-                    <form onSubmit={onSubmit} className="space-y-6 px-4 md:px-8 lg:px-16">
+                    <form onSubmit={onSubmit} className="space-y-6">
                         <div className="space-y-5">
                             {/* Email Input */}
                             <div>
                                 <div className="relative">
                                     <Input
                                         {...register('email')}
+                                        inputSize="sm"
                                         type="email"
                                         variant="default"
                                         placeholder="Enter your email"
@@ -167,30 +168,30 @@ export default function LoginForm() {
 
                         {/* Additional options */}
                         <div className="flex items-start justify-between flex-col text-sm gap-2">
-                        <a href="#" className="text-purple-600 hover:text-purple-700 font-medium transition-colors">
-                            Forgot your password?
-                        </a>
-                        <label className="flex items-center cursor-pointer">
-                            <input type="checkbox" className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 focus:ring-2" />
-                            <span className="ml-2 text-gray-600">Remember me</span>
-                        </label>
+                            <a href="#" className="text-purple-600 hover:text-purple-700 font-medium transition-colors">
+                                Forgot your password?
+                            </a>
+                            <label className="flex items-center cursor-pointer">
+                                <input type="checkbox" className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 focus:ring-2" />
+                                <span className="ml-2 text-gray-600">Remember me</span>
+                            </label>
                         </div>
 
                         {/* Submit button */}
                         <Button
                             type="submit"
                             variant="primary"
-                            size="lg"
+                            size="md"
                             disabled={isLoading}
                             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-lg"
                         >
                         {isLoading ? (
                             <span className="flex items-center justify-center gap-2">
-                            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            Logging in...
+                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Logging in...
                             </span>
                         ) : (
                             'Login'
@@ -209,7 +210,7 @@ export default function LoginForm() {
                     </form>
 
                     {/* Footer */}
-                    <div className="mt-4 text-center px-4 md:px-8 lg:px-16">
+                    <div className="mt-4 text-center px-4 md:px-8">
                         <p className="text-sm text-gray-600">
                         Don&apos;t have an account?{' '}
                         </p>

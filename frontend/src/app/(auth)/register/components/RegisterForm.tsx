@@ -110,6 +110,7 @@ export default function RegisterForm() {
                                         variant="default"
                                         placeholder="Enter your name"
                                         colorScheme="purple"
+                                        inputSize="sm"
                                         {...register('user_name')}
                                         iconPosition="left"
                                         className={`pr-10 ${errors.user_name ? 'border-red-500' : ''}`}
@@ -168,6 +169,7 @@ export default function RegisterForm() {
                                         placeholder="Enter your email"
                                         colorScheme="purple"
                                         {...register('email')}
+                                        inputSize="sm"
                                         iconPosition="left"
                                         className={`pr-10 ${errors.email ? 'border-red-500' : ''}`}
                                     />
@@ -197,6 +199,7 @@ export default function RegisterForm() {
                                         colorScheme="purple"
                                         {...register('password')}
                                         iconPosition="left"
+                                        inputSize="sm"
                                         className={`pr-10 ${errors.password ? 'border-red-500' : ''}`}
                                     />
                                     <button
@@ -241,6 +244,7 @@ export default function RegisterForm() {
                                         colorScheme="purple"
                                         {...register('confirm_password')}
                                         iconPosition="left"
+                                        inputSize="sm"
                                         className={`pr-10 ${errors.confirm_password ? 'border-red-500' : ''}`}
                                     />
                                     <button
@@ -275,7 +279,7 @@ export default function RegisterForm() {
                         <Button
                             type="submit"
                             variant="primary"
-                            size="lg"
+                            size="md"
                             disabled={isLoading}
                             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-lg"
                         >
