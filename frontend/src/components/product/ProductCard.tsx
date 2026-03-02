@@ -126,7 +126,7 @@ export default function ProductCard({ product }: { product: Product }) {
             <div className="relative z-10 flex flex-col overflow-hidden rounded-[20px] lg:rounded-[28px] shadow-2xl shadow-blue-500/20 transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-2xl">
 
                 {/* Altura de imagen reducida en móvil (h-40) y original en desktop (h-64) */}
-                <div className="relative overflow-hidden bg-gray-100 h-40 lg:h-64">
+                <div className="relative overflow-hidden bg-gray-100 h-32 lg:h-64">
                     <Image
                         src={product.image_url}
                         alt={product.name}
@@ -142,7 +142,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 </div>
 
                 {/* Padding reducido en móvil (p-3) y original en desktop (p-5) */}
-                <div className="p-3 lg:p-5 bg-white">
+                <div className="p-2 lg:p-5 bg-white">
                     <div className="flex items-center justify-between">
                         <h2 className="text-base lg:text-xl font-bold text-gray-900 mb-1 line-clamp-1" data-tippy-content={product.name}>
                             {product.name}
