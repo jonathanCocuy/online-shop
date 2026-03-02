@@ -53,25 +53,35 @@ export default function Products() {
     return (
         <div className="min-h-screen flex flex-col items-center">
             {/* Header Section */}
-            <div className="relative overflow-hidden w-full mt-10 mb-10">
-                <div className="relative max-w-7xl mx-auto w-full p-8">
-                    <div className="text-left flex items-center justify-between">
-                        <div className="flex flex-col items-start justify-center gap-2">
-                            <h1 className="text-5xl font-bold text-white flex items-center gap-3">
-                                <ShoppingBag size={36} />
+            <div className="relative overflow-hidden w-full mt-6 mb-6 lg:mt-10 lg:mb-10">
+                {/* Reducimos el padding en móvil (p-4) y lo mantenemos amplio en desktop (lg:p-8) */}
+                <div className="relative max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+
+                    {/* Magia aquí: flex-col en móvil, flex-row en lg. Agregamos gap para separar */}
+                    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-0">
+
+                        <div className="flex flex-col items-start justify-center gap-1 lg:gap-2">
+                            <h1 className="text-2xl lg:text-5xl font-bold text-white flex items-center gap-2 lg:gap-3">
+                                {/* Hacemos el icono responsivo usando clases en lugar de size fijo */}
+                                <ShoppingBag className="w-6 h-6 lg:w-10 lg:h-10" />
                                 Our Products List
                             </h1>
-                            <p className="text-gray-400 text-lg">
+                            <p className="text-gray-400 text-sm lg:text-lg">
                                 Discover our exclusive collection
                             </p>
                         </div>
-                        <Filter sortBy={sortBy} onSortChange={(value) => setSortBy(value as any)} />
+
+                        {/* Contenedor del filtro: le damos ancho completo en móvil por si lo necesita */}
+                        <div className="w-full sm:w-auto mt-2 lg:mt-0">
+                            <Filter sortBy={sortBy} onSortChange={(value) => setSortBy(value as any)} />
+                        </div>
+
                     </div>
                 </div>
             </div>
 
             {/* Content Section */}
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl mx-auto px-4">
                 {/* Loading State */}
                 {loading && (
                     <div className="flex flex-col items-center justify-center gap-6 py-20">
@@ -114,10 +124,10 @@ export default function Products() {
                         </div>
                     </div>
                 )}
-                
+
                 {/* Products Grid */}
                 {!loading && products.length > 0 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2">
                         {sortedProducts.map((product) => (
                             <div key={product.id} className="">
                                 <ProductCard product={product} />

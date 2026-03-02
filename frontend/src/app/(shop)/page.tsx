@@ -287,7 +287,7 @@ export default function Shop() {
                                 ))}
                             </div>
 
-                            <div className="text-center mt-4 flex justify-center md:hidden">
+                            <div className="text-center mt-4 flex justify-center md:hidden  ">
                                 <Link href="/products">
                                     <Button variant="secondary" className="flex items-center gap-2 justify-center">
                                         View All Products
