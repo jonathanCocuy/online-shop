@@ -81,10 +81,10 @@ export default function LoginForm() {
                     {/* Header */}
                     <div className="text-left mb-4 px-2">
                         <div className="flex items-center justify-start gap-2 mb-4">
-                            <div className="flex items-center justify-center w-15 h-15 shadow-lg rounded-full bg-white">
-                                <Image src="/images/login-logo.png" alt="Login" width={60} height={60} className="rounded-sm" />
+                            <div className="flex items-center justify-center w-10 h-10 shadow-lg rounded-full bg-white">
+                                <Image src="/images/login-logo.png" alt="Login" className="rounded-sm" width={50} height={50}/>
                             </div>
-                            <p className="text-2xl font-bold text-gray-800">On-Shop</p>
+                            <p className="text-xl font-bold text-gray-800">On-Shop</p>
                         </div>
                         <h1 className="text-2xl text-gray-800 mb-2">
                             Welcome Back!
@@ -95,7 +95,7 @@ export default function LoginForm() {
                     </div>
 
                     {/* Form */}
-                    <form onSubmit={onSubmit} className="space-y-6">
+                    <form onSubmit={onSubmit} className="space-y-6 px-2	">
                         <div className="space-y-5">
                             {/* Email Input */}
                             <div>
@@ -217,7 +217,7 @@ export default function LoginForm() {
                         <Link 
                             href="/register" 
                             onClick={handleNavigateToRegister}
-                            className="text-purple-600 hover:text-purple-700 font-medium transition-colors cursor-pointer"
+                            className="text-sm text-purple-600 hover:text-purple-700 font-medium transition-colors cursor-pointer"
                         >
                             Register here
                         </Link>

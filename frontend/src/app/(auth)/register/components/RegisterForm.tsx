@@ -100,7 +100,7 @@ export default function RegisterForm() {
                     </div>
     
                     {/* Form */}
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-4 md:px-8 lg:px-16">
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-2 md:px-8 lg:px-16">
                         <div className="space-y-4">
                             {/* Name Input */}
                             <div>
@@ -315,7 +315,7 @@ export default function RegisterForm() {
                         <Link 
                             href="/login" 
                             onClick={handleNavigateToLogin}
-                            className="text-purple-600 hover:text-purple-700 font-medium transition-colors cursor-pointer"
+                            className="text-sm text-purple-600 hover:text-purple-700 font-medium transition-colors cursor-pointer"
                         >
                             Login here
                         </Link>
