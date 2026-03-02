@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { 
-    ArrowRight, 
-    ShoppingBag, 
-    TrendingUp, 
+import {
+    ArrowRight,
+    ShoppingBag,
+    TrendingUp,
     Star,
     Zap,
     Shield,
@@ -166,7 +166,7 @@ export default function Shop() {
             </section>
 
             {/* Features Section */}
-            <section className="py-8 lg:py-16 border-y border-gray-800 bg-gray-900/50 rounded-lg">
+            <section className="m-4 py-8 lg:py-16 border-y border-gray-800 bg-gray-900/50 rounded-lg">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         <div className="flex items-start gap-4">
@@ -210,7 +210,7 @@ export default function Shop() {
             </section>
 
             {/* Categories Section */}
-            <section className="py-20 w-full">
+            <section className="py-15 lg:py-20 w-full">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
