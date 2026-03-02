@@ -54,7 +54,7 @@ export default function Navbar() {
     }
 
     useEffect(() => {
-        setIsAuthenticated(authService.isAuthenticated());
+        setIsAuthenticated(authService.isAuthenticated());  // Fix error
         setIsClient(true);
     }, []);
 
