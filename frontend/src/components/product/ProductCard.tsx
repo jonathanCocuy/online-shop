@@ -122,8 +122,8 @@ export default function ProductCard({ product }: { product: Product }) {
 
     return (
         <div className="relative max-w-[240px] lg:w-[295px]">
-            <div className="absolute inset-0 translate-x-1 lg:translate-x-2 translate-y-1 lg:translate-y-2 rounded-[20px] lg:rounded-[28px] bg-gradient-to-r from-blue-500/30 to-purple-500/30 blur-2xl lg:blur-3xl opacity-60"></div>
-            <div className="relative z-10 flex flex-col overflow-hidden rounded-[20px] lg:rounded-[28px] shadow-2xl shadow-blue-500/20 transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-2xl">
+            <div className="absolute inset-0 translate-x-1 lg:translate-x-2 translate-y-1 lg:translate-y-2 rounded-sm lg:rounded-[28px] bg-gradient-to-r from-blue-500/30 to-purple-500/30 blur-2xl lg:blur-3xl opacity-60"></div>
+            <div className="relative z-10 flex flex-col overflow-hidden rounded-[14px] lg:rounded-[28px] shadow-2xl shadow-blue-500/20 transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-2xl">
 
                 {/* Altura de imagen reducida en móvil (h-40) y original en desktop (h-64) */}
                 <div className="relative overflow-hidden bg-gray-100 h-32 lg:h-64">
