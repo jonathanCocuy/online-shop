@@ -287,9 +287,9 @@ export default function Shop() {
                                 ))}
                             </div>
 
-                            <div className="text-center mt-10 md:hidden">
+                            <div className="text-center mt-4 md:hidden">
                                 <Link href="/products">
-                                    <Button variant="secondary" size="lg">
+                                    <Button variant="secondary" size="md">
                                         View All Products
                                         <ArrowRight className="ml-2" size={18} />
                                     </Button>
