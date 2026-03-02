@@ -142,6 +142,7 @@ export default function RegisterForm() {
                                         colorScheme="purple"
                                         {...register('last_name')}
                                         iconPosition="left"
+                                        inputSize="sm"
                                         className={`pr-10 ${errors.last_name ? 'border-red-500' : ''}`}
                                     />
                                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
