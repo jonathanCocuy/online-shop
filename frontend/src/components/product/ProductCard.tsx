@@ -153,7 +153,7 @@ export default function ProductCard({ product }: { product: Product }) {
                         {product.category?.toUpperCase() ?? product.category_id}
                     </p>
 
-                    <p className="text-gray-600 text-[9px] lg:text-sm mb-2 lg:mb-4 line-clamp-2 leading-tight">
+                    <p className="text-gray-600 text-[10px] lg:text-sm mb-2 lg:mb-4 line-clamp-2 leading-tight">
                         {product.description}
                     </p>
 

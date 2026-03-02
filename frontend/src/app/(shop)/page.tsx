@@ -213,10 +213,10 @@ export default function Shop() {
             <section className="py-15 lg:py-20 w-full">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
-                        <h2 className="text-2xl md:text-5xl font-bold text-white mb-4">
+                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
                             Shop by Category
                         </h2>
-                        <p className="text-gray-400 text-lg max-w-2xl mx-auto text-md">
+                        <p className="text-gray-400 text-md max-w-2xl mx-auto">
                             Browse through our wide range of categories to find exactly what you need
                         </p>
                     </div>
@@ -252,16 +252,15 @@ export default function Shop() {
 
             {/* Featured Products Section */}
             <section className="bg-gray-900/30 flex justify-center items-center px-4 sm:px-6 lg:px-8">
-                <div className="max-w-7xl w-full py-20">
+                <div className="max-w-7xl w-full py-10">
                     <div className="flex items-center justify-between mb-12">
                         <div>
                             <div className="flex items-center gap-3 mb-3">
-                                <Star className="text-yellow-400 fill-yellow-400" size={28} />
                                 <h2 className="text-3xl md:text-5xl font-bold text-white">
                                     Featured Products
                                 </h2>
                             </div>
-                            <p className="text-gray-400 text-lg">
+                            <p className="text-gray-400 text-md">
                                 Hand-picked products just for you
                             </p>
                         </div>
