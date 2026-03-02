@@ -19,6 +19,7 @@ export default function RootLayout({children} : {children: React.ReactNode}) {
     <html lang="en">
       <body
         className={`${questrial.variable} antialiased`}
+        suppressHydrationWarning
       >
         {children}
       </body>

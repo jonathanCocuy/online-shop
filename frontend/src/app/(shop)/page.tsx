@@ -56,115 +56,61 @@ export default function Shop() {
         };
 
         fetchTotalUsers();
-
         fetchTotalProducts();
-
         fetchFeaturedProducts();
     }, []);
 
     const categories: CategoryCardData[] = [
-        {
-            id: '1',
-            name: 'Technology',
-            slug: 'technology',
-            gradient: 'from-blue-500 to-cyan-500',
-            productCount: 245
-        },
-        {
-            id: '2',
-            name: 'Home',
-            slug: 'home',
-            gradient: 'from-green-500 to-emerald-500',
-            productCount: 189
-        },
-        {
-            id: '3',
-            name: 'Shoes',
-            slug: 'shoes',
-            gradient: 'from-orange-500 to-red-500',
-            productCount: 312
-        },
-        {
-            id: '4',
-            name: 'Accessories',
-            slug: 'accesories',
-            gradient: 'from-purple-500 to-pink-500',
-            productCount: 156
-        },
-        {
-            id: '5',
-            name: 'Sports',
-            slug: 'sports',
-            gradient: 'from-red-500 to-rose-500',
-            productCount: 198
-        },
-        {
-            id: '6',
-            name: 'Clothes',
-            slug: 'clothes',
-            gradient: 'from-indigo-500 to-purple-500',
-            productCount: 421
-        }
+        { id: '1', name: 'Technology', slug: 'technology', gradient: 'from-blue-500 to-cyan-500', productCount: 245 },
+        { id: '2', name: 'Home', slug: 'home', gradient: 'from-green-500 to-emerald-500', productCount: 189 },
+        { id: '3', name: 'Shoes', slug: 'shoes', gradient: 'from-orange-500 to-red-500', productCount: 312 },
+        { id: '4', name: 'Accessories', slug: 'accesories', gradient: 'from-purple-500 to-pink-500', productCount: 156 },
+        { id: '5', name: 'Sports', slug: 'sports', gradient: 'from-red-500 to-rose-500', productCount: 198 },
+        { id: '6', name: 'Clothes', slug: 'clothes', gradient: 'from-indigo-500 to-purple-500', productCount: 421 }
     ];
 
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen overflow-x-hidden w-full">
             {/* Hero Section */}
-            <section className="relative overflow-hidden">
-                {/* Background Pattern */}
+            <section className="relative overflow-hidden w-full">
                 <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAzMHYySDE4di0yaDEyek0zNiAyNnYySDE4di0yaDEyek0zNiAyMnYySDE4di0yaDEyek0zNiAxOHYySDE4di0yaDE4eiIvPjwvZz48L2c+PC9zdmc+')] opacity-20"></div>
-                
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 "></div>
+                <div className="absolute inset-0"></div>
 
-                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[600px] py-20">
                         {/* Left Content */}
-                        <div className="text-center lg:text-left z-10">
-                            {/* Badge */}
+                        <div className="text-center lg:text-left z-10 w-full min-w-0">
                             <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-2 mb-6">
                                 <Zap size={16} className="text-blue-400" />
                                 <span className="text-blue-400 text-sm font-semibold">New Arrivals Every Week</span>
                             </div>
 
-                            {/* Main Headline */}
-                            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                            <h1 className="text-4xl md:text-7xl font-bold text-white mb-6 leading-tight">
                                 Everything You Need
                                 <span className="block mt-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-transparent bg-clip-text">
                                     In One Place
                                 </span>
                             </h1>
 
-                            {/* Description */}
-                            <p className="text-gray-400 text-lg md:text-xl mb-8 max-w-xl mx-auto lg:mx-0">
+                            <p className="text-gray-400 text-base md:text-xl mb-8 max-w-xl mx-auto lg:mx-0">
                                 Discover thousands of quality products at unbeatable prices. Fast shipping, secure payments, and exceptional service.
                             </p>
 
-                            {/* CTAs */}
                             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center lg:justify-start">
                                 <Link href="/products">
-                                    <Button 
-                                        variant="primary" 
-                                        size="lg" 
-                                        className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg shadow-blue-500/25 text-lg px-8 flex items-center gap-2 justify-center"
-                                    >
+                                    <Button variant="primary" size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg shadow-blue-500/25 text-lg px-8 flex items-center gap-2 justify-center">
                                         Shop Now
                                         <ArrowRight className="ml-2" size={20} />
                                     </Button>
                                 </Link>
                                 <Link href="/categories">
-                                    <Button 
-                                        variant="secondary" 
-                                        size="lg"
-                                        className="text-lg px-8"
-                                    >
+                                    <Button variant="secondary" size="lg" className="text-lg px-8">
                                         Browse Categories
                                     </Button>
                                 </Link>
                             </div>
 
-                            {/* Stats */}
-                            <div className="grid grid-cols-2 gap-6 mt-12 max-w-lg mx-auto lg:mx-0 items-center justify-center">
+                            <div className="grid grid-cols-2 gap-6 mt-12 max-w-lg mx-auto lg:mx-0">
                                 <div className="text-center lg:text-left">
                                     <div className="text-3xl font-bold text-white mb-1">{totalProducts.length}</div>
                                     <div className="text-gray-400 text-sm">Products</div>
@@ -179,7 +125,6 @@ export default function Shop() {
                         {/* Right Content - Hero Image */}
                         <div className="relative hidden lg:block">
                             <div className="relative w-full h-[500px]">
-                                {/* Floating Cards */}
                                 <div className="absolute top-10 right-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl p-6 shadow-2xl shadow-blue-500/50 animate-float z-20 max-w-xs">
                                     <div className="flex items-center gap-3 mb-3">
                                         <div className="bg-white/20 p-2 rounded-lg">
@@ -204,7 +149,6 @@ export default function Shop() {
                                     </div>
                                 </div>
 
-                                {/* Main Hero Image */}
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <div className="relative w-96 h-96 animate-bounce-slow">
                                         <Image
@@ -222,7 +166,7 @@ export default function Shop() {
             </section>
 
             {/* Features Section */}
-            <section className="py-16 border-y border-gray-800 bg-gray-900/50 rounded-lg">
+            <section className="py-8 lg:py-16 border-y border-gray-800 bg-gray-900/50 rounded-lg">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         <div className="flex items-start gap-4">
@@ -234,7 +178,6 @@ export default function Shop() {
                                 <p className="text-gray-400 text-sm">On orders over $100</p>
                             </div>
                         </div>
-
                         <div className="flex items-start gap-4">
                             <div className="bg-green-500/10 p-3 rounded-xl">
                                 <Shield className="text-green-400" size={24} />
@@ -244,7 +187,6 @@ export default function Shop() {
                                 <p className="text-gray-400 text-sm">100% secure transactions</p>
                             </div>
                         </div>
-
                         <div className="flex items-start gap-4">
                             <div className="bg-purple-500/10 p-3 rounded-xl">
                                 <HeadphonesIcon className="text-purple-400" size={24} />
@@ -254,7 +196,6 @@ export default function Shop() {
                                 <p className="text-gray-400 text-sm">Dedicated customer service</p>
                             </div>
                         </div>
-
                         <div className="flex items-start gap-4">
                             <div className="bg-orange-500/10 p-3 rounded-xl">
                                 <TrendingUp className="text-orange-400" size={24} />
@@ -269,7 +210,7 @@ export default function Shop() {
             </section>
 
             {/* Categories Section */}
-            <section className="py-20">
+            <section className="py-20 w-full">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
@@ -280,7 +221,19 @@ export default function Shop() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                    {/* Mobile: scroll horizontal */}
+                    <div className="-mx-4 px-4 md:hidden">
+                        <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory">
+                            {categories.map((category) => (
+                                <div key={category.id} className="flex-shrink-0 snap-start w-36">
+                                    <CategoryCard category={category} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Desktop: grid normal */}
+                    <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-6 gap-6">
                         {categories.map((category) => (
                             <CategoryCard key={category.id} category={category} />
                         ))}
@@ -288,7 +241,7 @@ export default function Shop() {
 
                     <div className="text-center mt-10 flex justify-center">
                         <Link href="/categories">
-                            <Button variant="secondary" size="lg" className='flex items-center gap-2 justify-center'>
+                            <Button variant="secondary" size="lg" className="flex items-center gap-2 justify-center">
                                 View All Categories
                                 <ArrowRight className="ml-2" size={18} />
                             </Button>
@@ -298,13 +251,13 @@ export default function Shop() {
             </section>
 
             {/* Featured Products Section */}
-            <section className="bg-gray-900/30 flex justify-center items-center">
-                <div className="max-w-7xl w-full">
+            <section className="bg-gray-900/30 flex justify-center items-center px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl w-full py-20">
                     <div className="flex items-center justify-between mb-12">
                         <div>
                             <div className="flex items-center gap-3 mb-3">
                                 <Star className="text-yellow-400 fill-yellow-400" size={28} />
-                                <h2 className="text-4xl md:text-5xl font-bold text-white">
+                                <h2 className="text-3xl md:text-5xl font-bold text-white">
                                     Featured Products
                                 </h2>
                             </div>
@@ -313,7 +266,7 @@ export default function Shop() {
                             </p>
                         </div>
                         <Link href="/products" className="hidden md:block">
-                            <Button variant="secondary" className='flex items-center gap-2 justify-center'>
+                            <Button variant="secondary" className="flex items-center gap-2 justify-center">
                                 View All
                                 <ArrowRight className="ml-2" size={18} />
                             </Button>
@@ -329,10 +282,7 @@ export default function Shop() {
                         <>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                                 {featuredProducts.map((product) => (
-                                    <div 
-                                        key={product.id} 
-                                        className=""
-                                    >
+                                    <div key={product.id}>
                                         <ProductCard product={product} />
                                     </div>
                                 ))}
@@ -350,9 +300,6 @@ export default function Shop() {
                     )}
                 </div>
             </section>
-
-            {/* CTA Section */}
-            
         </div>
     );
 }
