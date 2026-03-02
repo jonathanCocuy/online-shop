@@ -2,7 +2,7 @@
 
 import { Product } from '@/lib/product';
 import Image from 'next/image';
-import { Eye, Heart } from 'lucide-react';
+import { Eye, Heart, ShoppingCart } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '../ui/Button';
 import tippy from 'tippy.js';
@@ -142,7 +142,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 </div>
 
                 {/* Padding reducido en móvil (p-3) y original en desktop (p-5) */}
-                <div className="p-2 lg:p-5 bg-white">
+                <div className="p-3 lg:p-5 bg-white">
                     <div className="flex items-center justify-between">
                         <h2 className="text-base lg:text-xl font-bold text-gray-900 mb-1 line-clamp-1" data-tippy-content={product.name}>
                             {product.name}
@@ -184,8 +184,17 @@ export default function ProductCard({ product }: { product: Product }) {
                             </Button>
                         </div>
 
-                        <Button variant="primary" size="sm" className="flex items-center gap-1 lg:gap-2 text-[11px] lg:text-sm px-2 py-1.5 lg:px-3 lg:py-2" onClick={handleAddToCart}>
-                            Add to cart
+                        <Button
+                            variant="primary"
+                            size="sm"
+                            className="flex items-center justify-center gap-1 lg:gap-2 text-[11px] lg:text-sm px-2 py-1.5 lg:px-3 lg:py-2"
+                            onClick={handleAddToCart}
+                        >
+                            {/* El icono se muestra por defecto, pero se oculta en pantallas grandes (lg:hidden) */}
+                            <ShoppingCart className="w-4 h-4 lg:hidden" />
+
+                            {/* El texto está oculto por defecto, pero se muestra en pantallas grandes (lg:block) */}
+                            <span className="hidden lg:block">Add to cart</span>
                         </Button>
                     </div>
                 </div>
