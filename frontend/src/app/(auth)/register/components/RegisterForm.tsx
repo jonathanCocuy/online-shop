@@ -86,8 +86,8 @@ export default function RegisterForm() {
                     {/* Header */}
                     <div className="text-left mb-4 px-4 md:px-8 lg:px-16">
                         <div className="flex items-center justify-start gap-2 mb-4">
-                            <div className="flex items-center justify-center w-15 h-15 shadow-lg rounded-full bg-white">
-                                <Image src="/images/login-logo.png" alt="Register" width={60} height={60} className="rounded-sm" />
+                            <div className="flex items-center justify-center w-10 h-10 shadow-lg rounded-full bg-white">
+                                <Image src="/images/login-logo.png" alt="Register" className="rounded-sm" width={50} height={50}/>
                             </div>
                             <p className="text-2xl font-bold text-gray-800">On-Shop</p>
                         </div>
