@@ -12,6 +12,7 @@ import { authService } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { GoogleIcon } from "@/components/ui/Icons";
+import { authLayoutWrapperClasses } from "@/app/(auth)/shared/authLayout";
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
@@ -66,9 +67,11 @@ export default function LoginForm() {
     });
 
     return (
-        <div className="flex items-center justify-center w-full h-full p-4 md:p-8 lg:p-12 min-h-screen">
-            {/* Container of the form */}
-            <div className="w-full h-[90%] sm:w-[85%] sm:h-[90%] md:w-[60%] md:h-[90%] lg:w-[50%] lg:h-[95%] xl:w-[60%] xl:h-[90%] bg-gray-500 rounded-4xl bg-[url('/images/register.webp')] bg-cover bg-center bg-no-repeat">
+        <div className="flex items-start justify-center w-full h-full p-4 md:p-8 lg:p-12 min-h-screen">
+            
+            
+            
+            <div className={`${authLayoutWrapperClasses} bg-gray-500 rounded-4xl bg-[url('/images/register.webp')] bg-cover bg-center bg-no-repeat flex items-center justify-start h-[620px]`}>
                 {/* Main card - Con animación hacia la derecha */}
                 <div 
                     className={`w-full md:w-full lg:w-[100%] xl:w-1/2 bg-white/70 backdrop-blur-xs rounded-4xl shadow-2xl p-6 md:p-8 border border-white/20 h-full flex flex-col justify-center transition-all duration-500 ease-in-out ${
