@@ -7,13 +7,13 @@ import ProductCard from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/Button";
 import ProductForm, { ProductFormData } from "@/components/product/ProductForm";
 import { ShoppingBag } from "lucide-react";
-import Filter from "@/components/ui/Filter";
+import CategoryFilter from "@/components/ui/Filter";
 
 export default function Products() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'name'>('featured');
+    const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'name' | 'newest' | 'oldest'>('newest');
 
     // Función para cargar productos
     const fetchProducts = async () => {
@@ -37,6 +37,12 @@ export default function Products() {
     const sortedProducts = useMemo(() => {
         return [...products].sort((a, b) => {
             switch (sortBy) {
+                case 'newest':
+                    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+                case 'oldest':
+                    return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+                case 'featured':
+                    return 0;
                 case 'price-low':
                     return a.price - b.price;
                 case 'price-high':
@@ -72,8 +78,8 @@ export default function Products() {
                         </div>
 
                         {/* Contenedor del filtro: le damos ancho completo en móvil por si lo necesita */}
-                        <div className="w-full sm:w-auto mt-2 lg:mt-0">
-                            <Filter sortBy={sortBy} onSortChange={(value) => setSortBy(value as any)} />
+                        <div className="w-full sm:w-auto mt-2 lg:mt-0 flex justify-start lg:justify-end">
+                            <CategoryFilter sortBy={sortBy} onSortChange={(value) => setSortBy(value as any)} />
                         </div>
 
                     </div>

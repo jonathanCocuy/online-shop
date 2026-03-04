@@ -105,7 +105,7 @@ export default function ProductCard({ product }: { product: Product }) {
             const total = await cartService.getCartCount();
             Swal.fire({
                 title: 'Added to cart',
-                text: `Ahora tienes ${total} ${total === 1 ? 'producto' : 'productos'} en el carrito.`,
+                text: `Now you have ${total} ${total === 1 ? 'product' : 'products'} in your cart.`,
                 icon: 'success',
                 timer: 1500,
                 showConfirmButton: false
@@ -113,7 +113,7 @@ export default function ProductCard({ product }: { product: Product }) {
         } catch (error: any) {
             Swal.fire({
                 title: 'Error',
-                text: error?.message || 'No se pudo agregar el producto al carrito',
+                text: error?.message || 'Failed to add product to cart',
                 icon: 'error',
                 confirmButtonText: 'OK'
             });
@@ -136,7 +136,7 @@ export default function ProductCard({ product }: { product: Product }) {
                     />
                     {product.stock < 10 && (
                         <div className="absolute top-2 right-2 lg:top-4 lg:right-4 bg-red-500 text-white px-2 py-0.5 lg:px-3 lg:py-1 rounded-full text-[10px] lg:text-xs font-semibold">
-                            Solo {product.stock} disp.
+                            Only {product.stock} left in stock
                         </div>
                     )}
                 </div>

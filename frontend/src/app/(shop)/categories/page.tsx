@@ -117,6 +117,10 @@ export default function CategoryPage() {
 
     const sortedProducts = [...products].sort((a, b) => {
         switch (sortBy) {
+            case 'newest':
+                return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+            case 'oldest':
+                return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
             case 'price-low':
                 return a.price - b.price;
             case 'price-high':

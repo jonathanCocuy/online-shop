@@ -18,6 +18,8 @@ export default function CategoryFilter({ sortBy, onSortChange }: CategoryFilterP
                 className="bg-gray-900 border border-gray-700 text-white rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
                 <option value="featured">Featured</option>
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
                 <option value="price-low">Price: Low to High</option>
                 <option value="price-high">Price: High to Low</option>
                 <option value="name">Name: A-Z</option>
