@@ -121,6 +121,8 @@ export default function CustomerDashboard() {
         return texts[status as keyof typeof texts];
     };
 
+    // const userName = authService.getUserId();
+
     const productsCreated = createdProducts.length;
 
     const metricCards = [
@@ -153,18 +155,24 @@ export default function CustomerDashboard() {
             {isClient && isAuthenticated ? (
                 <>
                     {/* Header */}
-                    <div className="relative overflow-hidden w-full mt-10 mb-10">
-                        <div className="relative max-w-7xl mx-auto w-full p-8">
-                            <div className="text-left flex items-center justify-between">
-                                <div className="flex flex-col items-start justify-center gap-2">
-                                    <h1 className="text-5xl font-bold text-white flex items-center gap-3 justify-center">
-                                        <LayoutDashboard size={36} />
-                                        Dashboard insights for your store
+                    <div className="relative overflow-hidden w-full pl-4 mt-6 mb-6 lg:mt-10 lg:mb-10">
+                        {/* Reducimos el padding en móvil (p-4) y lo mantenemos amplio en desktop (lg:p-8) */}
+                        <div className="relative max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+
+                            {/* Magia aquí: flex-col en móvil, flex-row en lg. Agregamos gap para separar */}
+                            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-0">
+
+                                <div className="flex flex-col items-start justify-center gap-1 lg:gap-2">
+                                    <h1 className="text-2xl lg:text-5xl font-bold text-white flex items-center gap-2 lg:gap-3">
+                                        {/* Hacemos el icono responsivo usando clases en lugar de size fijo */}
+                                        <LayoutDashboard className="w-6 h-6 lg:w-10 lg:h-10" />
+                                        Hello {'User'}
                                     </h1>
-                                    <p className="text-gray-400 text-lg">
-                                        Track your page, product, favorites, and order performance in one place
+                                    <p className="text-gray-400 text-sm lg:text-lg">
+                                        Discover your dashboard
                                     </p>
                                 </div>
+
                             </div>
                         </div>
                     </div>

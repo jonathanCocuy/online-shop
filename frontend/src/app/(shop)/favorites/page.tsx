@@ -8,6 +8,7 @@ import { favoritesService } from '@/lib/favorites';
 import { authService } from '@/lib/auth';
 import Swal from 'sweetalert2';
 import { cartService } from '@/lib/cart';
+import router from 'next/router';
 
 export default function Favorites() {
     const [favorites, setFavorites] = useState<Product[]>([]);
@@ -46,13 +47,8 @@ export default function Favorites() {
             Swal.fire({
                 title: 'Removed from favorites',
                 text: 'Product removed from favorites',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                confirmButtonColor: '#3B82F6',
-                cancelButtonText: 'No',
-                cancelButtonColor: '#6B7280'
-            });
+                icon: 'success',
+            })
         } catch (err) {
             console.error('Failed to remove favorite', err);
             Swal.fire({

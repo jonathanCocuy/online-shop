@@ -126,7 +126,7 @@ export default function CartPage() {
 
     const calculateSubtotal = () => cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const calculateDiscount = () => (calculateSubtotal() * discount) / 100;
-    const calculateShipping = () => (calculateSubtotal() > 100000 ? 0 : 15000);
+    const calculateShipping = () => (calculateSubtotal() >= 100 ? 0 : 10);
     const calculateTotal = () => calculateSubtotal() - calculateDiscount() + calculateShipping();
 
     const handleCheckout = async () => {

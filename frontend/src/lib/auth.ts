@@ -108,5 +108,13 @@ export const authService = {
         if (!payload || typeof payload !== 'object') return null;
         const userId = payload['userId'] ?? payload['user_id'] ?? payload['id'];
         return typeof userId === 'number' ? userId : (typeof userId === 'string' ? Number(userId) || null : null);
+    },
+
+    getUserName(): string | null {
+        const token = this.getToken();
+        if (!token) return null;
+        const payload = decodeJwtPayload(token);
+        if (!payload || typeof payload !== 'object') return null;
+        return payload['user_name'] ?? payload['name'] ?? payload['username'] ?? null;
     }
 };

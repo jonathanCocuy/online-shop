@@ -136,7 +136,7 @@ export default function Navbar() {
                         )}
                         {isClient && isAuthenticated && (
                             <>
-                                <Link href="/dashboard/client" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
+                                <Link href="/dashboard/client" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all" onClick={() => setIsOpen(false)}>
                                     <User size={20} />
                                 </Link>
                                 <Link href="/cart" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all relative" onClick={() => setIsOpen(false)}>
