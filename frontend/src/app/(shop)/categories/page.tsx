@@ -163,10 +163,10 @@ export default function CategoryPage() {
 
 
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-end justify-between mb-6">
                     <div>
                         <p className="text-sm uppercase tracking-[0.3em] text-blue-400 font-semibold">Inspiration</p>
-                        <h2 className="text-3xl font-bold text-white">Explore Popular Categories</h2>
+                        <h2 className="text-2xl font-bold text-white">Explore Categories</h2>
                     </div>
                     <Link href="/categories" className="text-sm text-blue-400 font-semibold flex items-center gap-1">
                         View all
@@ -182,16 +182,31 @@ export default function CategoryPage() {
                         <p className="text-gray-500">No categories available.</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-6">
-                        {categories.map((category) => (
-                            <CategoryCard
-                                key={category.id}
-                                category={category}
-                                onClick={() => setSelectedCategoryId(category.id)}
-                                isActive={selectedCategoryId === category.id}
-                            />
-                        ))}
-                    </div>
+                    <>
+                        <div className="-mx-4 px-2 md:hidden">
+                            <div className="flex overflow-x-auto py-2 gap-1 snap-x snap-mandatory">
+                                {categories.map((category) => (
+                                    <div key={category.id} className="flex-shrink-0 snap-start w-36 px-1">
+                                        <CategoryCard
+                                            category={category}
+                                            onClick={() => setSelectedCategoryId(category.id)}
+                                            isActive={selectedCategoryId === category.id}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-6 gap-6">
+                            {categories.map((category) => (
+                                <CategoryCard
+                                    key={category.id}
+                                    category={category}
+                                    onClick={() => setSelectedCategoryId(category.id)}
+                                    isActive={selectedCategoryId === category.id}
+                                />
+                            ))}
+                        </div>
+                    </>
                 )}
             </section>
 
@@ -233,7 +248,7 @@ export default function CategoryPage() {
                         </Link>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2">
                         {sortedProducts.map((product) => (
                             <div key={product.id}>
                                 <ProductCard product={product} />

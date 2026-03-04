@@ -18,12 +18,36 @@ import CategoryCard, { type CategoryCardData } from '@/components/categories/Cat
 import ProductCard from '@/components/product/ProductCard';
 import { Product, productService } from '@/lib/product';
 import { authService } from '@/lib/auth';
+import { categoryService, type Category } from '@/lib/category';
 
 export default function Shop() {
     const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [totalProducts, setTotalProducts] = useState<Product[]>([]);
     const [totalUsers, setTotalUsers] = useState<number>(0);
+    const [categories, setCategories] = useState<CategoryCardData[]>([]);
+
+    const gradientLookup: Record<string, string> = {
+        technology: 'from-blue-500 to-cyan-500',
+        home: 'from-green-500 to-emerald-500',
+        shoes: 'from-orange-500 to-red-500',
+        accessories: 'from-purple-500 to-pink-500',
+        sports: 'from-red-500 to-rose-500',
+        clothes: 'from-indigo-500 to-purple-500',
+    };
+
+    const slugify = (value: string) => value.toLowerCase().replace(/\s+/g, '-');
+
+    const mapCategoryToCard = (category: Category): CategoryCardData => {
+        const slug = category.slug ?? slugify(category.name);
+        return {
+            id: category.id,
+            name: category.name,
+            slug,
+            gradient: category.gradient ?? gradientLookup[slug] ?? 'from-slate-500 to-slate-700',
+            productCount: category.product_count ?? 0,
+        };
+    };
 
     useEffect(() => {
         const fetchFeaturedProducts = async () => {
@@ -55,19 +79,20 @@ export default function Shop() {
             }
         };
 
+        const fetchCategories = async () => {
+            try {
+                const rows = await categoryService.getCategories();
+                setCategories(rows.map(mapCategoryToCard));
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
         fetchTotalUsers();
         fetchTotalProducts();
         fetchFeaturedProducts();
+        fetchCategories();
     }, []);
-
-    const categories: CategoryCardData[] = [
-        { id: '1', name: 'Technology', slug: 'technology', gradient: 'from-blue-500 to-cyan-500', productCount: 245 },
-        { id: '2', name: 'Home', slug: 'home', gradient: 'from-green-500 to-emerald-500', productCount: 189 },
-        { id: '3', name: 'Shoes', slug: 'shoes', gradient: 'from-orange-500 to-red-500', productCount: 312 },
-        { id: '4', name: 'Accessories', slug: 'accesories', gradient: 'from-purple-500 to-pink-500', productCount: 156 },
-        { id: '5', name: 'Sports', slug: 'sports', gradient: 'from-red-500 to-rose-500', productCount: 198 },
-        { id: '6', name: 'Clothes', slug: 'clothes', gradient: 'from-indigo-500 to-purple-500', productCount: 421 }
-    ];
 
     return (
         <div className="min-h-screen overflow-x-hidden w-full">
@@ -223,9 +248,9 @@ export default function Shop() {
 
                     {/* Mobile: scroll horizontal */}
                     <div className="-mx-4 px-4 md:hidden">
-                        <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory">
+                        <div className="flex overflow-x-auto py-2 gap-1 snap-x snap-mandatory">
                             {categories.map((category) => (
-                                <div key={category.id} className="flex-shrink-0 snap-start w-36">
+                                <div key={category.id} className="flex-shrink-0 snap-start w-36 px-1">
                                     <CategoryCard category={category} />
                                 </div>
                             ))}

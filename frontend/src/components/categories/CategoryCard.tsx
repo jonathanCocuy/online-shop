@@ -32,7 +32,7 @@ function CardContent({ category }: { category: CategoryCardData }) {
 
 export default function CategoryCard({ category, onClick, isActive }: CategoryCardProps) {
     const wrapperClasses = `
-        group relative overflow-hidden rounded-2xl h-28 md:h-32 border bg-black/70 flex items-center justify-center transition-all duration-200
+        group relative overflow-hidden rounded-2xl h-28 md:h-32 w-full border bg-black/70 flex items-center justify-center transition-all duration-200
         ${isActive ? 'border-white/70 shadow-lg shadow-blue-500/20 scale-105' : 'border-white/30 hover:border-white/60 hover:shadow-xl hover:shadow-blue-500/30'}
     `;
 
