@@ -139,7 +139,7 @@ export default function Navbar() {
                                 <Link href="/dashboard/client" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all">
                                     <User size={20} />
                                 </Link>
-                                <Link href="/cart" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all relative">
+                                <Link href="/cart" className="p-2 text-gray-700 hover:text-slate-800 hover:scale-110 transition-all relative" onClick={() => setIsOpen(false)}>
                                     <ShoppingCart size={20} />
                                     <span className="absolute -top-1 -right-1 bg-slate-800 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                                         {count}

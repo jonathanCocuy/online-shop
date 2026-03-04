@@ -110,7 +110,7 @@ export default function Shop() {
                                 <span className="text-blue-400 text-sm font-semibold">New Arrivals Every Week</span>
                             </div>
 
-                            <h1 className="text-3xl lg:text-4xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                            <h1 className="text-3xl lg:text-5xl md:text-4xl font-bold text-white mb-6 leading-tight">
                                 Everything You Need
                                 <span className="block mt-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-transparent bg-clip-text">
                                     In One Place

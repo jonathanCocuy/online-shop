@@ -2,12 +2,13 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-import { ShoppingBag, ArrowLeft, Tag, Truck, Heart, ShoppingCart } from 'lucide-react';
+import { ShoppingBag, ArrowLeft, Tag, Truck, Heart, ShoppingCart, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import Swal from 'sweetalert2';
 import CartCard from '@/components/cart/CartCard';
 import { cartService, type CartItem } from '@/lib/cart';
 import { authService } from '@/lib/auth';
+import CategoryFilter from '@/components/ui/Filter';
 
 // Configuración de formatos por moneda
 const CURRENCY_CONFIG = {
@@ -251,24 +252,29 @@ export default function CartPage() {
     return (
         <div className="max-w-7xl w-full min-h-screen">
             {/* Header */}
-            <div className="relative overflow-hidden w-full mt-10 mb-10">
-                <div className="relative max-w-7xl mx-auto w-full p-8">
-                    <div className="text-left flex items-center justify-between">
-                        <div className="flex flex-col items-start justify-center gap-2">
-                            <h1 className="text-5xl font-bold text-white flex items-center gap-3 justify-center">
-                                <ShoppingCart size={36} />
+            <div className="relative overflow-hidden w-full pl-4 mt-6 mb-6 lg:mt-10 lg:mb-10">
+                {/* Padding responsivo: p-4 en móvil, p-8 en PC */}
+                <div className="relative max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+
+                    {/* Contenedor principal: Columna en móvil (flex-col), Fila en PC (lg:flex-row) */}
+                    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-0">
+
+                        <div className="flex flex-col items-start justify-center gap-1 lg:gap-2">
+                            {/* Texto e ícono escalables */}
+                            <h1 className="text-2xl lg:text-5xl font-bold text-white flex items-center gap-2 lg:gap-3">
+                                <ShoppingCart className="w-6 h-6 lg:w-10 lg:h-10" />
                                 Shopping Cart
                             </h1>
-                            <p className="text-gray-400 text-lg">
+                            <p className="text-gray-400 text-sm lg:text-lg">
                                 Your shopping cart
                             </p>
-                            <p className="text-gray-400 text-lg">{cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} in your cart</p>
+                            <p className="text-gray-400 font-bold text-sm lg:text-lg">{cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} in your cart</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Cart Items */}
                     <div className="lg:col-span-2 space-y-4">
@@ -300,34 +306,6 @@ export default function CartPage() {
                     <div className="lg:col-span-1">
                         <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 sticky top-8">
                             <h2 className="text-2xl font-bold text-white mb-6">Order Summary</h2>
-
-                            {/* Promo Code */}
-                            <div className="mb-6">
-                                <label className="text-gray-400 text-sm mb-2 block">Promo Code</label>
-                                <div className="flex gap-2">
-                                    <input
-                                        type="text"
-                                        value={promoCode}
-                                        onChange={(e) => setPromoCode(e.target.value)}
-                                        placeholder="Enter code"
-                                        className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    />
-                                    <Button
-                                        variant="secondary"
-                                        onClick={applyPromoCode}
-                                        className="flex items-center gap-2"
-                                    >
-                                        <Tag size={16} />
-                                        Apply
-                                    </Button>
-                                </div>
-                                {discount > 0 && (
-                                    <div className="mt-2 text-green-400 text-sm flex items-center gap-2">
-                                        <Tag size={14} />
-                                        {discount}% discount applied
-                                    </div>
-                                )}
-                            </div>
 
                             {/* Price Breakdown */}
                             <div className="space-y-3 mb-6">

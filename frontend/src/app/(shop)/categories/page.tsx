@@ -135,7 +135,7 @@ export default function CategoryPage() {
     return (
         <div className="max-w-7xl w-full min-h-screen">
             {/* Header */}
-            <div className="relative overflow-hidden w-full mt-6 mb-6 lg:mt-10 lg:mb-10">
+            <div className="relative overflow-hidden w-full pl-4 mt-6 mb-6 lg:mt-10 lg:mb-10">
                 {/* Padding responsivo: p-4 en móvil, p-8 en PC */}
                 <div className="relative max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
 
@@ -166,7 +166,7 @@ export default function CategoryPage() {
             </div>
 
 
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+            <section className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 mb-12">
                 <div className="flex items-end justify-between mb-6">
                     <div>
                         <p className="text-sm uppercase tracking-[0.3em] text-blue-400 font-semibold">Inspiration</p>

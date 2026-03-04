@@ -59,7 +59,7 @@ export default function Products() {
     return (
         <div className="min-h-screen flex flex-col items-center">
             {/* Header Section */}
-            <div className="relative overflow-hidden w-full mt-6 mb-6 lg:mt-10 lg:mb-10">
+            <div className="relative overflow-hidden w-full pl-4 mt-6 mb-6 lg:mt-10 lg:mb-10">
                 {/* Reducimos el padding en móvil (p-4) y lo mantenemos amplio en desktop (lg:p-8) */}
                 <div className="relative max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
 
