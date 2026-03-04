@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import { SlideOver } from "@/components/ui/SlideOver";
 import ProductForm, { ProductFormData } from '@/components/product/ProductForm';
 import { Pencil, Trash2 } from 'lucide-react';
+import { cartService } from '@/lib/cart';
 
 // Configuración de formatos por moneda
 const CURRENCY_CONFIG = {
@@ -134,7 +135,8 @@ export default function ProductDetailPage() {
                 image_url: productData.image_url,
                 stock: Number(productData.stock),
                 category_id: productData.category_id,
-                currency: productData.currency
+                currency: productData.currency,
+                created_at: new Date()
             });
 
             if (response.success) {
@@ -185,6 +187,34 @@ export default function ProductDetailPage() {
             minimumFractionDigits: config.decimals,
             maximumFractionDigits: config.decimals,
         });
+    };
+
+    const handleAddToCart = async () => {
+        if (!authService.isAuthenticated()) {
+            Swal.fire({
+                title: 'Authentication required',
+                text: 'Please login to add products to your cart',
+                icon: 'warning',
+                confirmButtonText: 'Login',
+                confirmButtonColor: '#3B82F6',
+                cancelButtonColor: '#6B7280',
+                cancelButtonText: 'Cancel'
+            });
+        }
+
+        try {
+            await cartService.addToCart(product?.id as string | number, 1);
+            const total = await cartService.getCartCount();
+            Swal.fire({
+                title: 'Added to cart',
+                text: `Now you have ${total} ${total === 1 ? 'product' : 'products'} in your cart.`,
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        } catch (error) {
+            console.error('Error adding product to cart:', error);
+        }
     };
 
     if (loading) {
@@ -288,6 +318,7 @@ export default function ProductDetailPage() {
                                     variant="primary" 
                                     size="lg" 
                                     className="flex-1 flex items-center justify-center gap-2"
+                                    onClick={handleAddToCart}
                                 >
                                     Add to cart
                                 </Button>
