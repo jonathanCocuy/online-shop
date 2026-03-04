@@ -51,7 +51,8 @@ export default function EditProductPage({ onProductUpdated }: EditProductPagePro
                 image_url: productData.image_url,
                 stock: Number(productData.stock),
                 category_id: productData.category_id,
-                currency: productData.currency
+                currency: productData.currency,
+                created_at: new Date()
             });
 
             if (response.success) {
