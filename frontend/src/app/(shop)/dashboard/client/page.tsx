@@ -193,7 +193,7 @@ export default function CustomerDashboard() {
                                     <h1 className="text-2xl lg:text-5xl font-bold text-white flex items-center gap-2 lg:gap-3">
                                         {/* Hacemos el icono responsivo usando clases en lugar de size fijo */}
                                         <LayoutDashboard className="w-6 h-6 lg:w-10 lg:h-10" />
-                                        Hello {userFullName ?? 'User'}
+                                        Hello {userFullName ?? ''}
                                     </h1>
                                     <p className="text-gray-400 text-sm lg:text-lg">
                                         Discover your dashboard
