@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { authService } from '@/lib/auth';
 import { SlideOver } from "@/components/ui/SlideOver";
 import { productService, Product } from '@/lib/product';
+import { usersService } from '@/lib/users';
 import ProductForm, { ProductFormData } from '@/components/product/ProductForm';
 import { favoritesService } from '@/lib/favorites';
 
@@ -34,6 +35,7 @@ export default function CustomerDashboard() {
 
     const [isClient, setIsClient] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [userFullName, setUserFullName] = useState<string | null>(null);
     const [isSlideOverOpen, setIsSlideOverOpen] = useState(false);
 
     useEffect(() => {
@@ -69,7 +71,32 @@ export default function CustomerDashboard() {
 
     useEffect(() => {
         setIsClient(true);
-        setIsAuthenticated(authService.isAuthenticated());
+        const token = authService.getToken();
+        const authenticated = Boolean(token);
+        setIsAuthenticated(authenticated);
+
+        if (!authenticated) {
+            setUserFullName(null);
+            return;
+        }
+
+        let isMounted = true;
+        const loadProfile = async () => {
+            try {
+                const profile = await usersService.getProfile();
+                if (!isMounted) return;
+                const fullName = [profile.user_name].filter(Boolean).join(' ');
+                setUserFullName(fullName || profile.user_name);
+            } catch (error) {
+                console.error('Failed to load user profile', error);
+            }
+        };
+
+        loadProfile();
+
+        return () => {
+            isMounted = false;
+        };
     }, []);
 
     const handdleAddProduct = async (product: ProductFormData) => {
@@ -166,7 +193,7 @@ export default function CustomerDashboard() {
                                     <h1 className="text-2xl lg:text-5xl font-bold text-white flex items-center gap-2 lg:gap-3">
                                         {/* Hacemos el icono responsivo usando clases en lugar de size fijo */}
                                         <LayoutDashboard className="w-6 h-6 lg:w-10 lg:h-10" />
-                                        Hello {'User'}
+                                        Hello {userFullName ?? 'User'}
                                     </h1>
                                     <p className="text-gray-400 text-sm lg:text-lg">
                                         Discover your dashboard
