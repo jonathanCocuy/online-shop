@@ -230,7 +230,7 @@ export default function CustomerDashboard() {
 
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div className="lg:col-span-1">
-                                <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 min-h-[360px]">
+                                <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6">
                                 <div className="flex items-center justify-between mb-6">
                                     <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                                         <Plus size={24} className="text-blue-400" />
@@ -247,9 +247,9 @@ export default function CustomerDashboard() {
                                     <div className="text-center py-12">
                                         <Package size={48} className="text-gray-600 mx-auto mb-4" />
                                         <p className="text-gray-400">No products created yet</p>
-                                        <p className="text-gray-400 text-sm">
-                                            Usa el botón de abajo para agregar el primero.
-                                        </p>
+                                        <Button className="mt-4" variant="primary" size="sm" onClick={() => setIsSlideOverOpen(true)}>
+                                            Add New Product
+                                        </Button>
                                     </div>
                                 ) : (
                                     <div className="space-y-4 flex flex-col">
@@ -285,11 +285,6 @@ export default function CustomerDashboard() {
                                         Showing 3 of {createdProducts.length} created products. Visit the orders page to see them all.
                                     </div>
                                 )}
-                                <div className="mt-6 flex justify-center">
-                                    <Button variant="primary" onClick={() => setIsSlideOverOpen(true)}>
-                                        Add New Product
-                                    </Button>
-                                </div>
                                 </div>
                             </div>
                             
@@ -309,7 +304,7 @@ export default function CustomerDashboard() {
                                     </div>
 
                                     {orders.length === 0 ? (
-                                        <div className="text-center py-12">
+                                        <div className="text-center py-12 ">
                                             <Package size={48} className="text-gray-600 mx-auto mb-4" />
                                             <p className="text-gray-400">No orders yet</p>
                                             <Link href="/products">
@@ -348,7 +343,7 @@ export default function CustomerDashboard() {
 
                             {/* Favorites */}
                             <div className="lg:col-span-1">
-                                <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 min-h-[320px]">
+                                <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6">
                                     <div className="flex items-center justify-between mb-6">
                                         <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                                             <Heart size={24} className="text-pink-400" />
