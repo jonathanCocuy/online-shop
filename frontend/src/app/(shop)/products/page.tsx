@@ -4,8 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { productService } from "@/lib/product";
 import { Product } from "@/lib/product";
 import ProductCard from "@/components/product/ProductCard";
-import { Button } from "@/components/ui/Button";
-import ProductForm, { ProductFormData } from "@/components/product/ProductForm";
 import { ShoppingBag } from "lucide-react";
 import CategoryFilter from "@/components/ui/Filter";
 
@@ -57,9 +55,9 @@ export default function Products() {
 
 
     return (
-        <div className="min-h-screen flex flex-col items-center">
+        <div className="max-w-7xl w-full mx-auto">
             {/* Header Section */}
-            <div className="relative overflow-hidden w-full pl-4 mt-6 mb-6 lg:mt-10 lg:mb-10">
+            <div className="max-w-full mx-auto relative overflow-hidden w-full pl-4 mt-6 mb-6 lg:mt-10 lg:mb-10">
                 {/* Reducimos el padding en móvil (p-4) y lo mantenemos amplio en desktop (lg:p-8) */}
                 <div className="relative max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
 
@@ -79,7 +77,7 @@ export default function Products() {
 
                         {/* Contenedor del filtro: le damos ancho completo en móvil por si lo necesita */}
                         <div className="w-full sm:w-auto mt-2 lg:mt-0 flex justify-start lg:justify-end">
-                            <CategoryFilter sortBy={sortBy} onSortChange={(value) => setSortBy(value as any)} />
+                            <CategoryFilter sortBy={sortBy} onSortChange={(value) => setSortBy(value as typeof sortBy)} />
                         </div>
 
                     </div>
@@ -133,9 +131,9 @@ export default function Products() {
 
                 {/* Products Grid */}
                 {!loading && products.length > 0 && (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 justify-center items-center">
                         {sortedProducts.map((product) => (
-                            <div key={product.id} className="">
+                            <div key={product.id}>
                                 <ProductCard product={product} />
                             </div>
                         ))}
