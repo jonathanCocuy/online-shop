@@ -1,14 +1,17 @@
-import { env } from "./env.js";
 import cors from "cors";
 
 export const corsMiddleware = cors({
-    origin: [
-        env.PRODUCTION_URL,
-        env.DEVELOPMENT_URL
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-});
+    origin: (origin, callback) => {
+        const allowedOrigins = [
+            "https://onshop.jonathancocuy-dev.online",
+            "http://localhost:3000"
+        ];
 
-export default corsMiddleware;
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    credentials: true
+});
