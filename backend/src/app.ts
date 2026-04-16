@@ -11,7 +11,7 @@ import userRoutes from "./routes/user.routes.js";
 export const app = express();
 
 app.use(corsMiddleware);
-app.options('*', corsMiddleware);
+app.options('/.*/', corsMiddleware);
 
 app.use(express.json());
 
@@ -21,7 +21,3 @@ app.use("/", categoryRoutes);
 app.use("/", favoritesRoutes);
 app.use("/users", userRoutes);
 app.use("/", cartRoutes);
-
-app.get("/", (req, res) => {
-  res.send("Backend funcionando 🚀");
-});
