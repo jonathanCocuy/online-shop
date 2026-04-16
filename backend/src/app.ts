@@ -20,3 +20,7 @@ app.use("/", categoryRoutes);
 app.use("/", favoritesRoutes);
 app.use("/users", userRoutes);
 app.use("/", cartRoutes);
+
+app.get("/", (req, res) => {
+  res.send("Backend funcionando 🚀");
+});
