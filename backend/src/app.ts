@@ -11,6 +11,7 @@ import userRoutes from "./routes/user.routes.js";
 export const app = express();
 
 app.use(corsMiddleware);
+app.options('*', corsMiddleware);
 
 app.use(express.json());
 
