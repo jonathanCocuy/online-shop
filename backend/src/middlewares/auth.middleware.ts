@@ -4,13 +4,6 @@ import jwt from 'jsonwebtoken'
 import { JwtPayload } from '../types/auth.types.js'
 
 // Extender Request para TS
-declare global {
-    namespace Express {
-        interface Request {
-            user: JwtPayload | undefined
-        }
-    }
-}
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization
