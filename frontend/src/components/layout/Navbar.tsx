@@ -70,14 +70,14 @@ export default function Navbar() {
                             <div className="rounded-lg">
                                 <Image src="/images/login-logo.png" alt="Logo" width={50} height={50} className="sm: w-10 h-10" />
                             </div>
-                            <span className="text-lg lg:text-2xl font-bold text-slate-800">
+                            <span className="text-lg lg:text-lg font-bold text-slate-800">
                                 On-Shop
                             </span>
                         </div>
                     </div>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center flex-1 justify-center space-x-8">
+                    <div className="hidden md:flex items-center flex-1 justify-center space-x-8 text-sm">
                         <Link
                             href="/"
                             className={`text-gray-700 hover:text-slate-800 hover:scale-105 transition-all font-medium pb-1 ${activeLink === "Home" ? "border-b-2 border-slate-800 font-semibold" : ""

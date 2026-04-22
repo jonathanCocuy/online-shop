@@ -110,38 +110,38 @@ export default function Shop() {
                                 <span className="text-blue-400 text-sm font-semibold">New Arrivals Every Week</span>
                             </div>
 
-                            <h1 className="text-3xl lg:text-5xl md:text-4xl font-bold text-white mb-6 leading-tight">
+                            <h1 className="text-3xl lg:text-5xl md:text-4xl font-extrabold text-white mb-6 leading-tight">
                                 Everything You Need
                                 <span className="block mt-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-transparent bg-clip-text">
                                     In One Place
                                 </span>
                             </h1>
 
-                            <p className="text-gray-400 text-base md:text-xl mb-8 max-w-xl mx-auto lg:mx-0">
+                            <p className="text-gray-400 text-md mb-8 max-w-xl mx-auto lg:mx-0">
                                 Discover thousands of quality products at unbeatable prices. Fast shipping, secure payments, and exceptional service.
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center lg:justify-start">
                                 <Link href="/products">
-                                    <Button variant="primary" size="md" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg shadow-blue-500/25 text-lg px-8 flex items-center gap-2 justify-center">
+                                    <Button variant="primary" size="md" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg shadow-blue-500/25 text-md px-8 flex items-center gap-2 justify-center">
                                         Shop Now
                                         <ArrowRight className="ml-2" size={20} />
                                     </Button>
                                 </Link>
                                 <Link href="/categories">
-                                    <Button variant="secondary" size="md" className="text-lg px-8">
+                                    <Button variant="secondary" size="md" className="text-md px-8">
                                         Browse Categories
                                     </Button>
                                 </Link>
                             </div>
 
                             <div className="grid grid-cols-2 gap-6 mt-12 max-w-lg mx-auto lg:mx-0">
-                                <div className="text-center lg:text-left">
-                                    <div className="text-3xl font-bold text-white mb-1">{totalProducts.length}</div>
+                                <div className="text-center lg:text-left flex flex-col items-center justify-center">
+                                    <div className="text-2xl font-bold text-white mb-1">{totalProducts.length}</div>
                                     <div className="text-gray-400 text-sm">Products</div>
                                 </div>
-                                <div className="text-center lg:text-left">
-                                    <div className="text-3xl font-bold text-white mb-1">4.9★</div>
+                                <div className="text-center lg:text-left flex flex-col items-center justify-center">
+                                    <div className="text-2xl font-bold text-white mb-1">4.9 ★</div>
                                     <div className="text-gray-400 text-sm">Rating</div>
                                 </div>
                             </div>
@@ -238,7 +238,7 @@ export default function Shop() {
             <section className="py-15 lg:py-20 w-full">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+                        <h2 className="text-xl md:text-5xl font-bold text-white mb-4">
                             Shop by Category
                         </h2>
                         <p className="text-gray-400 text-md max-w-2xl mx-auto">
@@ -281,7 +281,7 @@ export default function Shop() {
                     <div className="flex items-center justify-between mb-12">
                         <div>
                             <div className="flex items-center gap-3 mb-3">
-                                <h2 className="text-3xl md:text-5xl font-bold text-white">
+                                <h2 className="text-xl md:text-5xl font-bold text-white">
                                     Featured Products
                                 </h2>
                             </div>
@@ -314,7 +314,7 @@ export default function Shop() {
 
                             <div className="text-center mt-4 flex justify-center md:hidden  ">
                                 <Link href="/products">
-                                    <Button variant="secondary" className="flex items-center gap-2 justify-center">
+                                    <Button variant="secondary" className="text-sm flex items-center gap-2 justify-center">
                                         View All Products
                                         <ArrowRight className="ml-2" size={18} />
                                     </Button>

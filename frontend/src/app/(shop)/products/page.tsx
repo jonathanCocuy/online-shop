@@ -65,12 +65,12 @@ export default function Products() {
                     <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-0">
 
                         <div className="flex flex-col items-start justify-center gap-1 lg:gap-2">
-                            <h1 className="text-2xl lg:text-5xl font-bold text-white flex items-center gap-2 lg:gap-3">
+                            <h1 className="text-2xl lg:text-3xl font-bold text-white flex items-center gap-2 lg:gap-3">
                                 {/* Hacemos el icono responsivo usando clases en lugar de size fijo */}
                                 <ShoppingBag className="w-6 h-6 lg:w-10 lg:h-10" />
                                 Our Products List
                             </h1>
-                            <p className="text-gray-400 text-sm lg:text-lg">
+                            <p className="text-gray-400 text-sm lg:text-md">
                                 Discover our exclusive collection
                             </p>
                         </div>

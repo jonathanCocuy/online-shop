@@ -144,11 +144,11 @@ export default function CategoryPage() {
 
                         <div className="flex flex-col items-start justify-center gap-1 lg:gap-2">
                             {/* Texto e ícono escalables */}
-                            <h1 className="text-2xl lg:text-5xl font-bold text-white flex items-center gap-2 lg:gap-3">
+                            <h1 className="text-2xl lg:text-3xl font-bold text-white flex items-center gap-2 lg:gap-3">
                                 <Filter className="w-6 h-6 lg:w-10 lg:h-10" />
                                 {currentCategoryName.charAt(0).toUpperCase() + currentCategoryName.slice(1)}
                             </h1>
-                            <p className="text-gray-400 text-sm lg:text-lg">
+                            <p className="text-gray-400 text-sm lg:text-md">
                                 Discover our exclusive products
                             </p>
                         </div>
