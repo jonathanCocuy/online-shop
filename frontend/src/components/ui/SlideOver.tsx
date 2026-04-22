@@ -16,9 +16,7 @@ export const SlideOver: React.FC<SlideOverProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  // Función para manejar click en el backdrop
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Solo cierra si el click es directamente en el backdrop
     if (e.target === e.currentTarget) {
       onClose();
     }
@@ -26,33 +24,52 @@ export const SlideOver: React.FC<SlideOverProps> = ({
 
   return (
     <>
-      {/* Backdrop - ahora captura clicks y previene interacción con elementos debajo */}
+      {/* Backdrop con efecto Blur (Desenfoque) */}
       <div
-        className="fixed inset-0 z-40 bg-black/80 transition-opacity duration-300"
+        className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300"
         onClick={handleBackdropClick}
       />
   
-      {/* Slide Over Panel */}
-      <div className="fixed top-25 w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/2 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out h-auto flex justify-center items-center rounded-lg">
-        <div className="flex flex-col w-full h-full">
-          {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
-              aria-label="Close"
-            >
-              <X size={24} />
-            </button>
+      {/* Slide Over Panel Centralizado */}
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-5xl bg-black shadow-2xl z-50 transform transition-all duration-300 ease-in-out flex flex-col rounded-2xl border border-gray-800 overflow-hidden max-h-[90vh]">
+        
+        {/* Header con estilo Minimalista */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-800 bg-black">
+          <div>
+            <h2 className="text-2xl font-bold text-white tracking-tight">{title}</h2>
+            <div className="h-1 w-12 bg-blue-600 rounded-full mt-1"></div>
           </div>
+          <button
+            onClick={onClose}
+            className="p-2 text-gray-500 hover:text-white hover:bg-gray-900 rounded-full transition-all"
+            aria-label="Close"
+          >
+            <X size={24} />
+          </button>
+        </div>
 
-          {/* Content */}
-          <div className="flex-1 overflow-y-auto p-6">
-            {children}
-          </div>
+        {/* Area de Contenido con Scroll Personalizado */}
+        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+          {children}
         </div>
       </div>
+
+      {/* Estilos para el scrollbar (opcional, añadir en tu globals.css) */}
+      <style jsx>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #000;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #333;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #2563eb;
+        }
+      `}</style>
     </>
   );
 };

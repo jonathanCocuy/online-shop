@@ -1,12 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Questrial } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
 
-const questrial = Questrial({
-  variable: "--font-questrial",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: "400",
 });
 
 export const viewport: Viewport = {
@@ -24,7 +23,7 @@ export default function RootLayout({children} : {children: React.ReactNode}) {
     <html lang="en" suppressHydrationWarning>
       <head />
       <body
-        className={`${questrial.variable} antialiased`}
+        className={`${inter.variable} antialiased`}
         suppressHydrationWarning
       >
         {children}

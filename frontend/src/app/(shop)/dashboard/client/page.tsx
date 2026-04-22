@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { ShoppingCart, Heart, Package, Star, LayoutDashboard, Plus, ShoppingBag, ShoppingBasket } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 import Image from 'next/image';
 import { authService } from '@/lib/auth';
 import { SlideOver } from "@/components/ui/SlideOver";
-import { productService, Product } from '@/lib/product';
+import { productService, Product, CreateProductPayload } from '@/lib/product';
 import { usersService } from '@/lib/users';
 import ProductForm, { ProductFormData } from '@/components/product/ProductForm';
 import { favoritesService } from '@/lib/favorites';
@@ -23,30 +23,21 @@ interface OrderSummary {
 export default function CustomerDashboard() {
     const [orders, setOrders] = useState<OrderSummary[]>([]);
     const [favorites, setFavorites] = useState<Product[]>([]);
-    const [stats, setStats] = useState({
-        totalOrders: 0,
+    const [createdProducts, setCreatedProducts] = useState<Product[]>([]);
+
+    const stats = useMemo(() => ({
+        totalOrders: orders.length,
         totalSpent: 0,
         pendingOrders: 0,
         favoriteItems: favorites.length,
-        pageVisits: 0,
-        productViews: 0
-    });
-    const [createdProducts, setCreatedProducts] = useState<Product[]>([]);
+        pageVisits: orders.length * 150 + favorites.length * 40,
+        productViews: favorites.length * 12 + orders.length * 5,
+    }), [favorites.length, orders.length]);
 
     const [isClient, setIsClient] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userFullName, setUserFullName] = useState<string | null>(null);
     const [isSlideOverOpen, setIsSlideOverOpen] = useState(false);
-
-    useEffect(() => {
-        setStats((prev) => ({
-            ...prev,
-            favoriteItems: favorites.length,
-            totalOrders: orders.length,
-            pageVisits: orders.length * 150 + favorites.length * 40,
-            productViews: favorites.length * 12 + orders.length * 5
-        }));
-    }, [favorites.length, orders.length]);
 
     useEffect(() => {
         const fetchFavorites = async () => {
@@ -66,22 +57,31 @@ export default function CustomerDashboard() {
     }, []);
 
     useEffect(() => {
-        loadCreatedProducts();
-    }, [loadCreatedProducts]);
+        const load = async () => {
+            try {
+                const products = await productService.getProductsByUser();
+                setCreatedProducts(products);
+            } catch (error) {
+                console.error('Failed to load user products', error);
+            }
+        };
+        void load();
+    }, []);
 
     useEffect(() => {
-        setIsClient(true);
-        const token = authService.getToken();
-        const authenticated = Boolean(token);
-        setIsAuthenticated(authenticated);
-
-        if (!authenticated) {
-            setUserFullName(null);
-            return;
-        }
-
         let isMounted = true;
-        const loadProfile = async () => {
+
+        const initialize = async () => {
+            const token = authService.getToken();
+            const authenticated = Boolean(token);
+            setIsClient(true);
+            setIsAuthenticated(authenticated);
+
+            if (!authenticated) {
+                setUserFullName(null);
+                return;
+            }
+
             try {
                 const profile = await usersService.getProfile();
                 if (!isMounted) return;
@@ -92,7 +92,7 @@ export default function CustomerDashboard() {
             }
         };
 
-        loadProfile();
+        void initialize();
 
         return () => {
             isMounted = false;
@@ -102,19 +102,16 @@ export default function CustomerDashboard() {
     const handdleAddProduct = async (product: ProductFormData) => {
         try {
             const categoryIdNum = Number(product.category_id);
-            const base = {
+            const payload: CreateProductPayload = {
                 name: product.name,
                 description: product.description,
                 price: Number(product.price),
                 image_url: product.image_url,
                 stock: Number(product.stock),
-                currency: product.currency
+                currency: product.currency,
+                category_id: !Number.isNaN(categoryIdNum) && categoryIdNum >= 1 ? categoryIdNum : 0,
             };
-            const payload =
-                !Number.isNaN(categoryIdNum) && categoryIdNum >= 1
-                    ? { ...base, category_id: categoryIdNum }
-                    : { ...base, category: String(product.category_id) };
-            await productService.createProduct(payload as any);
+            await productService.createProduct(payload);
             await loadCreatedProducts();
             setIsSlideOverOpen(false);
         } catch (error) {
@@ -212,7 +209,7 @@ export default function CustomerDashboard() {
                                 return (
                                     <div
                                         key={card.label}
-                                        className="bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300"
+                                        className="bg-linear-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300"
                                     >
                                         <div className="flex items-center justify-between mb-4">
                                             <div className="bg-white/10 p-3 rounded-xl">
@@ -257,7 +254,7 @@ export default function CustomerDashboard() {
                                             <Link href={`/products/${product.id}`} key={product.id}>
                                                 <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-3 hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
                                                     <div className="flex items-center gap-3">
-                                                        <div className="relative h-[40px] w-[60px] flex-shrink-0">
+                                                        <div className="relative h-[40px] w-[60px] shrink-0">
                                                             <Image
                                                                 src={product.image_url}
                                                                 alt={product.name}
@@ -279,6 +276,11 @@ export default function CustomerDashboard() {
                                             </Link>
                                         ))}
                                     </div>
+                                )}
+                                {createdProducts.length > 0 && (
+                                  <Button className="mt-4" variant="primary" size="sm" onClick={() => setIsSlideOverOpen(true)}>
+                                      Add New Product
+                                  </Button>
                                 )}
                                 {createdProducts.length > 3 && (
                                     <div className="mt-4 text-xs text-gray-500 text-center">
@@ -372,7 +374,7 @@ export default function CustomerDashboard() {
                                                 <Link href={`/products/${product.id}`} key={product.id}>
                                                     <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-3 hover:border-pink-500/50 transition-all duration-300 cursor-pointer">
                                                         <div className="flex items-center gap-3">
-                                                            <div className="relative h-[40px] w-[60px] flex-shrink-0">
+                                                            <div className="relative h-[40px] w-[60px] shrink-0">
                                                                 <Image
                                                                     src={product.image_url}
                                                                     alt={product.name}
@@ -414,7 +416,7 @@ export default function CustomerDashboard() {
                                 Please login to access your dashboard
                             </p>
                             <p className="text-lg text-gray-400">
-                                If you don't have an account, please register
+                                If you don&apos;t have an account, please register
                             </p>
                         </div>
                         
