@@ -24,7 +24,7 @@ export interface ProductFormData {
     price: number | string;
     image_url: string;
     stock: number | string;    
-    category_id: string;
+    category_id: string | number;
     currency: string;
 }   
 
@@ -59,10 +59,15 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditMod
         const loadCategories = async () => {
             try {
                 const data = await categoryService.getCategories();
-                setCategoryOptions(data.map((category) => ({
+                const options = data.map((category) => ({
                     value: String(category.id),
                     label: category.name
-                })));
+                }));
+                setCategoryOptions(options);
+                setFormData(prev => ({
+                    ...prev,
+                    category_id: prev.category_id || (options[0]?.value ?? "")
+                }));
             } catch (error) {
                 console.error('Unable to load categories', error);
             }
@@ -124,7 +129,7 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditMod
         setIsSubmitting(true);
         try {
             const priceValue = typeof formData.price === 'string' ? parseFloat(formData.price) : formData.price;
-            await onSubmit({ ...formData, price: priceValue, stock: Number(formData.stock) });
+            await onSubmit({ ...formData, price: priceValue, stock: Number(formData.stock), category_id: Number(formData.category_id) });
             await Swal.fire({
                 title: 'Done!',
                 text: isEditMode ? 'Product updated' : 'Product created',
